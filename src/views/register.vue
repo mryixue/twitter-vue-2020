@@ -3,7 +3,7 @@
     <div id="register">
       <img class="logo" src="/logo.png">
       <h3 class="title">建立您的帳號</h3>
-      <form class="login-box">
+      <form class="form">
         <input
           inputmode="account"
           v-model="account"
@@ -41,7 +41,7 @@
           required
           placeholder="密碼確認"
         />
-        <button class="login-button" type="submit">註冊</button>
+        <div class="button">註冊</div>
       </form>
       <router-link class="cancle" to="/login/">取消</router-link>
     </div>
@@ -79,7 +79,7 @@ $font-color: rgba(#b0d7f6, .8)
         top: 20px
     .title
       margin: 20px
-    .login-box
+    .form
       display: flex
       flex-flow: column nowrap
       align-items: center
@@ -89,7 +89,7 @@ $font-color: rgba(#b0d7f6, .8)
         font-size: 16px
         padding: 10px
         margin: 10px
-      button
+      .button
         background:
           color: $font-color
         width: 360px
@@ -98,6 +98,7 @@ $font-color: rgba(#b0d7f6, .8)
         padding: 10px
         margin: 10px
         font-size: 18px
+        text-align: center
         &:hover, &:active
           cursor: pointer
           background:
