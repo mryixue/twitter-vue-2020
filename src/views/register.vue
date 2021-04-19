@@ -1,6 +1,6 @@
 <template>
   <div class="loginframe">
-    <div id="login">
+    <div id="register">
       <img class="logo" src="/logo.png">
       <h3 class="title">登入 Twitter</h3>
       <form class="login-box">
@@ -23,11 +23,7 @@
         />
         <button class="login-button" type="submit">登入</button>
       </form>
-      <div class="links">
-        <router-link to="/register/">註冊 Twitter</router-link>
-        <span>‧</span>
-        <router-link to="/">後台登入</router-link>
-      </div>
+      <a class="register" href="./register/">註冊 Twitter</a>
     </div>
   </div>
 </template>
@@ -81,7 +77,7 @@ $font-color: rgba(#b0d7f6, .8)
           cursor: pointer
           background:
             color: #a0c4e0
-    .links a
+    .register
       color: $font-color
       text-shadow: 0px 0px 0.5px black
       margin:
