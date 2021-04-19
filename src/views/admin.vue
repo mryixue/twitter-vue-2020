@@ -1,9 +1,9 @@
 <template>
   <div class="loginframe">
-    <div id="login">
+    <div id="admin">
       <img class="logo" src="/logo.png">
-      <h3 class="title">登入 Twitter</h3>
-      <form class="form">
+      <h3 class="title">後台登入</h3>
+      <form class="form" @keydown.enter.exact="login">
         <input
           inputmode="user"
           v-model="user"
@@ -19,23 +19,30 @@
           required
           placeholder="密碼"
         />
-        <div class="button">登入</div>
+        <div class="button" @click="login">登入</div>
       </form>
-      <div class="links">
-        <router-link to="/register/">註冊 Twitter</router-link>
-        <span>‧</span>
-        <router-link to="/admin/">後台登入</router-link>
-      </div>
+      <router-link class="links" to="/login/">前台登入</router-link>
     </div>
   </div>
 </template>
 
 <script>
+const admin = {
+  user: 'root',
+  password: 'aaa'
+}
 export default {
   data(){
     return{
-      user: '',
-      password: ''
+      user: 'root',
+      password: 'aaa'
+    }
+  },
+  methods: {
+    login(){
+      if(this.user === admin.user && this.password === admin.password){
+        this.$router.push('/admin_main')
+      }
     }
   }
 }
@@ -47,7 +54,7 @@ $font-color: rgba(#b0d7f6, .8)
 .loginframe
   display: flex
   justify-content: center
-  #login
+  #admin
     display: flex
     flex-flow: column nowrap
     align-items: center
@@ -81,7 +88,7 @@ $font-color: rgba(#b0d7f6, .8)
           cursor: pointer
           background:
             color: #a0c4e0
-    .links a
+    .links
       color: $font-color
       text-shadow: 0px 0px 0.5px black
       margin:
