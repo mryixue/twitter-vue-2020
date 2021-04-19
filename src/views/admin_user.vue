@@ -1,16 +1,16 @@
 <template>
   <div class="adminframe">
     <adminLeft/>
-    <adminRightTweets/>
+    <adminRightUser/>
   </div>
 </template>
 
 <script>
 import adminLeft from '../components/adminLeft'
-import adminRightTweets from '../components/adminRightTweets'
+import adminRightUser from '../components/adminRightUser'
 export default {
   components: {
-    adminLeft, adminRightTweets
+    adminLeft, adminRightUser
   }
 }
 </script>
@@ -38,6 +38,6 @@ export default {
         .router-link-exact-active
           color: $font-color
           text-shadow: 1px 1px 0.5px black
-    #adminRIghtTweets
+    #adminRIghtUser
       width: 65vw
 </style>
