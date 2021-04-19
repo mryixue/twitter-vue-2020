@@ -2,28 +2,48 @@
   <div class="loginframe">
     <div id="register">
       <img class="logo" src="/logo.png">
-      <h3 class="title">登入 Twitter</h3>
+      <h3 class="title">建立您的帳號</h3>
       <form class="login-box">
         <input
-          id="login-email"
-          inputmode="email"
-          v-model="email"
+          inputmode="account"
+          v-model="account"
           autocomplete="username"
           required
           autofocus
-          placeholder="電子郵件"
+          placeholder="帳號"
         />
         <input
-          id="login-password"
+          inputmode="name"
+          v-model="name"
+          maxlength="25"
+          required
+          placeholder="顯示名稱"
+        />
+        <input
+          inputmode="email"
+          v-model="email"
+          autocomplete="email"
+          required
+          autofocus
+          placeholder="電子信箱"
+        />
+        <input
           type="password"
           v-model="password"
-          autocomplete="current-password"
+          autocomplete="new-password"
           required
           placeholder="密碼"
         />
-        <button class="login-button" type="submit">登入</button>
+        <input
+          type="comfirm"
+          v-model="comfirm"
+          autocomplete="new-password"
+          required
+          placeholder="密碼確認"
+        />
+        <button class="login-button" type="submit">註冊</button>
       </form>
-      <a class="register" href="./register/">註冊 Twitter</a>
+      <router-link class="cancle" to="/login/">取消</router-link>
     </div>
   </div>
 </template>
@@ -32,8 +52,12 @@
 export default {
   data(){
     return{
+      id: '',
+      account: '',
+      name: '',
       email: '',
-      password: ''
+      password: '',
+      comfirm: ''
     }
   }
 }
@@ -45,7 +69,7 @@ $font-color: rgba(#b0d7f6, .8)
 .loginframe
   display: flex
   justify-content: center
-  #login
+  #register
     display: flex
     flex-flow: column nowrap
     align-items: center
@@ -73,11 +97,12 @@ $font-color: rgba(#b0d7f6, .8)
         border-radius: 20px
         padding: 10px
         margin: 10px
+        font-size: 18px
         &:hover, &:active
           cursor: pointer
           background:
             color: #a0c4e0
-    .register
+    .cancle
       color: $font-color
       text-shadow: 0px 0px 0.5px black
       margin:

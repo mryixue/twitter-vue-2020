@@ -5,16 +5,14 @@
       <h3 class="title">登入 Twitter</h3>
       <form class="login-box">
         <input
-          id="login-email"
-          inputmode="email"
-          v-model="email"
+          inputmode="user"
+          v-model="user"
           autocomplete="username"
           required
           autofocus
-          placeholder="電子郵件"
+          placeholder="帳號"
         />
         <input
-          id="login-password"
           type="password"
           v-model="password"
           autocomplete="current-password"
@@ -36,7 +34,7 @@
 export default {
   data(){
     return{
-      email: '',
+      user: '',
       password: ''
     }
   }
@@ -77,6 +75,7 @@ $font-color: rgba(#b0d7f6, .8)
         border-radius: 20px
         padding: 10px
         margin: 10px
+        font-size: 18px
         &:hover, &:active
           cursor: pointer
           background:
