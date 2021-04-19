@@ -1,7 +1,11 @@
 <template>
-  <div id="app">
-  </div>
+  <router-view/>
 </template>
 
-<style lang="sass">
-</style>
+<script>
+export default {
+  created() {
+    this.$router.push('/login')
+  },
+}
+</script>
