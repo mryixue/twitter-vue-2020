@@ -18,10 +18,11 @@ export default {
 <style lang="sass">
   $font-color: rgba(#b0d7f6, .8)
   .adminframe
-    display: flex
+    position: relative
     height: 100vh
     #adminLeft
       width: 35vw
+      position: fixed
       display: flex
       flex-flow: column nowrap
       align-items: center
@@ -39,5 +40,7 @@ export default {
           color: $font-color
           text-shadow: 1px 1px 0.5px black
     #adminRIghtTweets
-      width: 65vw
+      margin:
+        left: 35vw
+      width: 63vw
 </style>
