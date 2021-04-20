@@ -3,7 +3,7 @@
     <div id="login">
       <img class="logo" src="/logo.png">
       <h3 class="title">登入 Twitter</h3>
-      <form class="form">
+      <form class="form" @submit.prevent.stop='handleSubmit'>
         <input
           inputmode="user"
           v-model="user"
@@ -19,7 +19,7 @@
           required
           placeholder="密碼"
         />
-        <div class="button">登入</div>
+        <div class="button" :disabled="isProcessing">登入</div>
       </form>
       <div class="links">
         <router-link to="/register/">註冊 Twitter</router-link>
@@ -31,13 +31,57 @@
 </template>
 
 <script>
+import authorizationAPI from './../apis/authorization'
+import { Toast } from './../utils/helpers'
+
 export default {
-  data(){
-    return{
+  data () {
+    return {
       user: '',
-      password: ''
+      password: '',
+      isProcessing: false
+    }
+  },
+  methods: {
+    async handleSubmit () {
+      try {
+        if (!this.user || !this.password) {
+          Toast.fire({
+            icon: 'warning',
+            title: '請填入帳號密碼'
+          })
+          return
+        }
+        this.isProcessing = true
+
+        const response = await authorizationAPI.logIn({
+          user: this.user,
+          password: this.password
+        })
+
+        const { data } = response
+
+        if (data.status !== 'success') {
+          throw new Error(data.message)
+        }
+
+        localStorage.setItem('token', data.token)
+        this.$store.commit('setCurrentUser', data.user)
+        this.$router.push('/首頁路由')
+
+      } catch (error) {
+        this.isProcessing = false
+        this.password = ''
+
+        Toast.fire({
+          icon: 'warning',
+          title: '請確認您輸入了正確的帳號密碼'
+        })
+        console.error(error.message)
+      }
     }
   }
+
 }
 </script>
 
