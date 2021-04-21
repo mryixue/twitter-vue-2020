@@ -19,7 +19,7 @@
           required
           placeholder="密碼"
         />
-        <div class="button" type="submit" @click="handleSubmit">登入</div>
+        <div class="button" @click="handleSubmit">登入</div>
       </form>
       <div class="links">
         <router-link to="/register/">註冊 Twitter</router-link>
@@ -32,22 +32,50 @@
 
 <script>
 import authorizationAPI from './../apis/authorization'
+import { Toast } from './../utils/helpers'
 
 export default {
   data () {
     return {
       account: '',
       password: '',
+      //isProcessing: false
     }
   },
   methods: {
-    handleSubmit() {
-      authorizationAPI.logIn({
-        account: this.account,
-        password: this.password
-      }).then(res => {
-        console.log(res)
-      })
+    async handleSubmit () {
+      try {
+        if (!this.account || !this.password) {
+          Toast.fire({
+            icon: 'warning',
+            title: '請填入帳號和密碼'
+          })
+          return
+        }
+        //this.isProcessing = true
+
+        const response = await authorizationAPI.logIn({
+          account: this.account,
+          password: this.password
+        })
+
+        const { data } = response
+        if (data.status !== 'success') {
+          throw new Error(data.message)
+        }
+        localStorage.setItem('token', data.token)
+        //this.$store.commit('setCurrentUser', data.user)
+        this.$router.push('/main')
+      } catch (error) {
+        //this.isProcessing = false
+        this.password = ''
+
+        Toast.fire({
+          icon: 'warning',
+          title: '請確認您輸入了正確的帳號密碼'
+        })
+        console.error(error.message)
+      }
     }
   }
 }

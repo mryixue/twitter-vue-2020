@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import login from '../views/login.vue'
+import main from '../views/main.vue'
 import admin from '../views/admin.vue'
 import admin_main from '../views/admin_main.vue'
 import admin_user from '../views/admin_user.vue'
@@ -23,6 +24,11 @@ const routes = [
     path: '/register',
     name: 'register',
     component: () => import('../views/register.vue')
+  },
+  {
+    path: '/main',
+    name: 'main',
+    component: main
   },
   {
     path: '/admin',
