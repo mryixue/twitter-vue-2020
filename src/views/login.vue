@@ -3,10 +3,10 @@
     <div id="login">
       <img class="logo" src="/logo.png">
       <h3 class="title">登入 Twitter</h3>
-      <form class="form" @submit.prevent.stop='handleSubmit'>
+      <form class="form" @submit.prevent.stop="handleSubmit">
         <input
           inputmode="user"
-          v-model="user"
+          v-model="account"
           autocomplete="username"
           required
           autofocus
@@ -19,7 +19,7 @@
           required
           placeholder="密碼"
         />
-        <div class="button" :disabled="isProcessing">登入</div>
+        <div class="button" type="submit" :disabled="isProcessing">登入</div>
       </form>
       <div class="links">
         <router-link to="/register/">註冊 Twitter</router-link>
@@ -37,51 +37,24 @@ import { Toast } from './../utils/helpers'
 export default {
   data () {
     return {
-      user: '',
+      account: '',
       password: '',
       isProcessing: false
     }
   },
   methods: {
-    async handleSubmit () {
-      try {
-        if (!this.user || !this.password) {
-          Toast.fire({
-            icon: 'warning',
-            title: '請填入帳號密碼'
-          })
-          return
-        }
-        this.isProcessing = true
+    handleSubmit() {
+        authorizationAPI.logIn({
+        account: this.account,
+        password: this.password
+      }).then(res => {
+        console.log(res)
+      })
 
-        const response = await authorizationAPI.logIn({
-          user: this.user,
-          password: this.password
-        })
-
-        const { data } = response
-
-        if (data.status !== 'success') {
-          throw new Error(data.message)
-        }
-
-        localStorage.setItem('token', data.token)
-        this.$store.commit('setCurrentUser', data.user)
-        this.$router.push('/首頁路由')
-
-      } catch (error) {
-        this.isProcessing = false
-        this.password = ''
-
-        Toast.fire({
-          icon: 'warning',
-          title: '請確認您輸入了正確的帳號密碼'
-        })
-        console.error(error.message)
-      }
+    console.log(data)
+    this.$router.push('/admin')
     }
   }
-
 }
 </script>
 

@@ -1,7 +1,7 @@
 import axios from 'axios'
 import Swal from 'sweetalert2'
 
-const baseURL = 'https://forum-express-api.herokuapp.com/api (to be replaced)'
+const baseURL = 'https://twitter-backend-test-server.herokuapp.com/api'
 
 const axiosInstance = axios.create({
   baseURL
