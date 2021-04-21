@@ -4,9 +4,7 @@
 
 <script>
 export default {
-  created() {
-    this.$router.push('/login')
-  },
+  name: 'App',
 }
 </script>
 
@@ -22,22 +20,22 @@ b, u, i, center,
 dl, dt, dd, ol, ul, li,
 fieldset, form, label, legend,
 table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed, 
-figure, figcaption, footer, header, hgroup, 
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
 menu, nav, output, ruby, section, summary,
 time, mark, audio, video
   margin: 0
   padding: 0
   border: 0
 
-article, aside, details, figcaption, figure, 
+article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section
   display: block
 
 html, body
   height: 100%
   width: 100%
-  
+
 ol, ul, li
   list-style: none
 
@@ -46,7 +44,7 @@ a
   color: black
 
 *
-  font-family:  "Noto Sans TC", Arial, sans-serif
+  font-family: "Noto Sans TC", Arial, sans-serif
   white-space: nowrap
 
 *,

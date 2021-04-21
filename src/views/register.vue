@@ -43,7 +43,7 @@
         />
         <div class="button">註冊</div>
       </form>
-      <router-link class="cancle" to="/login/">取消</router-link>
+      <router-link class="cancle" to="/login">取消</router-link>
     </div>
   </div>
 </template>

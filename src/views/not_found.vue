@@ -1,5 +1,5 @@
 <template>
   <h1>
-    main.vue
+    404 Page Not Found
   </h1>
 </template>
