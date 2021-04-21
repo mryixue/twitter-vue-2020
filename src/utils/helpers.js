@@ -3,23 +3,9 @@ import Swal from 'sweetalert2'
 
 const baseURL = 'https://twitter-backend-test-server.herokuapp.com/api'
 
-const axiosInstance = axios.create({
+export const apiHelper = axios.create({
   baseURL
 })
-
-axiosInstance.interceptors.request.use(
-  config => {
-    const token = localStorage.getItem('token')
-
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`
-    }
-    return config
-  },
-  err => Promise.reject(err)
-)
-
-export const apiHelper = axiosInstance
 
 export const Toast = Swal.mixin({
   toast: true,

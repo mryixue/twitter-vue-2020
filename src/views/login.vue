@@ -3,7 +3,7 @@
     <div id="login">
       <img class="logo" src="/logo.png">
       <h3 class="title">登入 Twitter</h3>
-      <form class="form" @submit.prevent.stop="handleSubmit">
+      <form class="form" @keydown.enter.exact="handleSubmit">
         <input
           inputmode="user"
           v-model="account"
@@ -19,7 +19,7 @@
           required
           placeholder="密碼"
         />
-        <div class="button" type="submit" :disabled="isProcessing">登入</div>
+        <div class="button" type="submit" @click="handleSubmit">登入</div>
       </form>
       <div class="links">
         <router-link to="/register/">註冊 Twitter</router-link>
@@ -32,27 +32,22 @@
 
 <script>
 import authorizationAPI from './../apis/authorization'
-import { Toast } from './../utils/helpers'
 
 export default {
   data () {
     return {
       account: '',
       password: '',
-      isProcessing: false
     }
   },
   methods: {
     handleSubmit() {
-        authorizationAPI.logIn({
+      authorizationAPI.logIn({
         account: this.account,
         password: this.password
       }).then(res => {
         console.log(res)
       })
-
-    console.log(data)
-    this.$router.push('/admin')
     }
   }
 }
