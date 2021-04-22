@@ -25,7 +25,7 @@ export default {
     return {
       tweets: [
         {
-          id: '',
+          id: 1,
           avater: '',
           name: 'Apple',
           at: 'apple',
@@ -33,7 +33,7 @@ export default {
           article: 'abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz.'
         },
         {
-          id: '',
+          id: 2,
           avater: '',
           name: 'Apple',
           at: 'apple',
@@ -41,7 +41,7 @@ export default {
           article: 'abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz.'
         },
         {
-          id: '',
+          id: 3,
           avater: '',
           name: 'Apple',
           at: 'apple',
@@ -49,7 +49,7 @@ export default {
           article: 'abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz.'
         },
         {
-          id: '',
+          id: 4,
           avater: '',
           name: 'Apple',
           at: 'apple',
@@ -57,7 +57,7 @@ export default {
           article: 'abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz.'
         },
         {
-          id: '',
+          id: 5,
           avater: '',
           name: 'Apple',
           at: 'apple',
@@ -65,7 +65,7 @@ export default {
           article: 'abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz.'
         },
         {
-          id: '',
+          id: 6,
           avater: '',
           name: 'Apple',
           at: 'apple',
@@ -73,7 +73,7 @@ export default {
           article: 'abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz.'
         },
         {
-          id: '',
+          id: 7,
           avater: '',
           name: 'Apple',
           at: 'apple',
@@ -87,39 +87,39 @@ export default {
 </script>
 
 <style lang="sass">
-  #adminRIghtTweets
-    &:hover
-      cursor: default
-    .title
-      padding: 10px 20px
-    .cards
-      display: flex
-      box-shadow: 0px -0.5px 1px rgba(gray,.7)
-      .left .avatar
-        width: 50px
-        height: 50px
-        margin: 10px
-        background-color: gray
-        border-radius: 50px
-      .right
-        position: relative
+#adminRIghtTweets
+  &:hover
+    cursor: default
+  .title
+    padding: 10px 20px
+  .cards
+    display: flex
+    box-shadow: 0px -0.5px 1px rgba(gray,.7)
+    .left .avatar
+      width: 50px
+      height: 50px
+      margin: 10px
+      background-color: gray
+      border-radius: 50px
+    .right
+      position: relative
+      padding:
+        top: 10px
+        bottom: 30px
+        left: 10px
+      .info span
+        color: rgba(gray,.7)
         padding:
-          top: 10px
-          bottom: 30px
-          left: 10px
-        .info span
-          color: rgba(gray,.7)
-          padding:
-            left: 5px
-        .article
-          padding:
-            top: 5px
-          white-space: normal
-        .delete
-          font-size: 25px
-          position: absolute
-          right: 5px
-          top: 0px
-          &:hover
-            cursor: pointer
+          left: 5px
+      .article
+        padding:
+          top: 5px
+        white-space: normal
+      .delete
+        font-size: 25px
+        position: absolute
+        right: 5px
+        top: 0px
+        &:hover
+          cursor: pointer
 </style>

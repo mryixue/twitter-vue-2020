@@ -19,7 +19,12 @@
           required
           placeholder="密碼"
         />
-        <button type="submit" class="button" :disabled="isProcessing">登入</button>
+        <button
+          type="submit"
+          class="button"
+          :disabled="isProcessing"
+          :class="{isProcessing}"
+        >登入</button>
       </form>
       <div class="links">
         <router-link to="/register/">註冊 Twitter</router-link>
@@ -37,8 +42,8 @@ import { Toast } from './../utils/helpers'
 export default {
   data () {
     return {
-      account: '',
-      password: '',
+      account: 'user1@example.com',
+      password: '12345678',
       isProcessing: false
     }
   },
@@ -121,6 +126,8 @@ $font-color: rgba(#b0d7f6, .8)
         &:active
           background:
             color: #a0c4e0
+      .isProcessing:hover
+        cursor: default
     .links a
       color: $font-color
       text-shadow: 0px 0px 0.5px black

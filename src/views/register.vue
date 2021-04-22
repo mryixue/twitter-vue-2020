@@ -41,7 +41,12 @@
           required
           placeholder="密碼確認"
         />
-        <button type="submit" class="button">註冊</button>
+        <button
+          type="submit"
+          class="button"
+          :disabled="isProcessing"
+          :class="{isProcessing}"
+        >註冊</button>
       </form>
       <router-link class="cancle" to="/login">取消</router-link>
     </div>
@@ -57,7 +62,8 @@ export default {
       name: '',
       email: '',
       password: '',
-      comfirm: ''
+      comfirm: '',
+      isProcessing: false
     }
   }
 }
@@ -103,6 +109,8 @@ $font-color: rgba(#b0d7f6, .8)
         &:active
           background:
             color: #a0c4e0
+      .isProcessing:hover
+        cursor: default
     .cancle
       color: $font-color
       text-shadow: 0px 0px 0.5px black
