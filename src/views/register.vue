@@ -3,7 +3,7 @@
     <div id="register">
       <img class="logo" src="/logo.png">
       <h3 class="title">建立您的帳號</h3>
-      <form class="form">
+      <form class="form" @submit.prevent.stop="handleSubmit">
         <input
           inputmode="account"
           v-model="account"
@@ -35,8 +35,8 @@
           placeholder="密碼"
         />
         <input
-          type="comfirm"
-          v-model="comfirm"
+          type="password"
+          v-model="checkPassword"
           autocomplete="new-password"
           required
           placeholder="密碼確認"
@@ -54,16 +54,70 @@
 </template>
 
 <script>
+import authorizationAPI from './../apis/authorization'
+import { Toast } from './../utils/helpers'
+
 export default {
   data(){
     return{
-      id: '',
       account: '',
       name: '',
       email: '',
       password: '',
-      comfirm: '',
+      checkPassword: '',
       isProcessing: false
+    }
+  },
+  methods: {
+    async handleSubmit () {
+      try {
+        if (
+          !this.account ||
+          !this.name ||
+          !this.email ||
+          !this.password ||
+          !this.checkPassword
+        ) {
+          Toast.fire({
+            icon: 'warning',
+            title: '請確認已填寫所有欄位'
+          })
+          return
+        }
+        if (this.password !== this.checkPassword) {
+          Toast.fire({
+            icon: 'warning',
+            title: '兩次輸入的密碼不同'
+          })
+          this.checkPassword = ''
+          return
+        }
+        this.isProcessing = true
+
+        const { data } = await authorizationAPI.register({
+          account: this.account,
+          name: this.name,
+          email: this.email,
+          password: this.password,
+          checkPassword: this.checkPassword
+        })
+        if (data.status === 'error') {
+          throw new Error(data.message)
+        }
+        Toast.fire({
+          icon: 'success',
+          title: data.message
+        })
+        this.$router.push('/login')
+      } catch (error) {
+        this.isProcessing = false
+
+        Toast.fire({
+          icon: 'warning',
+          title: `無法註冊 - ${error.message}`
+        })
+        console.error(error.message)
+      }
     }
   }
 }
