@@ -15,4 +15,22 @@ export default {
 </script>
 
 <style lang="sass">
+$font-color: rgba(#b0d7f6, .8)
+#adminLeft
+  display: flex
+  flex-flow: column nowrap
+  align-items: center
+  img
+    width: 50px
+    margin: 30px
+  .nav
+    display: flex
+    flex-flow: column nowrap
+    align-items: center
+    a
+      line-height: 50px
+      font-size: 20px
+    .router-link-active
+      color: $font-color
+      text-shadow: 1px 1px 0.5px black
 </style>
