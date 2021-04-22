@@ -3,7 +3,7 @@
     <div id="admin">
       <img class="logo" src="/logo.png">
       <h3 class="title">後台登入</h3>
-      <form class="form" @keydown.enter.exact="login">
+      <form class="form" @submit.prevent.stop="login">
         <input
           inputmode="user"
           v-model="user"
@@ -19,7 +19,7 @@
           required
           placeholder="密碼"
         />
-        <div class="button" @click="login">登入</div>
+        <button type="submit" class="button">登入</button>
       </form>
       <router-link class="links" to="/login/">前台登入</router-link>
     </div>
@@ -83,9 +83,9 @@ $font-color: rgba(#b0d7f6, .8)
         padding: 10px
         margin: 10px
         font-size: 18px
-        text-align: center
-        &:hover, &:active
+        &:hover
           cursor: pointer
+        &:active
           background:
             color: #a0c4e0
     .links
