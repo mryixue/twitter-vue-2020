@@ -6,5 +6,10 @@ export default {
       account,
       password
     })
+  },
+  register (data) {
+    return apiHelper.post('/users', {
+      ...data
+    })
   }
 }

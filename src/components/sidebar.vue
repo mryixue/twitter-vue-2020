@@ -7,7 +7,7 @@
       <router-link to="/setting/">設定</router-link>
     </nav>
     <div class="button">推文</div>
-    <div class="logout">
+    <div class="logout" @click="logout">
       <img src="/logout.png">
       <span>登出</span>
     </div>
@@ -15,8 +15,18 @@
 </template>
 
 <script>
-export default {
+import { mapState } from 'vuex'
 
+export default {
+  computed: {
+    ...mapState(['currentUser', 'isAuthenticated'])
+  },
+  methods: {
+    logout () {
+      this.$store.commit('revokeAuthentication')
+      this.$router.push('/login')
+    }
+  }
 }
 </script>
 
