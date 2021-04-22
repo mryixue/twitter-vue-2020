@@ -19,7 +19,12 @@
           required
           placeholder="密碼"
         />
-        <button type="submit" class="button">登入</button>
+        <button
+          type="submit"
+          class="button"
+          :disabled="isProcessing"
+          :class="{isProcessing}"
+        >登入</button>
       </form>
       <router-link class="links" to="/login/">前台登入</router-link>
     </div>
@@ -28,14 +33,15 @@
 
 <script>
 const admin = {
-  user: 'root',
-  password: 'aaa'
+  user: 'root@example.com',
+  password: '12345678'
 }
 export default {
   data(){
     return{
-      user: 'root',
-      password: 'aaa'
+      user: 'root@example.com',
+      password: '12345678',
+      isProcessing: false
     }
   },
   methods: {
@@ -88,6 +94,8 @@ $font-color: rgba(#b0d7f6, .8)
         &:active
           background:
             color: #a0c4e0
+      .isProcessing:hover
+        cursor: default
     .links
       color: $font-color
       text-shadow: 0px 0px 0.5px black
