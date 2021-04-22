@@ -41,7 +41,7 @@
           required
           placeholder="密碼確認"
         />
-        <div class="button">註冊</div>
+        <button type="submit" class="button">註冊</button>
       </form>
       <router-link class="cancle" to="/login">取消</router-link>
     </div>
@@ -98,9 +98,9 @@ $font-color: rgba(#b0d7f6, .8)
         padding: 10px
         margin: 10px
         font-size: 18px
-        text-align: center
-        &:hover, &:active
+        &:hover
           cursor: pointer
+        &:active
           background:
             color: #a0c4e0
     .cancle

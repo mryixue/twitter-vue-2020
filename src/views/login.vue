@@ -3,7 +3,7 @@
     <div id="login">
       <img class="logo" src="/logo.png">
       <h3 class="title">登入 Twitter</h3>
-      <form class="form" @keydown.enter.exact="handleSubmit">
+      <form class="form" @submit.prevent.stop="handleSubmit">
         <input
           inputmode="user"
           v-model="account"
@@ -19,7 +19,7 @@
           required
           placeholder="密碼"
         />
-        <div class="button" @click="handleSubmit">登入</div>
+        <button type="submit" class="button" :disabled="isProcessing">登入</button>
       </form>
       <div class="links">
         <router-link to="/register/">註冊 Twitter</router-link>
@@ -39,7 +39,7 @@ export default {
     return {
       account: '',
       password: '',
-      //isProcessing: false
+      isProcessing: false
     }
   },
   methods: {
@@ -52,7 +52,7 @@ export default {
           })
           return
         }
-        //this.isProcessing = true
+        this.isProcessing = true
 
         const response = await authorizationAPI.logIn({
           account: this.account,
@@ -67,7 +67,7 @@ export default {
         //this.$store.commit('setCurrentUser', data.user)
         this.$router.push('/main')
       } catch (error) {
-        //this.isProcessing = false
+        this.isProcessing = false
         this.password = ''
 
         Toast.fire({
@@ -116,9 +116,9 @@ $font-color: rgba(#b0d7f6, .8)
         padding: 10px
         margin: 10px
         font-size: 18px
-        text-align: center
-        &:hover, &:active
+        &:hover
           cursor: pointer
+        &:active
           background:
             color: #a0c4e0
     .links a
