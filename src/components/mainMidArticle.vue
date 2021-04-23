@@ -1,6 +1,6 @@
 <template>
-  <div id="adminRIghtTweets">
-    <h3 class="title">推文清單</h3>
+  <div id="mainMidArticle">
+    <h1 class="title">首頁</h1>
     <div class="box">
       <div class="cards" v-for="tweet of tweets" :key="tweet.id">
         <div class="left">
@@ -12,6 +12,10 @@
             <span>@{{ tweet.at}}·{{ tweet.postTime }}</span>
           </h5>
           <p class="article">{{ tweet.article }}</p>
+          <div class="icons">
+            <img class="reply" src="/reply.png">{{ tweet.reply }}
+            <img class="like" src="/likeOn.png">{{ tweet.like }}
+          </div>
           <div class="delete">×</div>
         </div>
       </div>
@@ -30,7 +34,9 @@ export default {
           name: 'Apple',
           at: 'apple',
           postTime: '3小時',
-          article: 'abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz.'
+          article: 'abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz.',
+          reply: 3,
+          like: 8
         },
         {
           id: 2,
@@ -38,7 +44,9 @@ export default {
           name: 'Apple',
           at: 'apple',
           postTime: '3小時',
-          article: 'abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz.'
+          article: 'abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz.',
+          reply: 3,
+          like: 8
         },
         {
           id: 3,
@@ -46,7 +54,9 @@ export default {
           name: 'Apple',
           at: 'apple',
           postTime: '3小時',
-          article: 'abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz.'
+          article: 'abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz.',
+          reply: 3,
+          like: 8
         },
         {
           id: 4,
@@ -54,7 +64,9 @@ export default {
           name: 'Apple',
           at: 'apple',
           postTime: '3小時',
-          article: 'abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz.'
+          article: 'abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz.',
+          reply: 3,
+          like: 8
         },
         {
           id: 5,
@@ -62,7 +74,9 @@ export default {
           name: 'Apple',
           at: 'apple',
           postTime: '3小時',
-          article: 'abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz.'
+          article: 'abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz.',
+          reply: 3,
+          like: 8
         },
         {
           id: 6,
@@ -70,7 +84,9 @@ export default {
           name: 'Apple',
           at: 'apple',
           postTime: '3小時',
-          article: 'abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz.'
+          article: 'abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz.',
+          reply: 3,
+          like: 8
         },
         {
           id: 7,
@@ -78,7 +94,9 @@ export default {
           name: 'Apple',
           at: 'apple',
           postTime: '3小時',
-          article: 'abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz.'
+          article: 'abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz.',
+          reply: 3,
+          like: 8
         },
       ]
     }
@@ -87,11 +105,9 @@ export default {
 </script>
 
 <style lang="sass">
-#adminRIghtTweets
-  &:hover
-    cursor: default
-  .title
-    padding: 10px 20px
+#mainMidArticle
+  padding: 20px
+  overflow: auto
   .cards
     display: flex
     box-shadow: 0.3px 1px 1.5px rgba(gray,.7)
@@ -108,6 +124,8 @@ export default {
         top: 10px
         bottom: 30px
         left: 10px
+      .info
+        font-size: 18px
       .info span
         color: rgba(gray,.7)
         padding:
@@ -116,6 +134,11 @@ export default {
         padding:
           top: 5px
         white-space: normal
+      .icons
+        .reply
+          width: 20px
+        .like
+          width: 40px
       .delete
         font-size: 25px
         position: absolute

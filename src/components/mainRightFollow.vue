@@ -1,5 +1,5 @@
 <template>
-  <div id="follows">
+  <div id="mainRightFollow">
     <div class="box">
       <div class="title">跟隨誰</div>
       <div class="card" v-for="follower of followers" :key="follower.id">
@@ -75,7 +75,7 @@ export default {
 
 <style lang="sass">
 $font-color: rgba(#b0d7f6, .8)
-#follows
+#mainRightFollow
   .box
     margin:
       top: 20px

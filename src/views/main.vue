@@ -1,17 +1,20 @@
 <template>
   <div class="mainframe">
-    <sidebar/>
-    <follows/>
+    <mainLeft/>
+    <mainMidArticle/>
+    <mainRightFollow/>
   </div>
 </template>
 
 <script>
-import sidebar from '../components/sidebar'
-import follows from '../components/follows'
+import mainLeft from '../components/mainLeft'
+import mainRightFollow from '../components/mainRightFollow'
+import mainMidArticle from '../components/mainMidArticle'
 export default {
   components: {
-    sidebar,
-    follows
+    mainLeft,
+    mainRightFollow,
+    mainMidArticle
   },
 
 }
@@ -20,13 +23,19 @@ export default {
 <style lang="sass">
 .mainframe
   position: relative
+  width: 100vw
   height: 100vh
-  #sidebar
+  #mainLeft
     width: 15vw
     height: 100%
     position: fixed
-  #follows
-    width: 25vw
+  #mainMidArticle
+    width: 53vw
+    height: 100%
+    left: 15vw
+    position: fixed
+  #mainRightFollow
+    width: 30vw
     height: 100%
     position: fixed
     right: 0
