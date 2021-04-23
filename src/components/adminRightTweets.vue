@@ -1,8 +1,8 @@
 <template>
   <div id="adminRIghtTweets">
     <h3 class="title">推文清單</h3>
-    <div class="tweets" v-for="tweet of tweets" :key="tweet.id">
-      <div class="cards">
+    <div class="box">
+      <div class="cards" v-for="tweet of tweets" :key="tweet.id">
         <div class="left">
           <div class="avatar"></div>
           <!-- <img class="avatar" src="tweet.avater" alt="tweet.avater"></div> -->
@@ -94,7 +94,7 @@ export default {
     padding: 10px 20px
   .cards
     display: flex
-    box-shadow: 0px -0.5px 1px rgba(gray,.7)
+    box-shadow: 0.3px 1px 1.5px rgba(gray,.7)
     .left .avatar
       width: 50px
       height: 50px
@@ -102,6 +102,7 @@ export default {
       background-color: gray
       border-radius: 50px
     .right
+      width: 100%
       position: relative
       padding:
         top: 10px
