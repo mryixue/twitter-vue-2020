@@ -1,5 +1,5 @@
 <template>
-  <div id="sidebar">
+  <div id="mainLeft">
     <img class="logo" src="/logo.png">
     <nav class="nav">
       <router-link to="/main/">首頁</router-link>
@@ -32,7 +32,7 @@ export default {
 
 <style lang="sass">
 $font-color: rgba(#b0d7f6, .8)
-#sidebar
+#mainLeft
   display: flex
   flex-flow: column nowrap
   align-items: center
