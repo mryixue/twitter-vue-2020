@@ -3,11 +3,19 @@ import VueRouter from 'vue-router'
 import login from '../views/login.vue'
 import main from '../views/main.vue'
 import admin from '../views/admin.vue'
-import admin_main from '../views/admin_main.vue'
-import admin_user from '../views/admin_user.vue'
 import not_found from '../views/not_found.vue'
+import store from './../store'
 
 Vue.use(VueRouter)
+
+// const authorizeIsAdmin = (to, from, next) => {
+//   const currentUser = store.state.currentUser
+//   if (currentUser && !currentUser.isAdmin) {
+//     next('/not-found')
+//     return
+//   }
+//   next()
+// }
 
 const routes = [
   {
@@ -32,15 +40,20 @@ const routes = [
   },
   {
     path: '/admin',
+    name: 'admin',
     component: admin
   },
   {
     path: '/admin_main',
-    component: admin_main
+    name: 'admin_main',
+    component: () => import('../views/admin_main.vue')
+    // beforeEnter: authorizeIsAdmin
   },
   {
     path: '/admin_user',
-    component: admin_user
+    name: 'admin_user',
+    component: () => import('../views/admin_user.vue')
+    // beforeEnter: authorizeIsAdmin
   },
   {
     path: '*',

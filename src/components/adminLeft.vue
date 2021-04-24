@@ -5,7 +5,7 @@
       <router-link to="/admin_main/">推文清單</router-link>
       <router-link to="/admin_user/">使用者列表</router-link>
     </nav>
-    <div class="logout">
+    <div class="logout" @click="logout">
       <img src="/logout.png">
       <span>登出</span>
     </div>
@@ -13,8 +13,18 @@
 </template>
 
 <script>
-export default {
+import { mapState } from 'vuex'
 
+export default {
+  computed: {
+    ...mapState(['currentUser', 'isAuthenticated'])
+  },
+  methods: {
+    logout () {
+      this.$store.commit('revokeAuthentication')
+      this.$router.push('/admin')
+    }
+  }
 }
 </script>
 
