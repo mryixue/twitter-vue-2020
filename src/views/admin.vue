@@ -6,7 +6,7 @@
       <form class="form" @submit.prevent.stop="login">
         <input
           inputmode="user"
-          v-model="user"
+          v-model="account"
           autocomplete="username"
           required
           autofocus
@@ -32,22 +32,50 @@
 </template>
 
 <script>
-const admin = {
-  user: 'root@example.com',
-  password: '12345678'
-}
+import adminAPI from './../apis/admin'
+import { Toast } from './../utils/helpers'
+
 export default {
   data(){
     return{
-      user: 'root@example.com',
+      account: 'root@example.com',
       password: '12345678',
       isProcessing: false
     }
   },
   methods: {
-    login(){
-      if(this.user === admin.user && this.password === admin.password){
+    async login () {
+      try {
+        if (!this.account || !this.password) {
+          Toast.fire({
+            icon: 'warning',
+            title: '請填入帳號和密碼'
+          })
+          return
+        }
+        this.isProcessing = true
+
+        const response = await adminAPI.logIn({
+          account: this.account,
+          password: this.password
+        })
+
+        const { data } = response
+        if (data.status !== 'success') {
+          throw new Error(data.message)
+        }
+        localStorage.setItem('token', data.token)
+        this.$store.commit('setCurrentUser', data.user)
         this.$router.push('/admin_main')
+      } catch (error) {
+        this.isProcessing = false
+        this.password = ''
+
+        Toast.fire({
+          icon: 'warning',
+          title: '請確認您輸入了正確的帳號密碼'
+        })
+        console.error(error.message)
       }
     }
   }
