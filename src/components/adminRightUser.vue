@@ -5,22 +5,21 @@
         <tr>
           <th>Avatar</th>
           <th>Name</th>
-          <th>Tweets</th>
-          <th>Reply</th>
+          <th>Tweet</th>
           <th>Like</th>
           <th>Following</th>
           <th>Follower</th>
         </tr>
       </thead>
+      <Spinner v-if="isLoading" />
       <tbody>
-        <tr v-for="user of users" :key="user.id">
-          <td>{{user.avatar}}</td>
+        <tr v-for="user in users" :key="user.id">
+          <td><img class="avatar" width="100" :src="user.avatar | emptyImage" alt="user.avater"></td>
           <td>{{user.name}}</td>
-          <td>{{user.tweets}}</td>
-          <td>{{user.reply}}</td>
-          <td>{{user.like}}</td>
-          <td>{{user.following}}</td>
-          <td>{{user.follower}}</td>
+          <td>{{user.tweetCount}}</td>
+          <td>{{user.likedCount}}</td>
+          <td>{{user.followingCount}}</td>
+          <td>{{user.followerCount}}</td>
         </tr>
       </tbody>
     </table>
@@ -28,144 +27,47 @@
 </template>
 
 <script>
+import { emptyImageFilter } from './../utils/mixins'
+import adminAPI from './../apis/admin'
+import { Toast } from './../utils/helpers'
+import Spinner from './../components/spinner'
+
 export default {
+  mixins: [emptyImageFilter],
+  components: {
+    Spinner
+  },
   data() {
     return {
-      users: [
-        {
-          id: 1,
-          name: 'John Doe',
-          at: 'heyjohn',
-          avatar: '',
-          tweets: 3,
-          reply: '1.5k',
-          like: '20k',
-          following: 34,
-          follower: 59
-        },
-        {
-          id: 2,
-          name: 'Robert Fox',
-          at: '@robfox',
-          avatar: '',
-          tweets: 3,
-          reply: '1.5k',
-          like: '20k',
-          following: 34,
-          follower: 59
-        },
-        {
-          id: 3,
-          name: 'Leslie Alexander',
-          at: 'lesAlex',
-          avatar: '',
-          tweets: 3,
-          reply: '1.5k',
-          like: '20k',
-          following: 34,
-          follower: 59
-        },
-        {
-          id: 4,
-          name: 'Arlene McCoy',
-          at: 'alcoy',
-          avatar: '',
-          tweets: 3,
-          reply: '1.5k',
-          like: '20k',
-          following: 34,
-          follower: 59
-        },
-        {
-          id: 5,
-          name: 'John Doe',
-          at: 'heyjohn',
-          avatar: '',
-          tweets: 3,
-          reply: '1.5k',
-          like: '20k',
-          following: 34,
-          follower: 59
-        },
-        {
-          id: 6,
-          name: 'Robert Fox',
-          at: '@robfox',
-          avatar: '',
-          tweets: 3,
-          reply: '1.5k',
-          like: '20k',
-          following: 34,
-          follower: 59
-        },
-        {
-          id: 7,
-          name: 'Leslie Alexander',
-          at: 'lesAlex',
-          avatar: '',
-          tweets: 3,
-          reply: '1.5k',
-          like: '20k',
-          following: 34,
-          follower: 59
-        },
-        {
-          id: 8,
-          name: 'Arlene McCoy',
-          at: 'alcoy',
-          avatar: '',
-          tweets: 3,
-          reply: '1.5k',
-          like: '20k',
-          following: 34,
-          follower: 59
-        },
-        {
-          id: 9,
-          name: 'John Doe',
-          at: 'heyjohn',
-          avatar: '',
-          tweets: 3,
-          reply: '1.5k',
-          like: '20k',
-          following: 34,
-          follower: 59
-        },
-        {
-          id: 10,
-          name: 'Robert Fox',
-          at: '@robfox',
-          avatar: '',
-          tweets: 3,
-          reply: '1.5k',
-          like: '20k',
-          following: 34,
-          follower: 59
-        },
-        {
-          id: 11,
-          name: 'Leslie Alexander',
-          at: 'lesAlex',
-          avatar: '',
-          tweets: 3,
-          reply: '1.5k',
-          like: '20k',
-          following: 34,
-          follower: 59
-        },
-        {
-          id: 12,
-          name: 'Arlene McCoy',
-          at: 'alcoy',
-          avatar: '',
-          tweets: 3,
-          reply: '1.5k',
-          like: '20k',
-          following: 34,
-          follower: 59
-        },
-      ]
+      users: [],
+      isLoading: true,
     }
+  },
+  created () {
+    this.fetchUsers()
+  },
+  methods: {
+    async fetchUsers () {
+      try {
+        this.isLoading = true
+        const data = await adminAPI.users.get()
+
+        if (data.status === 'error') {
+          throw new Error(data.message)
+        }
+
+        this.users = data.data
+
+        this.isLoading = false
+      } catch (error) {
+        this.isLoading = false
+        Toast.fire({
+          icon: 'error',
+          title: '無法取得會員資料，請稍後再試'
+        })
+        console.error(error.message)
+      }
+    },
   }
 }
 </script>

@@ -1,7 +1,7 @@
 <template>
   <div id="adminRIghtTweets">
     <h3 class="title">推文清單</h3>
-    <!-- <Spinner v-if="isLoading" /> -->
+    <Spinner v-if="isLoading" />
     <div class="box">
       <div class="cards" v-for="tweet in tweets" :key="tweet.id">
         <div class="left">
@@ -34,65 +34,7 @@ export default {
   data() {
     return {
       tweets: [],
-      // isLoading: true,
-      tweets1: [
-        {
-          id: 1,
-          avater: '',
-          name: 'Apple',
-          at: 'apple',
-          postTime: '3小時',
-          article: 'abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz.'
-        },
-        {
-          id: 2,
-          avater: '',
-          name: 'Apple',
-          at: 'apple',
-          postTime: '3小時',
-          article: 'abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz.'
-        },
-        {
-          id: 3,
-          avater: '',
-          name: 'Apple',
-          at: 'apple',
-          postTime: '3小時',
-          article: 'abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz.'
-        },
-        {
-          id: 4,
-          avater: '',
-          name: 'Apple',
-          at: 'apple',
-          postTime: '3小時',
-          article: 'abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz.'
-        },
-        {
-          id: 5,
-          avater: '',
-          name: 'Apple',
-          at: 'apple',
-          postTime: '3小時',
-          article: 'abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz.'
-        },
-        {
-          id: 6,
-          avater: '',
-          name: 'Apple',
-          at: 'apple',
-          postTime: '3小時',
-          article: 'abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz.'
-        },
-        {
-          id: 7,
-          avater: '',
-          name: 'Apple',
-          at: 'apple',
-          postTime: '3小時',
-          article: 'abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz.'
-        },
-      ]
+      isLoading: true,
     }
   },
   created () {
@@ -101,7 +43,7 @@ export default {
   methods: {
     async fetchTweets () {
       try {
-        //this.isLoading = true
+        this.isLoading = true
         const data = await adminAPI.tweets.get()
 
         if (data.status === 'error') {
@@ -110,9 +52,9 @@ export default {
 
         this.tweets = data.data
 
-        //this.isLoading = false
+        this.isLoading = false
       } catch (error) {
-        //this.isLoading = false
+        this.isLoading = false
         Toast.fire({
           icon: 'error',
           title: '無法取得推文，請稍後再試'
@@ -120,6 +62,32 @@ export default {
         console.error(error.message)
       }
     },
+    async deleteTweet (tweetId) {
+      try {
+        const data = await adminAPI.tweets.delete({
+          tweetId
+        })
+
+        if (data.status === 'error') {
+          throw new Error(data.message)
+        }
+
+        this.tweets = this.tweets.filter(
+          tweet => tweet.id !== tweetId
+        )
+
+        Toast.fire({
+          icon: 'success',
+          title: '刪除推文成功'
+        })
+      } catch (error) {
+        Toast.fire({
+          icon: 'error',
+          title: '無法刪除推文，請稍後再試'
+        })
+        console.error(error.message)
+      }
+    }
   }
 }
 </script>
