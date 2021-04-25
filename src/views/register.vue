@@ -24,7 +24,6 @@
           v-model="email"
           autocomplete="email"
           required
-          autofocus
           placeholder="電子信箱"
         />
         <input

@@ -76,7 +76,8 @@ export default {
 <style lang="sass">
 $font-color: rgba(#b0d7f6, .8)
 #mainRightFollow
-  overflow: auto
+  overflow-y: auto
+  overflow-x: hidden
   .box
     margin: 20px
     background:
