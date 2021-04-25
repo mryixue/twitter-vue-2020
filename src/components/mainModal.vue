@@ -1,6 +1,5 @@
 <template>
-  <div id="mainMidnew">
-    <h1 class="title">首頁</h1>
+  <div id="mainModal" v-show="modalOn">
     <form @submit.prevent.stop="handleSubmit">
       <textarea
         v-model="description"
@@ -13,6 +12,7 @@
         :disabled="isProcessing"
         :class="{isProcessing}"
       >推文</button>
+      <div class="close" @click="closeModal()">×</div>
     </form>
   </div>
 </template>
@@ -25,7 +25,8 @@ export default {
   data () {
     return {
       description: '',
-      isProcessing: false
+      isProcessing: false,
+      modalOn: true
     }
   },
   methods: {
@@ -62,6 +63,9 @@ export default {
         })
         console.error(error.message)
       }
+    },
+    closeModal(){
+      this.modalOn = !this.modalOn
     }
   }
 
@@ -70,16 +74,17 @@ export default {
 
 <style lang="sass">
 $font-color: rgba(#b0d7f6, .8)
-#mainMidnew
+#mainModal
   padding: 10px
-  h1
-    font-size: 24px
+  display: flex
+  align-items: center
+  justify-content: center
   form
     position: relative
     textarea
       resize: none
-      width: 100%
-      height: 13vh
+      width: 50vw
+      height: 30vh
       font-size: 20px
       margin:
         top: 10px
@@ -102,4 +107,11 @@ $font-color: rgba(#b0d7f6, .8)
         cursor: pointer
     .isProcessing:hover
       cursor: default
+    .close
+      position: absolute
+      top: 10px
+      right: 5px
+      font-size: 18px
+      &:hover
+        cursor: pointer
 </style>
