@@ -110,7 +110,9 @@ export default {
   overflow: auto
   .cards
     display: flex
-    box-shadow: 0.3px 1px 1.5px rgba(gray,.7)
+    margin: 15px 0
+    border-radius: 10px
+    background-color: #f1f7fd
     .left .avatar
       width: 50px
       height: 50px

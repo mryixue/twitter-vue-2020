@@ -26,16 +26,16 @@ export default {
   width: 100vw
   height: 100vh
   #mainLeft
-    width: 15vw
+    width: 20vw
     height: 100%
     position: fixed
   #mainMidArticle
     width: 53vw
     height: 100%
-    left: 15vw
+    left: 20vw
     position: fixed
   #mainRightFollow
-    width: 30vw
+    width: 25vw
     height: 100%
     position: fixed
     right: 0
