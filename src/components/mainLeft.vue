@@ -2,7 +2,7 @@
   <div id="mainLeft">
     <img class="logo" src="/logo.png">
     <nav class="nav">
-      <router-link to="/main/">首頁</router-link>
+      <router-link to="/main">首頁</router-link>
       <router-link
         :to="{ name: 'user', params: { id: currentUser.id } }"
       >

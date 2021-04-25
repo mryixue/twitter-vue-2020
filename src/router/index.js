@@ -40,8 +40,8 @@ const routes = [
   },
   {
     path: '/users/:id',
-    name: 'user',
-    component: () => import('../views/user.vue')
+    name: 'user'
+    // component: () => import('../views/user.vue')
   },
   {
     path: '/setting',
