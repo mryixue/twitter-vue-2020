@@ -39,6 +39,16 @@ const routes = [
     component: main
   },
   {
+    path: '/users/:id',
+    name: 'user'
+    // component: () => import('../views/user.vue')
+  },
+  {
+    path: '/setting',
+    name: 'setting',
+    component: () => import('../views/setting.vue')
+  },
+  {
     path: '/admin',
     name: 'admin',
     component: admin
