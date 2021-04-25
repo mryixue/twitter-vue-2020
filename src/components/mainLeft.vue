@@ -3,7 +3,11 @@
     <img class="logo" src="/logo.png">
     <nav class="nav">
       <router-link to="/main/">首頁</router-link>
-      <router-link to="/user/">個人資料</router-link>
+      <router-link
+        :to="{ name: 'user', params: { id: currentUser.id } }"
+      >
+        個人資料
+      </router-link>
       <router-link to="/setting/">設定</router-link>
     </nav>
     <div class="button">推文</div>
