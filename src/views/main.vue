@@ -4,6 +4,7 @@
     <mainMidnew/>
     <mainMidArticle/>
     <mainRightFollow/>
+    <mainMidnew class="modal" v-show="false"/>
   </div>
 </template>
 
@@ -32,10 +33,17 @@ export default {
     columns: 20vw 1fr 25vw
     rows: 20vh 1fr
     areas: "left new right" "left article right"
+  position: relative
   #mainLeft
     grid-area: left
   #mainMidArticle
     grid-area: article
   #mainRightFollow
     grid-area: right
+  #mainMidnew
+    grid-area: new
+    .modal
+      position: absolute
+      width: 100vw
+      height: 100vh
 </style>
