@@ -1,23 +1,20 @@
 <template>
   <div id="mainMidArticle">
-    <h1 class="title">首頁</h1>
-    <div class="box">
-      <div class="cards" v-for="tweet of tweets" :key="tweet.id">
-        <div class="left">
-          <div class="avatar"></div>
-          <!-- <img class="avatar" src="tweet.avater" alt="tweet.avater"></div> -->
+    <div class="cards" v-for="tweet of tweets" :key="tweet.id">
+      <div class="left">
+        <div class="avatar"></div>
+        <!-- <img class="avatar" src="tweet.avater" alt="tweet.avater"></div> -->
+      </div>
+      <div class="right">
+        <h5 class="info">{{ tweet.name }}
+          <span>@{{ tweet.at}}·{{ tweet.postTime }}</span>
+        </h5>
+        <p class="article">{{ tweet.article }}</p>
+        <div class="icons">
+          <img class="reply" src="/reply.png">{{ tweet.reply }}
+          <img class="like" src="/likeOn.png">{{ tweet.like }}
         </div>
-        <div class="right">
-          <h5 class="info">{{ tweet.name }}
-            <span>@{{ tweet.at}}·{{ tweet.postTime }}</span>
-          </h5>
-          <p class="article">{{ tweet.article }}</p>
-          <div class="icons">
-            <img class="reply" src="/reply.png">{{ tweet.reply }}
-            <img class="like" src="/likeOn.png">{{ tweet.like }}
-          </div>
-          <div class="delete">×</div>
-        </div>
+        <div class="delete">×</div>
       </div>
     </div>
   </div>
@@ -106,11 +103,12 @@ export default {
 
 <style lang="sass">
 #mainMidArticle
-  padding: 20px
   overflow: auto
   .cards
     display: flex
-    box-shadow: 0.3px 1px 1.5px rgba(gray,.7)
+    margin: 15px 20px
+    border-radius: 10px
+    background-color: #f1f7fd
     .left .avatar
       width: 50px
       height: 50px

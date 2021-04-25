@@ -51,4 +51,13 @@ a
 *::before,
 *::after
   box-sizing: border-box
+
+::-webkit-scrollbar
+  width: 10px
+
+::-webkit-scrollbar-thumb
+  background: grey
+
+::-webkit-scrollbar-thumb:hover
+  background: rgba(grey,0.5)
 </style>

@@ -36,7 +36,6 @@ $font-color: rgba(#b0d7f6, .8)
   display: flex
   flex-flow: column nowrap
   align-items: center
-  border-right: 1px solid gray
   img
     width: 50px
     margin: 30px

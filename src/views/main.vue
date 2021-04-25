@@ -1,8 +1,10 @@
 <template>
   <div class="mainframe">
     <mainLeft/>
+    <mainMidnew/>
     <mainMidArticle/>
     <mainRightFollow/>
+    <mainMidnew class="modal" v-show="false"/>
   </div>
 </template>
 
@@ -10,11 +12,13 @@
 import mainLeft from '../components/mainLeft'
 import mainRightFollow from '../components/mainRightFollow'
 import mainMidArticle from '../components/mainMidArticle'
+import mainMidnew from '../components/mainMidnew'
 export default {
   components: {
     mainLeft,
     mainRightFollow,
-    mainMidArticle
+    mainMidArticle,
+    mainMidnew
   },
 
 }
@@ -22,21 +26,24 @@ export default {
 
 <style lang="sass">
 .mainframe
-  position: relative
   width: 100vw
   height: 100vh
+  display: grid
+  grid-template:
+    columns: 20vw 1fr 25vw
+    rows: 20vh 1fr
+    areas: "left new right" "left article right"
+  position: relative
   #mainLeft
-    width: 15vw
-    height: 100%
-    position: fixed
+    grid-area: left
   #mainMidArticle
-    width: 53vw
-    height: 100%
-    left: 15vw
-    position: fixed
+    grid-area: article
   #mainRightFollow
-    width: 30vw
-    height: 100%
-    position: fixed
-    right: 0
+    grid-area: right
+  #mainMidnew
+    grid-area: new
+    .modal
+      position: absolute
+      width: 100vw
+      height: 100vh
 </style>
