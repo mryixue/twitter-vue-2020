@@ -4,7 +4,7 @@
     <mainMidnew/>
     <mainMidArticle/>
     <mainRightFollow/>
-    <!-- <mainMidnew class="modal" v-show="false"/> -->
+    <mainModal/>
   </div>
 </template>
 
@@ -13,14 +13,15 @@ import mainLeft from '../components/mainLeft'
 import mainRightFollow from '../components/mainRightFollow'
 import mainMidArticle from '../components/mainMidArticle'
 import mainMidnew from '../components/mainMidnew'
+import mainModal from '../components/mainModal'
 export default {
   components: {
     mainLeft,
     mainRightFollow,
     mainMidArticle,
-    mainMidnew
+    mainMidnew,
+    mainModal
   },
-
 }
 </script>
 
@@ -42,8 +43,12 @@ export default {
     grid-area: right
   #mainMidnew
     grid-area: new
-    .modal
-      position: absolute
-      width: 100vw
-      height: 100vh
+  #mainModal
+    position: absolute
+    top: 0
+    left: 0
+    width: 100vw
+    height: 100vh
+    grid-area: 1/1/3/3
+    background-color: rgba(grey,.8)
 </style>
