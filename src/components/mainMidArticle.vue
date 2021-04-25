@@ -1,103 +1,68 @@
 <template>
   <div id="mainMidArticle">
-    <div class="cards" v-for="tweet of tweets" :key="tweet.id">
+    <Spinner v-if="isLoading" />
+    <div class="cards" v-for="tweet in tweets" :key="tweet.id">
       <div class="left">
-        <div class="avatar"></div>
-        <!-- <img class="avatar" src="tweet.avater" alt="tweet.avater"></div> -->
+        <img class="avatar" :src="tweet.User.avater | emptyImage" alt="tweet.avater">
       </div>
       <div class="right">
-        <h5 class="info">{{ tweet.name }}
-          <span>@{{ tweet.at}}·{{ tweet.postTime }}</span>
+        <h5 class="info">{{ tweet.User.name }}
+          <span>@{{ tweet.User.account }}·{{ tweet.createdAt | fromNow }}</span>
         </h5>
-        <p class="article">{{ tweet.article }}</p>
+        <p class="article">{{ tweet.description }}</p>
         <div class="icons">
-          <img class="reply" src="/reply.png">{{ tweet.reply }}
-          <img class="like" src="/likeOn.png">{{ tweet.like }}
+          <img class="reply" src="/reply.png">{{ tweet.replyCount }}
+          <img class="like" src="/likeOn.png">{{ tweet.likeCount }}
         </div>
-        <div class="delete">×</div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { emptyImageFilter } from './../utils/mixins'
+import { fromNowFilter } from './../utils/mixins'
+import tweetsAPI from './../apis/tweets'
+import { Toast } from './../utils/helpers'
+import Spinner from './../components/spinner'
+
 export default {
+  mixins: [emptyImageFilter, fromNowFilter],
+  components: {
+    Spinner
+  },
   data() {
     return {
-      tweets: [
-        {
-          id: 1,
-          avater: '',
-          name: 'Apple',
-          at: 'apple',
-          postTime: '3小時',
-          article: 'abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz.',
-          reply: 3,
-          like: 8
-        },
-        {
-          id: 2,
-          avater: '',
-          name: 'Apple',
-          at: 'apple',
-          postTime: '3小時',
-          article: 'abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz.',
-          reply: 3,
-          like: 8
-        },
-        {
-          id: 3,
-          avater: '',
-          name: 'Apple',
-          at: 'apple',
-          postTime: '3小時',
-          article: 'abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz.',
-          reply: 3,
-          like: 8
-        },
-        {
-          id: 4,
-          avater: '',
-          name: 'Apple',
-          at: 'apple',
-          postTime: '3小時',
-          article: 'abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz.',
-          reply: 3,
-          like: 8
-        },
-        {
-          id: 5,
-          avater: '',
-          name: 'Apple',
-          at: 'apple',
-          postTime: '3小時',
-          article: 'abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz.',
-          reply: 3,
-          like: 8
-        },
-        {
-          id: 6,
-          avater: '',
-          name: 'Apple',
-          at: 'apple',
-          postTime: '3小時',
-          article: 'abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz.',
-          reply: 3,
-          like: 8
-        },
-        {
-          id: 7,
-          avater: '',
-          name: 'Apple',
-          at: 'apple',
-          postTime: '3小時',
-          article: 'abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz, abcdefghijklmnopqrstuvwxyz.',
-          reply: 3,
-          like: 8
-        },
-      ]
+      tweets: [],
+      isLoading: true,
     }
-  }
+  },
+  created () {
+    this.fetchTweets()
+  },
+  methods: {
+    async fetchTweets () {
+      try {
+        this.isLoading = true
+        const data = await tweetsAPI.getTweets()
+
+        if (data.status === 'error') {
+          throw new Error(data.message)
+        }
+
+        this.tweets = data.data
+
+        this.isLoading = false
+      } catch (error) {
+        this.isLoading = false
+        Toast.fire({
+          icon: 'error',
+          title: '無法取得推文，請稍後再試'
+        })
+        console.error(error.message)
+      }
+    }
+  },
 }
 </script>
 

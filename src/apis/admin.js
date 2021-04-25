@@ -9,7 +9,7 @@ export default {
   },
   tweets: {
     get () {
-      return apiHelper.get('admin/tweets')
+      return apiHelper.get('/admin/tweets')
     },
     delete ({ tweetId }) {
       return apiHelper.delete(`/admin/tweets/${tweetId}`)
@@ -17,7 +17,7 @@ export default {
   },
   users: {
     get () {
-      return apiHelper.get('admin/users')
+      return apiHelper.get('/admin/users')
     }
   }
 }

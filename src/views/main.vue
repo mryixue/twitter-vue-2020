@@ -4,7 +4,7 @@
     <mainMidnew/>
     <mainMidArticle/>
     <mainRightFollow/>
-    <mainMidnew class="modal" v-show="false"/>
+    <!-- <mainMidnew class="modal" v-show="false"/> -->
   </div>
 </template>
 

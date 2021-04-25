@@ -114,7 +114,7 @@ export default {
 
         Toast.fire({
           icon: 'warning',
-          title: `無法註冊 - ${error.message}`
+          title: '無法註冊 - 帳號已註冊過'
         })
         console.error(error.message)
       }
