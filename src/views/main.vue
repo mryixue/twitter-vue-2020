@@ -1,5 +1,5 @@
 <template>
-  <div class="mainframe">
+  <div id="mainframe">
     <mainLeft/>
     <mainMidnew/>
     <mainMidArticle/>
@@ -26,7 +26,7 @@ export default {
 </script>
 
 <style lang="sass">
-.mainframe
+#mainframe
   width: 100vw
   height: 100vh
   display: grid

@@ -20,13 +20,14 @@
 <script>
 import tweetsAPI from './../apis/tweets'
 import { Toast } from './../utils/helpers'
+import Bus from '../bus.js'
 
 export default {
   data () {
     return {
       description: '',
       isProcessing: false,
-      modalOn: true
+      modalOn: false
     }
   },
   methods: {
@@ -67,6 +68,11 @@ export default {
     closeModal(){
       this.modalOn = !this.modalOn
     }
+  },
+  created() {
+    Bus.$on('val', () => {
+      this.modalOn = !this.modalOn
+    })
   }
 
 }

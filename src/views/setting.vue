@@ -1,5 +1,5 @@
 <template>
-  <div class="mainframe">
+  <div id="settingframe">
     <mainLeft/>
     <setting/>
   </div>
@@ -17,7 +17,7 @@ export default {
 </script>
 
 <style lang="sass">
-.mainframe
+#settingframe
   width: 100vw
   height: 100vh
   display: grid

@@ -10,7 +10,7 @@
       </router-link>
       <router-link to="/setting/">設定</router-link>
     </nav>
-    <div class="button">推文</div>
+    <div class="button" @click="tweet">推文</div>
     <div class="logout" @click="logout">
       <img src="/logout.png">
       <span>登出</span>
@@ -20,6 +20,7 @@
 
 <script>
 import { mapState } from 'vuex'
+import Bus from '../bus.js'
 
 export default {
   computed: {
@@ -29,6 +30,9 @@ export default {
     logout () {
       this.$store.commit('revokeAuthentication')
       this.$router.push('/login')
+    },
+    tweet(){
+      Bus.$emit('val')
     }
   }
 }
