@@ -25,7 +25,7 @@
 <script>
 import { emptyImageFilter } from './../utils/mixins'
 import { fromNowFilter } from './../utils/mixins'
-import tweetsAPI from './../apis/tweets'
+import usersAPI from './../apis/users'
 import { Toast } from './../utils/helpers'
 import Spinner from './../components/spinner'
 
@@ -41,13 +41,19 @@ export default {
     }
   },
   created () {
-    this.fetchTweets()
+    const { id: userId } = this.$route.params
+    this.fetchUserTweets(userId)
+  },
+  beforeRouteUpdate (to, from, next) {
+    const { id: userId } = to.params
+    this.fetchUserTweets(userId)
+    next()
   },
   methods: {
-    async fetchTweets () {
+    async fetchUserTweets (userId) {
       try {
         this.isLoading = true
-        const data = await tweetsAPI.getTweets()
+        const data = await usersAPI.getUserTweets({ userId })
 
         if (data.status === 'error') {
           throw new Error(data.message)

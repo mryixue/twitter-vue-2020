@@ -3,7 +3,7 @@
     <Spinner v-if="isLoading" />
     <div class="cards" v-for="tweet in tweets" :key="tweet.id">
       <div class="left">
-        <img class="avatar" :src="tweet.User.avatar | emptyImage" alt="tweet.avater">
+        <img class="avatar" :src="tweet.User.avatar | emptyImage" alt="tweet.avatar">
       </div>
       <div class="right">
         <h5 class="info">{{ tweet.User.name }}
