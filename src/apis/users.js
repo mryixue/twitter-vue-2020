@@ -15,5 +15,8 @@ export default {
   },
   getCurrentUser () {
     return apiHelper.get('/users/current')
+  },
+  getTopUsers () {
+    return apiHelper.get('/users/top')
   }
 }

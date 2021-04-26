@@ -2,17 +2,16 @@
   <div id="mainRightFollow">
     <div class="box">
       <div class="title">跟隨誰</div>
-      <div class="card" v-for="follower of followers" :key="follower.id">
-        <div class="avatar">
-          <div class="img">{{follower.avatar}}</div>
-        </div>
+      <Spinner v-if="isLoading" />
+      <div class="card" v-for="follower in followers" :key="follower.id">
+        <img class="avatar" :src="follower.avatar | emptyImage" alt="follower.avatar">
         <div class="info">
           <div class="name">{{follower.name}}</div>
-          <div class="at">@{{follower.at}}</div>
+          <div class="at">@{{follower.account}}</div>
         </div>
         <div class="switch">
-          <div class="on" v-show="follower.followed">正在跟隨</div>
-          <div class="off" v-show="!follower.followed">跟隨</div>
+          <div class="on" v-show="follower.isFollowed">正在跟隨</div>
+          <div class="off" v-show="!follower.isFollowed">跟隨</div>
         </div>
       </div>
       <router-link class="button" to="/followers/">顯示更多</router-link>
@@ -21,55 +20,43 @@
 </template>
 
 <script>
+import { emptyImageFilter } from './../utils/mixins'
+import usersAPI from './../apis/users'
+import Spinner from './../components/spinner'
+
 export default {
+  mixins: [emptyImageFilter],
+  components: {
+    Spinner
+  },
   data() {
     return {
-      followers: [
-        {
-          id: 1,
-          avatar: '',
-          name: 'Pizza hut',
-          at: 'pizzahut',
-          followed: true
-        },
-        {
-          id: 2,
-          avatar: '',
-          name: 'Mcdonald\'s',
-          at: 'Mcdonalds',
-          followed: false
-        },
-        {
-          id: 3,
-          avatar: '',
-          name: 'Bank of America',
-          at: 'BankOfAmerica',
-          followed: false
-        },
-        {
-          id: 4,
-          avatar: '',
-          name: 'L\'Oreal',
-          at: 'Loreal',
-          followed: false
-        },
-        {
-          id: 5,
-          avatar: '',
-          name: 'Nintendo',
-          at: 'Nintendo',
-          followed: false
-        },
-        {
-          id: 6,
-          avatar: '',
-          name: 'MasterCard',
-          at: 'MasterCard',
-          followed: false
-        },
-      ]
+      followers: [],
+      isLoading: true,
     }
-  }
+  },
+  created () {
+    this.fetchTopUsers ()
+  },
+  methods: {
+    async fetchTopUsers () {
+      try {
+        this.isLoading = true
+        const data = await usersAPI.getTopUsers ()
+
+        if (data.status === 'error') {
+          throw new Error(data.message)
+        }
+
+        this.followers = data.data
+
+        this.isLoading = false
+      } catch (error) {
+        this.isLoading = false
+        console.error(error.message)
+      }
+    }
+  },
 }
 </script>
 
@@ -92,7 +79,7 @@ $font-color: rgba(#b0d7f6, .8)
       grid-template:
         columns: max-content 1fr auto
       border-bottom: 1px solid gray
-      .avatar .img
+      .avatar
         width: 50px
         height: 50px
         background:

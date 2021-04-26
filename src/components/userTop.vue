@@ -1,8 +1,8 @@
 <template>
   <div id="userTop">
     <div class="image">
-      <!-- <img src=""> -->
-      <div class="avatar"></div>
+      <img width="100%" height="100%" :src="user.cover | emptyImage" alt="user.cover">
+      <img class="avatar" :src="user.avatar | emptyImage" alt="user.avatar">
     </div>
     <div class="button">
       <div>編輯個人資料</div>
@@ -11,10 +11,10 @@
       <div class="name">{{user.name}}
         <div class="account">@{{user.account}}</div>
       </div>
-      <div class="intro">{{user.intro}}</div>
+      <div class="intro">{{user.introduction}}</div>
       <div class="follow">
-        <div class="following">{{user.following}} 跟隨中</div>
-        <div class="follower">{{user.follower}} 跟隨者</div>
+        <div class="following">{{user.followingCount}} 跟隨中</div>
+        <div class="follower">{{user.followerCount}} 跟隨者</div>
       </div>
     </div>
     <div class="filter">
@@ -26,20 +26,36 @@
 </template>
 
 <script>
+import usersAPI from './../apis/users'
+import { emptyImageFilter } from './../utils/mixins'
+
 export default {
+  mixins: [emptyImageFilter],
   data() {
     return {
       links: 'tweet',
       user: {
+        account: '',
+        name: '',
+        email: '',
+        introduction: '',
         avatar: '',
-        image: '',
-        name: 'John Doe',
-        account: 'heyjohn',
-        intro: 'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint.',
-        following: 34,
-        follower: 59
-      }
+        cover: '',
+        tweetCount: 0,
+        followingCount: 0,
+        followerCount: 0,
+        isFollowed: true
+      },
     }
+  },
+  created () {
+    const { id: userId } = this.$route.params
+    this.fetchUser(userId)
+  },
+  beforeRouteUpdate (to, from, next) {
+    const { id: userId } = to.params
+    this.fetchUser(userId)
+    next()
   },
   methods: {
     tweet(){
@@ -51,6 +67,31 @@ export default {
     like(){
       this.links = 'like'
     },
+    async fetchUser (userId) {
+      try {
+        const { data } = await usersAPI.getUser({ userId })
+
+        if (data.status === 'error') {
+          throw new Error(data.message)
+        }
+        const { account, name, email, introduction, avatar, cover, tweetCount, followingCount, followerCount, isFollowed } = data
+        this.user = {
+          ...this.user,
+          account,
+          name,
+          email,
+          introduction,
+          avatar,
+          cover,
+          tweetCount,
+          followingCount,
+          followerCount,
+          isFollowed
+        }
+      } catch (error) {
+        console.error(error.message)
+      }
+    }
   }
 }
 </script>
