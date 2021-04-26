@@ -2,16 +2,19 @@
   <div id="settingframe">
     <mainLeft/>
     <setting/>
+    <newTweet/>
   </div>
 </template>
 
 <script>
 import mainLeft from '../components/mainLeft'
 import setting from '../components/setting'
+import newTweet from '../components/newTweet'
 export default {
   components: {
     mainLeft,
-    setting
+    setting,
+    newTweet
   },
 }
 </script>
@@ -29,4 +32,12 @@ export default {
     grid-area: left
   #setting
     grid-area: setting
+  #newTweet
+    position: absolute
+    top: 0
+    left: 0
+    width: 100vw
+    height: 100vh
+    grid-area: 1/1/3/3
+    background-color: rgba(grey,.8)
 </style>

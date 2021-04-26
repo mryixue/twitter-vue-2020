@@ -10,7 +10,7 @@
       </router-link>
       <router-link to="/setting/">設定</router-link>
     </nav>
-    <div class="button" @click="tweet">推文</div>
+    <div class="button" @click="tweet">新推文</div>
     <div class="logout" @click="logout">
       <img src="/logout.png">
       <span>登出</span>

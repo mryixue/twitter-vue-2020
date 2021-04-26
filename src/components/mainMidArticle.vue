@@ -3,7 +3,7 @@
     <Spinner v-if="isLoading" />
     <div class="cards" v-for="tweet in tweets" :key="tweet.id">
       <div class="left">
-        <img class="avatar" :src="tweet.User.avater | emptyImage" alt="tweet.avater">
+        <img class="avatar" :src="tweet.User.avatar | emptyImage" alt="tweet.avater">
       </div>
       <div class="right">
         <h5 class="info">{{ tweet.User.name }}
@@ -11,8 +11,11 @@
         </h5>
         <p class="article">{{ tweet.description }}</p>
         <div class="icons">
-          <img class="reply" src="/reply.png">{{ tweet.replyCount }}
-          <img class="like" src="/likeOn.png">{{ tweet.likeCount }}
+          <div class="reply">{{ tweet.replyCount }}則留言</div>
+          <div class="like" @click="like">
+            <img src="/like.png">
+            <span>{{ tweet.likeCount }}</span>
+          </div>
         </div>
       </div>
     </div>
@@ -85,7 +88,7 @@ export default {
       position: relative
       padding:
         top: 10px
-        bottom: 30px
+        bottom: 10px
         left: 10px
       .info
         font-size: 18px
@@ -98,10 +101,27 @@ export default {
           top: 5px
         white-space: normal
       .icons
+        display: grid
+        grid-template:
+          columns: 1fr 1fr
+          areas: "like reply"
+        margin:
+          top: 10px
+        padding:
+          right: 20px
         .reply
-          width: 20px
+          grid-area: reply
+          justify-self: right
         .like
-          width: 40px
+          grid-area: like
+          display: flex
+          align-items: center
+          &:hover
+            cursor: pointer
+          img
+            width: 18px
+            margin:
+              right: 5px
       .delete
         font-size: 25px
         position: absolute

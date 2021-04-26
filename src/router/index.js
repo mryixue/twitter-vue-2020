@@ -71,6 +71,16 @@ const routes = [
     component: () => import('../views/setting.vue')
   },
   {
+    path: '/followers',
+    name: 'followers',
+    component: () => import('../views/followers.vue')
+  },
+  {
+    path: '/reply_list',
+    name: 'reply_list',
+    component: () => import('../views/reply_list.vue')
+  },
+  {
     path: '*',
     name: 'not_found',
     component: not_found

@@ -1,5 +1,5 @@
 <template>
-  <div id="mainModal" v-show="modalOn">
+  <div id="newTweet" v-show="modalOn">
     <form @submit.prevent.stop="handleSubmit">
       <textarea
         v-model="description"
@@ -80,7 +80,7 @@ export default {
 
 <style lang="sass">
 $font-color: rgba(#b0d7f6, .8)
-#mainModal
+#newTweet
   padding: 10px
   display: flex
   align-items: center

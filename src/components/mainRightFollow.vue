@@ -15,7 +15,7 @@
           <div class="off" v-show="!follower.followed">跟隨</div>
         </div>
       </div>
-      <div class="button">顯示更多</div>
+      <router-link class="button" to="/followers/">顯示更多</router-link>
     </div>
   </div>
 </template>
@@ -125,4 +125,5 @@ $font-color: rgba(#b0d7f6, .8)
         border: 2px solid $font_color
     .button
       padding: 10px 20px
+      display: block
 </style>
