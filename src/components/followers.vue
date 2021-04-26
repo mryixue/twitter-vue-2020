@@ -1,6 +1,15 @@
 <template>
-  <div id="followers">
-    <div class="cards" v-for="tweet in tweets" :key="tweet.id">
+  <div id="follow">
+    <div class="links">
+      <router-link to="/main/">←</router-link>
+      <div :class="{filter:!filter}" @click="followers">跟隨者</div>
+      <div :class="{filter:filter}" @click="following">正在跟隨</div>
+    </div>
+    <div
+      class="cards"
+      v-for="tweet in tweets"
+      v-if="tweet.followed == true || tweet.followed == filter"
+      :key="tweet.id">
       <div class="left">
         <!-- <img class="avatar" src="tweet.avatar"> -->
         <div class="avatar"></div>
@@ -23,6 +32,7 @@
 export default {
   data(){
     return{
+      filter: false,
       tweets: [
         {
           id: 1,
@@ -114,18 +124,38 @@ export default {
         },
       ]
     }
+  },
+  methods: {
+    followers(){
+      this.filter = false
+    },
+    following(){
+      this.filter = true
+    }
   }
 }
 </script>
 
 <style lang="sass">
 $font-color: rgba(#b0d7f6, .8)
-#followers
+#follow
   padding: 10px
   overflow-x: hidden
   overflow-y: auto
-  h1
-    font-size: 24px
+  .links
+    display: grid
+    grid-template:
+      columns: repeat(3, 1fr)
+    width: 250px
+    a
+      font-size: 24px
+    div
+      text-align: center
+      padding: 10px 0
+      &:hover
+        cursor: pointer
+    .filter
+      border-bottom: 5px solid $font-color
   .cards
     width: 100%
     display: flex

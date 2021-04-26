@@ -12,7 +12,7 @@
         <p class="article">{{ tweet.description }}</p>
         <div class="icons">
           <div class="reply">{{ tweet.replyCount }}則留言</div>
-          <div class="like" @click="like">
+          <div class="like">
             <img src="/like.png">
             <span>{{ tweet.likeCount }}</span>
           </div>
