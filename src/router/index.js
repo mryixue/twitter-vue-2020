@@ -40,8 +40,8 @@ const routes = [
   },
   {
     path: '/users/:id',
-    name: 'user'
-    // component: () => import('../views/user.vue')
+    name: 'user',
+    component: () => import('../views/user.vue')
   },
   {
     path: '/setting',
@@ -69,6 +69,16 @@ const routes = [
     path: '/setting',
     name: 'setting',
     component: () => import('../views/setting.vue')
+  },
+  {
+    path: '/followers',
+    name: 'followers',
+    component: () => import('../views/followers.vue')
+  },
+  {
+    path: '/reply_list',
+    name: 'reply_list',
+    component: () => import('../views/reply_list.vue')
   },
   {
     path: '*',

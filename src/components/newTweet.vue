@@ -1,5 +1,5 @@
 <template>
-  <div id="mainModal" v-show="modalOn">
+  <div id="newTweet" v-show="modalOn">
     <form @submit.prevent.stop="handleSubmit">
       <textarea
         v-model="description"
@@ -20,13 +20,14 @@
 <script>
 import tweetsAPI from './../apis/tweets'
 import { Toast } from './../utils/helpers'
+import Bus from '../bus.js'
 
 export default {
   data () {
     return {
       description: '',
       isProcessing: false,
-      modalOn: true
+      modalOn: false
     }
   },
   methods: {
@@ -67,6 +68,11 @@ export default {
     closeModal(){
       this.modalOn = !this.modalOn
     }
+  },
+  created() {
+    Bus.$on('val', () => {
+      this.modalOn = !this.modalOn
+    })
   }
 
 }
@@ -74,7 +80,7 @@ export default {
 
 <style lang="sass">
 $font-color: rgba(#b0d7f6, .8)
-#mainModal
+#newTweet
   padding: 10px
   display: flex
   align-items: center

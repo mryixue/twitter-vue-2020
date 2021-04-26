@@ -1,48 +1,37 @@
 <template>
-  <div id="mainframe">
+  <div id="followersframe">
     <mainLeft/>
-    <mainMidnew/>
-    <mainMidArticle/>
-    <mainRightFollow/>
+    <followers/>
     <newTweet/>
   </div>
 </template>
 
 <script>
 import mainLeft from '../components/mainLeft'
-import mainRightFollow from '../components/mainRightFollow'
-import mainMidArticle from '../components/mainMidArticle'
-import mainMidnew from '../components/mainMidnew'
+import followers from '../components/followers'
 import newTweet from '../components/newTweet'
 export default {
   components: {
     mainLeft,
-    mainRightFollow,
-    mainMidArticle,
-    mainMidnew,
+    followers,
     newTweet
   },
 }
 </script>
 
 <style lang="sass">
-#mainframe
+#followersframe
   width: 100vw
   height: 100vh
   display: grid
   grid-template:
-    columns: 20vw 1fr 25vw
-    rows: 20vh 1fr
-    areas: "left new right" "left article right"
+    columns: 20vw 1fr
+    areas: "left followers"
   position: relative
   #mainLeft
     grid-area: left
-  #mainMidArticle
-    grid-area: article
-  #mainRightFollow
-    grid-area: right
-  #mainMidnew
-    grid-area: new
+  #followers
+    grid-area: followers
   #newTweet
     position: absolute
     top: 0

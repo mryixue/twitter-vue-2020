@@ -1,5 +1,5 @@
 <template>
-  <div id="mainMidArticle">
+  <div id="userTweet">
     <Spinner v-if="isLoading" />
     <div class="cards" v-for="tweet in tweets" :key="tweet.id">
       <div class="left">
@@ -70,7 +70,7 @@ export default {
 </script>
 
 <style lang="sass">
-#mainMidArticle
+#userTweet
   overflow: auto
   .cards
     display: flex

@@ -1,8 +1,8 @@
 <template>
-  <div id="mainframe">
+  <div id="userframe">
     <mainLeft/>
-    <mainMidnew/>
-    <mainMidArticle/>
+    <userTop/>
+    <userTweet/>
     <mainRightFollow/>
     <newTweet/>
   </div>
@@ -11,37 +11,37 @@
 <script>
 import mainLeft from '../components/mainLeft'
 import mainRightFollow from '../components/mainRightFollow'
-import mainMidArticle from '../components/mainMidArticle'
-import mainMidnew from '../components/mainMidnew'
+import userTweet from '../components/userTweet'
+import userTop from '../components/userTop'
 import newTweet from '../components/newTweet'
 export default {
   components: {
     mainLeft,
     mainRightFollow,
-    mainMidArticle,
-    mainMidnew,
+    userTweet,
+    userTop,
     newTweet
   },
 }
 </script>
 
 <style lang="sass">
-#mainframe
+#userframe
   width: 100vw
   height: 100vh
   display: grid
   grid-template:
     columns: 20vw 1fr 25vw
-    rows: 20vh 1fr
+    rows: 380px 1fr
     areas: "left new right" "left article right"
   position: relative
   #mainLeft
     grid-area: left
-  #mainMidArticle
+  #userTweet
     grid-area: article
   #mainRightFollow
     grid-area: right
-  #mainMidnew
+  #userTop
     grid-area: new
   #newTweet
     position: absolute

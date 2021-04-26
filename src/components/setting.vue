@@ -74,7 +74,7 @@ export default {
 <style lang="sass">
 $font-color: rgba(#b0d7f6, .8)
 #setting
-  padding: 10px
+  padding: 50px 100px
   h1
     font-size: 24px
   .group
