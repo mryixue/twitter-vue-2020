@@ -8,10 +8,10 @@
         <div class="info">
           <div class="name">{{follower.name}}</div>
           <div class="at">@{{follower.account}}</div>
-        </div>
-        <div class="switch">
-          <div class="on" v-show="follower.isFollowed">正在跟隨</div>
-          <div class="off" v-show="!follower.isFollowed">跟隨</div>
+          <div class="switch">
+            <div class="on" v-show="follower.isFollowed">正在跟隨</div>
+            <div class="off" v-show="!follower.isFollowed">跟隨</div>
+          </div>
         </div>
       </div>
       <router-link class="button" to="/followers/">顯示更多</router-link>
@@ -93,24 +93,24 @@ $font-color: rgba(#b0d7f6, .8)
           font-size: 14px
         .at
           color: gray
-    .switch
-      display: flex
-      align-items: center
-      justify-content: center
-      div
-        text-align: center
-        padding: 5px 10px
-        margin:
-          right: 10px
-        border-radius: 10px
-        &:hover
-          cursor: pointer
-      .on
-        background:
+      .switch
+        display: flex
+        align-items: center
+        justify-content: flex-end
+        div
+          text-align: center
+          padding: 5px 10px
+          margin:
+            right: 5px
+          border-radius: 10px
+          &:hover
+            cursor: pointer
+        .on
+          background:
+            color: $font_color
+        .off
           color: $font_color
-      .off
-        color: $font_color
-        border: 2px solid $font_color
+          border: 2px solid $font_color
     .button
       padding: 10px 20px
       display: block

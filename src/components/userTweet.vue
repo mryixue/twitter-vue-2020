@@ -9,7 +9,9 @@
         <h5 class="info">{{ tweet.User.name }}
           <span>@{{ tweet.User.account }}·{{ tweet.createdAt | fromNow }}</span>
         </h5>
-        <p class="article">{{ tweet.description }}</p>
+        <router-link class="article" to="/reply_list/">
+          <p>{{ tweet.description }}</p>
+        </router-link>
         <div class="icons">
           <div class="reply">{{ tweet.replyCount }} 則留言</div>
           <div class="like">{{ tweet.likeCount }} 位喜歡</div>
@@ -103,7 +105,10 @@ export default {
       .article
         padding:
           top: 5px
-        white-space: normal
+        p
+          white-space: normal
+          &:hover
+            text-decoration: underline
       .icons
         display: flex
         justify-content: flex-end
