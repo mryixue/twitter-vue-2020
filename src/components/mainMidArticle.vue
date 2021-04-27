@@ -83,6 +83,7 @@ export default {
       margin: 10px
       background-color: gray
       border-radius: 50px
+      object-fit: cover
     .right
       width: 100%
       position: relative

@@ -86,4 +86,6 @@ export default {
     tbody tr
       &:hover
         background-color: yellow
+    td .avatar
+      object-fit: cover
 </style>
