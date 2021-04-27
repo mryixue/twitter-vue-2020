@@ -13,8 +13,8 @@
       </div>
       <div class="intro">{{user.introduction}}</div>
       <div class="follow">
-        <div class="following">{{user.followingCount}} 跟隨中</div>
-        <div class="follower">{{user.followerCount}} 跟隨者</div>
+        <div class="following">{{user.followingCount}} 位跟隨中</div>
+        <div class="follower">{{user.followerCount}} 位跟隨者</div>
       </div>
     </div>
     <div class="filter">
@@ -60,12 +60,15 @@ export default {
   methods: {
     tweet(){
       this.links = 'tweet'
+      this.$emit('goTweet')
     },
     reply(){
       this.links = 'reply'
+      this.$emit('goReply')
     },
     like(){
       this.links = 'like'
+      this.$emit('goLike')
     },
     async fetchUser (userId) {
       try {
@@ -143,8 +146,11 @@ $font-color: rgba(#b0d7f6, .8)
       padding: 10px
     .follow
       display: flex
+      justify-content: flex-end
+      padding:
+        right: 30px
       div
-        padding: 5px
+        padding: 5px 10px
   .filter
     display: grid
     grid-template:

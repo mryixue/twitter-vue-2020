@@ -31,7 +31,7 @@ export default {
   height: 100vh
   display: grid
   grid-template:
-    columns: 20vw 1fr 25vw
+    columns: 20vw 1fr 30vw
     rows: 20vh 1fr
     areas: "left new right" "left article right"
   position: relative
