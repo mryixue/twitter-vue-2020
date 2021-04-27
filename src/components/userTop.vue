@@ -1,7 +1,7 @@
 <template>
   <div id="userTop">
     <div class="image">
-      <img width="100%" height="100%" :src="user.cover | emptyImage" alt="user.cover">
+      <img class="cover" :src="user.cover | emptyImage" alt="user.cover">
       <img class="avatar" :src="user.avatar | emptyImage" alt="user.avatar">
     </div>
     <div class="button">
@@ -104,6 +104,10 @@ $font-color: rgba(#b0d7f6, .8)
     background-color: grey
     height: 20vh
     position: relative
+    .cover
+      width: 100%
+      height: 100%
+      object-fit: cover
     .avatar
       width: 100px
       height: 100px
@@ -113,6 +117,7 @@ $font-color: rgba(#b0d7f6, .8)
       position: absolute
       bottom: -50px
       left: 10px
+      object-fit: cover
   .button
     height: 50px
     display: flex
