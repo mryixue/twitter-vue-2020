@@ -60,12 +60,15 @@ export default {
   methods: {
     tweet(){
       this.links = 'tweet'
+      this.$emit('goTweet')
     },
     reply(){
       this.links = 'reply'
+      this.$emit('goReply')
     },
     like(){
       this.links = 'like'
+      this.$emit('goLike')
     },
     async fetchUser (userId) {
       try {

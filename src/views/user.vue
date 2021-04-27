@@ -1,8 +1,10 @@
 <template>
   <div id="userframe">
     <mainLeft/>
-    <userTop/>
-    <userTweet/>
+    <userTop @goTweet="goTweet" @goReply="goReply" @goLike="goLike"/>
+    <userTweet v-show="tweet"/>
+    <userReply v-show="reply"/>
+    <userLike v-show="like"/>
     <mainRightFollow/>
     <newTweet/>
   </div>
@@ -13,15 +15,44 @@ import mainLeft from '../components/mainLeft'
 import mainRightFollow from '../components/mainRightFollow'
 import userTweet from '../components/userTweet'
 import userTop from '../components/userTop'
+import userLike from '../components/userLike'
+import userReply from '../components/userReply'
 import newTweet from '../components/newTweet'
 export default {
   components: {
     mainLeft,
     mainRightFollow,
     userTweet,
+    userLike,
+    userReply,
     userTop,
     newTweet
   },
+  data() {
+    return {
+      tweet: true,
+      reply: false,
+      like: false
+    }
+  },
+  methods: {
+    goTweet(){
+      console.log('ok')
+      this.tweet = true
+      this.reply = false
+      this.like = false
+    },
+    goReply(){
+      this.reply = true
+      this.tweet = false
+      this.like = false
+    },
+    goLike(){
+      this.like = true
+      this.reply = false
+      this.tweet = false
+    },
+  }
 }
 </script>
 
