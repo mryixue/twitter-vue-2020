@@ -75,7 +75,8 @@ export default {
 
 <style lang="sass">
 #userLike
-  overflow: auto
+  overflow-x: hidden
+  overflow-y: auto
   .cards
     display: flex
     margin: 15px 20px
@@ -87,6 +88,7 @@ export default {
       margin: 10px
       background-color: gray
       border-radius: 50px
+      object-fit: cover
     .right
       width: 100%
       position: relative

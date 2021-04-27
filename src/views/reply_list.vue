@@ -1,7 +1,7 @@
 <template>
   <div id="replyframe">
     <mainLeft/>
-    <!-- <mainMidArticle/> -->
+    <mainMidReply/>
     <mainRightFollow/>
     <newTweet/>
   </div>
@@ -10,13 +10,13 @@
 <script>
 import mainLeft from '../components/mainLeft'
 import mainRightFollow from '../components/mainRightFollow'
-// import mainMidArticle from '../components/mainMidArticle'
+import mainMidReply from '../components/mainMidReply'
 import newTweet from '../components/newTweet'
 export default {
   components: {
     mainLeft,
     mainRightFollow,
-    // mainMidArticle,
+    mainMidReply,
     newTweet
   },
 }
@@ -33,8 +33,8 @@ export default {
   position: relative
   #mainLeft
     grid-area: left
-  // #mainMidArticle
-  //   grid-area: article
+  #mainMidReply
+    grid-area: article
   #mainRightFollow
     grid-area: right
   #newTweet

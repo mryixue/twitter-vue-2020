@@ -70,7 +70,8 @@ export default {
 
 <style lang="sass">
 #mainMidArticle
-  overflow: auto
+  overflow-x: hidden
+  overflow-y: auto
   .cards
     display: flex
     margin: 15px 20px
