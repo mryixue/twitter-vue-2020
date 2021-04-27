@@ -86,6 +86,7 @@ $font-color: rgba(#b0d7f6, .8)
           color: gray
         border-radius: 50px
         margin: 10px
+        object-fit: cover
       .info
         padding: 5px
         div

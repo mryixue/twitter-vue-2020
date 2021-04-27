@@ -63,7 +63,7 @@ export default {
   display: grid
   grid-template:
     columns: 20vw 1fr 25vw
-    rows: 380px 1fr
+    rows: 395px 1fr
     areas: "left new right" "left article right"
   position: relative
   #mainLeft

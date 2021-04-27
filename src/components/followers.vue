@@ -173,6 +173,7 @@ $font-color: rgba(#b0d7f6, .8)
         height: 50px
         border-radius: 50px
         background-color: grey
+        object-fit: cover
     .right
       .info div
         color: grey
