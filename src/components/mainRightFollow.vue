@@ -11,7 +11,13 @@
         </div>
         <div class="switch">
           <div class="on" v-show="follower.isFollowed">正在跟隨</div>
-          <div class="off" v-show="!follower.isFollowed">跟隨</div>
+          <div
+            class="off"
+            v-show="!follower.isFollowed"
+            @click.stop="handleFollow(follower.id)"
+          >
+            跟隨
+          </div>
         </div>
       </div>
       <router-link class="button" to="/followers/">顯示更多</router-link>
@@ -22,7 +28,9 @@
 <script>
 import { emptyImageFilter } from './../utils/mixins'
 import usersAPI from './../apis/users'
+import followApi from '../apis/followships'
 import Spinner from './../components/spinner'
+import { Toast } from '../utils/helpers'
 
 export default {
   mixins: [emptyImageFilter],
@@ -53,6 +61,27 @@ export default {
         this.isLoading = false
       } catch (error) {
         this.isLoading = false
+        console.error(error.message)
+      }
+    },
+
+    async handleFollow(id) {
+      try {
+        const data = await followApi.followUser({ id: id.toString() })
+        if (data.status === 'error') {
+          throw new Error(data.message)
+        }
+        Toast.fire({
+          icon: 'success',
+          title: '已跟隨此使用者'
+        })
+        const index = this.followers.findIndex(follower => follower.id === id)
+        this.followers[index].isFollowed = true
+      } catch (error) {
+        Toast.fire({
+          icon: 'warning',
+          title: '跟隨失敗，請稍後再試'
+        })
         console.error(error.message)
       }
     }
