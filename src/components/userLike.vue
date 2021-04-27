@@ -1,5 +1,5 @@
 <template>
-  <div id="userTweet">
+  <div id="userLike">
     <Spinner v-if="isLoading" />
     <div class="cards" v-for="tweet in tweets" :key="tweet.id">
       <div class="left">
@@ -13,7 +13,6 @@
           <p>{{ tweet.description }}</p>
         </router-link>
         <div class="icons">
-          <div class="reply">{{ tweet.replyCount }} 則留言</div>
           <div class="like">{{ tweet.likeCount }} 位喜歡</div>
         </div>
       </div>
@@ -75,7 +74,7 @@ export default {
 </script>
 
 <style lang="sass">
-#userTweet
+#userLike
   overflow-x: hidden
   overflow-y: auto
   .cards
