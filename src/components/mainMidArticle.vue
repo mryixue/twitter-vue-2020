@@ -11,11 +11,8 @@
         </h5>
         <p class="article">{{ tweet.description }}</p>
         <div class="icons">
-          <div class="reply">{{ tweet.replyCount }}則留言</div>
-          <div class="like">
-            <img src="/like.png">
-            <span>{{ tweet.likeCount }}</span>
-          </div>
+          <div class="reply">{{ tweet.replyCount }} 則留言</div>
+          <div class="like">{{ tweet.likeCount }} 位喜歡</div>
         </div>
       </div>
     </div>
@@ -102,27 +99,14 @@ export default {
           top: 5px
         white-space: normal
       .icons
-        display: grid
-        grid-template:
-          columns: 1fr 1fr
-          areas: "like reply"
+        display: flex
+        justify-content: flex-end
         margin:
           top: 10px
         padding:
-          right: 20px
-        .reply
-          grid-area: reply
-          justify-self: right
-        .like
-          grid-area: like
-          display: flex
-          align-items: center
-          &:hover
-            cursor: pointer
-          img
-            width: 18px
-            margin:
-              right: 5px
+          right: 10px
+        div
+          margin: 0 10px
       .delete
         font-size: 25px
         position: absolute
