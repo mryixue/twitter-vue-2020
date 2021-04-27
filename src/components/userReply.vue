@@ -1,19 +1,19 @@
 <template>
   <div id="userReply">
     <Spinner v-if="isLoading" />
-    <div class="cards" v-for="tweet in tweets" :key="tweet.id">
+    <div class="cards" v-for="reply in replies" :key="reply.id">
       <div class="left">
-        <img class="avatar" :src="tweet.User.avatar | emptyImage" alt="tweet.avater">
+        <img class="avatar" :src="reply.Tweet ? reply.Tweet.User.avatar : 'https://via.placeholder.com/350x220/DFDFDF?text=No+Image'" alt="reply.avatar">
       </div>
       <div class="right">
-        <h5 class="info">{{ tweet.User.name }}
-          <span>@{{ tweet.User.account }}·{{ tweet.createdAt | fromNow }}</span>
+        <h5 class="info">{{ reply.Tweet ? reply.Tweet.User.name : 'Unknown'}}
+          <span>@{{ reply.Tweet ? reply.Tweet.User.account : 'unknown'}}·{{ reply.createdAt | fromNow }}</span>
         </h5>
-        <router-link class="article" to="/reply_list/">
-          <p>{{ tweet.description }}</p>
+        <router-link class="article" :to="{ name: 'reply_list', params: { tweetId: reply.Tweet ? reply.Tweet.TweetId : -1} }">
+          <p>{{ reply.Tweet ? reply.Tweet.description : ''}}</p>
         </router-link>
         <div class="icons">
-          <div class="reply">{{ tweet.replyCount }} 則留言</div>
+          <div class="reply">{{ reply.Tweet ? reply.Tweet.replyCount : 0}} 則留言</div>
         </div>
       </div>
     </div>
@@ -34,37 +34,37 @@ export default {
   },
   data() {
     return {
-      tweets: [],
+      replies: [],
       isLoading: true,
     }
   },
   created () {
     const { id: userId } = this.$route.params
-    this.fetchUserTweets(userId)
+    this.fetchUserRepliedTweets(userId)
   },
   beforeRouteUpdate (to, from, next) {
     const { id: userId } = to.params
-    this.fetchUserTweets(userId)
+    this.fetchUserRepliedTweets(userId)
     next()
   },
   methods: {
-    async fetchUserTweets (userId) {
+    async fetchUserRepliedTweets (userId) {
       try {
         this.isLoading = true
-        const data = await usersAPI.getUserTweets({ userId })
+        const data = await usersAPI.getUserRepliedTweets({ userId })
 
         if (data.status === 'error') {
           throw new Error(data.message)
         }
 
-        this.tweets = data.data
+        this.replies = data.data
 
         this.isLoading = false
       } catch (error) {
         this.isLoading = false
         Toast.fire({
           icon: 'error',
-          title: '無法取得推文，請稍後再試'
+          title: '無法取得回覆過的推文，請稍後再試'
         })
         console.error(error.message)
       }
