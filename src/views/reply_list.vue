@@ -1,23 +1,26 @@
 <template>
   <div id="replyframe">
     <mainLeft/>
-    <!-- <mainMidArticle/> -->
+    <mainMidReply/>
     <mainRightFollow/>
     <newTweet/>
+    <userReplyModal/>
   </div>
 </template>
 
 <script>
 import mainLeft from '../components/mainLeft'
 import mainRightFollow from '../components/mainRightFollow'
-// import mainMidArticle from '../components/mainMidArticle'
+import mainMidReply from '../components/mainMidReply'
 import newTweet from '../components/newTweet'
+import userReplyModal from '../components/userReplyModal'
 export default {
   components: {
     mainLeft,
     mainRightFollow,
-    // mainMidArticle,
-    newTweet
+    mainMidReply,
+    newTweet,
+    userReplyModal
   },
 }
 </script>
@@ -33,11 +36,19 @@ export default {
   position: relative
   #mainLeft
     grid-area: left
-  // #mainMidArticle
-  //   grid-area: article
+  #mainMidReply
+    grid-area: article
   #mainRightFollow
     grid-area: right
   #newTweet
+    position: absolute
+    top: 0
+    left: 0
+    width: 100vw
+    height: 100vh
+    grid-area: 1/1/3/3
+    background-color: rgba(grey,.8)
+  #userReplyModal
     position: absolute
     top: 0
     left: 0

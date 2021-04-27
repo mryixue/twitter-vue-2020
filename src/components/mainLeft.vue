@@ -32,7 +32,7 @@ export default {
       this.$router.push('/login')
     },
     tweet(){
-      Bus.$emit('val')
+      Bus.$emit('totweet')
     }
   }
 }

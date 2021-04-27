@@ -1,7 +1,7 @@
 <template>
   <div id="follow">
     <div class="links">
-      <router-link to="/main/">←</router-link>
+      <a @click="$router.go(-1)">←</a>
       <div :class="{filter:!filter}" @click="followers">跟隨者</div>
       <div :class="{filter:filter}" @click="following">正在跟隨</div>
     </div>
@@ -152,8 +152,8 @@ $font-color: rgba(#b0d7f6, .8)
     div
       text-align: center
       padding: 10px 0
-      &:hover
-        cursor: pointer
+    &:hover
+      cursor: pointer
     .filter
       border-bottom: 5px solid $font-color
   .cards
