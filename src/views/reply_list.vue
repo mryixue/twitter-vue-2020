@@ -4,6 +4,7 @@
     <mainMidReply/>
     <mainRightFollow/>
     <newTweet/>
+    <userReplyModal/>
   </div>
 </template>
 
@@ -12,12 +13,14 @@ import mainLeft from '../components/mainLeft'
 import mainRightFollow from '../components/mainRightFollow'
 import mainMidReply from '../components/mainMidReply'
 import newTweet from '../components/newTweet'
+import userReplyModal from '../components/userReplyModal'
 export default {
   components: {
     mainLeft,
     mainRightFollow,
     mainMidReply,
-    newTweet
+    newTweet,
+    userReplyModal
   },
 }
 </script>
@@ -38,6 +41,14 @@ export default {
   #mainRightFollow
     grid-area: right
   #newTweet
+    position: absolute
+    top: 0
+    left: 0
+    width: 100vw
+    height: 100vh
+    grid-area: 1/1/3/3
+    background-color: rgba(grey,.8)
+  #userReplyModal
     position: absolute
     top: 0
     left: 0

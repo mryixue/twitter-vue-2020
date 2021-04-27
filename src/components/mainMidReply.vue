@@ -21,7 +21,7 @@
         <div class="like">{{ tweet.likeCount }} 喜歡次數</div>
       </div>
       <div class="icons">
-        <img src="/reply.png">
+        <img src="/reply.png" @click="reply(tweet)">
         <img src="/like.png">
       </div>
     </div>
@@ -45,6 +45,7 @@
 </template>
 
 <script>
+import Bus from '../bus.js'
 export default {
   data() {
     return {
@@ -108,6 +109,11 @@ export default {
         },
       ]
     }
+  },
+  methods: {
+    reply(tweet){
+      Bus.$emit('toreply', tweet)
+    }
   }
 }
 </script>
@@ -153,9 +159,6 @@ $font-color: rgba(#b0d7f6, .8)
     .count
       display: flex
       padding: 20px 10px
-      // border: 1px
-      //   style: solid none
-      //   color: grey
       div
         margin:
           right: 20px
@@ -195,4 +198,6 @@ $font-color: rgba(#b0d7f6, .8)
           span
             color: $font-color
             font-weight: bold
+        p
+          white-space: normal
 </style>

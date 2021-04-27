@@ -70,7 +70,7 @@ export default {
     }
   },
   created() {
-    Bus.$on('val', () => {
+    Bus.$on('totweet', () => {
       this.modalOn = !this.modalOn
     })
   }
