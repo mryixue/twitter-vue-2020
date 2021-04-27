@@ -1,5 +1,6 @@
 <template>
   <div id="userTop">
+    <!-- <Spinner v-if="isLoading" /> -->
     <div class="image">
       <img class="cover" :src="user.cover | emptyImage" alt="user.cover">
       <img class="avatar" :src="user.avatar | emptyImage" alt="user.avatar">
@@ -28,9 +29,13 @@
 <script>
 import usersAPI from './../apis/users'
 import { emptyImageFilter } from './../utils/mixins'
+import Spinner from './../components/spinner'
 
 export default {
   mixins: [emptyImageFilter],
+  components: {
+    Spinner
+  },
   data() {
     return {
       links: 'tweet',
@@ -46,15 +51,16 @@ export default {
         followerCount: 0,
         isFollowed: true
       },
+      isLoading: true,
     }
   },
   created () {
     const { id: userId } = this.$route.params
-    this.fetchUser(userId)
+    this.fetchUser (userId)
   },
   beforeRouteUpdate (to, from, next) {
     const { id: userId } = to.params
-    this.fetchUser(userId)
+    this.fetchUser (userId)
     next()
   },
   methods: {
@@ -72,6 +78,7 @@ export default {
     },
     async fetchUser (userId) {
       try {
+        this.isLoading = true
         const { data } = await usersAPI.getUser({ userId })
 
         if (data.status === 'error') {
@@ -91,7 +98,9 @@ export default {
           followerCount,
           isFollowed
         }
+        this.isLoading = false
       } catch (error) {
+        this.isLoading = false
         console.error(error.message)
       }
     }

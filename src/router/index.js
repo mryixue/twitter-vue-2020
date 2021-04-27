@@ -76,7 +76,7 @@ const routes = [
     component: () => import('../views/followers.vue')
   },
   {
-    path: '/reply_list',
+    path: '/reply_list/:tweetId',
     name: 'reply_list',
     component: () => import('../views/reply_list.vue')
   },

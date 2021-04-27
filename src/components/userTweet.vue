@@ -3,13 +3,13 @@
     <Spinner v-if="isLoading" />
     <div class="cards" v-for="tweet in tweets" :key="tweet.id">
       <div class="left">
-        <img class="avatar" :src="tweet.User.avatar | emptyImage" alt="tweet.avater">
+        <img class="avatar" :src="tweet.User.avatar | emptyImage" alt="tweet.avatar">
       </div>
       <div class="right">
         <h5 class="info">{{ tweet.User.name }}
           <span>@{{ tweet.User.account }}·{{ tweet.createdAt | fromNow }}</span>
         </h5>
-        <router-link class="article" to="/reply_list/">
+        <router-link class="article" :to="{ name: 'reply_list', params: { tweetId: tweet.id } }">
           <p>{{ tweet.description }}</p>
         </router-link>
         <div class="icons">

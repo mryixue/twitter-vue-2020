@@ -5,34 +5,45 @@
       <div :class="{filter:!filter}" @click="followers">跟隨者</div>
       <div :class="{filter:filter}" @click="following">正在跟隨</div>
     </div>
+    <!-- <Spinner v-if="isLoading" /> -->
     <div
       class="cards"
       v-for="tweet in tweets"
-      v-if="tweet.followed == true || tweet.followed == filter"
-      :key="tweet.id">
+      v-if="tweet.ifFollowed == true || tweet.ifFollowed == filter"
+      :key="tweet.followingId">
       <div class="left">
-        <!-- <img class="avatar" src="tweet.avatar"> -->
-        <div class="avatar"></div>
+        <img class="avatar" src="tweet.avatar">
       </div>
       <div class="right">
         <h5 class="info">{{ tweet.name }}
           <div>@{{ tweet.account }}</div>
         </h5>
-        <p class="article">{{ tweet.intro }}</p>
+        <p class="article">{{ tweet.introduction }}</p>
       </div>
       <div class="switch">
-        <div class="on" v-show="tweet.followed">正在跟隨</div>
-        <div class="off" v-show="!tweet.followed">跟隨</div>
+        <div class="on" v-show="tweet.ifFollowed">正在跟隨</div>
+        <div class="off" v-show="!tweet.ifFollowed">跟隨</div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { emptyImageFilter } from './../utils/mixins'
+import usersAPI from './../apis/users'
+import { Toast } from './../utils/helpers'
+import Spinner from './../components/spinner'
+
 export default {
+  mixins: [emptyImageFilter],
+  components: {
+    Spinner
+  },
   data(){
     return{
       filter: false,
+      tweets2: [],
+      isLoading: true,
       tweets: [
         {
           id: 1,
@@ -131,6 +142,27 @@ export default {
     },
     following(){
       this.filter = true
+    },
+    async fetchFollowingUsers (userId) {
+      try {
+        this.isLoading = true
+        const data = await usersAPI.getFollowingUsers({ userId })
+
+        if (data.status === 'error') {
+          throw new Error(data.message)
+        }
+
+        this.tweets = data.data
+        console.log(this.tweets)
+        this.isLoading = false
+      } catch (error) {
+        this.isLoading = false
+        Toast.fire({
+          icon: 'error',
+          title: '無法取得正在跟隨的使用者，請稍後再試'
+        })
+        console.error(error.message)
+      }
     }
   }
 }
@@ -197,5 +229,4 @@ $font-color: rgba(#b0d7f6, .8)
       .off
         color: $font_color
         border: 2px solid $font_color
-
 </style>
