@@ -107,6 +107,7 @@ export default {
           icon: 'success',
           title: data.message
         })
+        this.isProcessing = false
         this.$router.push('/login')
       } catch (error) {
         this.isProcessing = false

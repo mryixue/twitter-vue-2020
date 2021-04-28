@@ -22,7 +22,18 @@
       </div>
       <div class="icons">
         <img src="/reply.png" @click="reply(tweet)">
-        <img src="/like.png">
+        <template>
+          <img
+          v-show="!tweet.isLiked"
+          @click="handleLike(tweet.id)"
+          src="/like.png"
+          >
+          <img
+          v-show="tweet.isLiked"
+          @click="handleUnlike(tweet.id)"
+          src="/heart.png"
+          >
+        </template>
       </div>
     </div>
     <div class="replies">
@@ -49,6 +60,7 @@ import tweetsAPI from './../apis/tweets'
 import { emptyImageFilter } from './../utils/mixins'
 import { fromNowFilter, formatDateFilter } from './../utils/mixins'
 import Spinner from './../components/spinner'
+import { Toast } from '../utils/helpers'
 
 export default {
   mixins: [emptyImageFilter, fromNowFilter, formatDateFilter],
@@ -58,6 +70,8 @@ export default {
   data() {
     return {
       isLoading: true,
+      isLikeClicked: false,
+      isUnikeClicked: false,
       tweet: {},
       replies: [],
     }
@@ -85,18 +99,20 @@ export default {
         }
 
         const { User, Replies } = data
-        const { description, createdAt, replyCount, likeCount } = data
+        const { id, description, createdAt, replyCount, likeCount, isLiked } = data
         const { avatar, name, account } = User
 
         this.tweet = {
           ...this.tweet,
+          id,
           description,
           createdAt,
           avatar,
           name,
           account,
           replyCount,
-          likeCount
+          likeCount,
+          isLiked
         }
 
         this.replies = Replies
@@ -104,6 +120,74 @@ export default {
         this.isLoading = false
       } catch (error) {
         this.isLoading = false
+        console.error(error.message)
+      }
+    },
+    async handleLike (id) {
+      try {
+        if (this.isLikeClicked) {
+          return
+        }
+        this.isLikeClicked = true
+        if (!id) {
+          Toast.fire({
+            icon: 'warning',
+            title: '此推文不存在，無法按讚'
+          })
+          return
+        }
+
+        const data = await tweetsAPI.like({id})
+        if (data.status === 'error') {
+          throw new Error(data.message)
+        }
+        Toast.fire({
+          icon: 'success',
+          title: '已按讚此推文'
+        })
+        this.tweet.isLiked = true
+        this.tweet.likeCount++
+        this.isLikeClicked = false
+      } catch(error) {
+        Toast.fire({
+          icon: 'warning',
+          title: '按讚失敗，請稍後再試'
+        })
+        this.isLikeClicked = false
+        console.error(error.message)
+      }
+    },
+    async handleUnlike (id) {
+      try {
+        if (this.isUnikeClicked) {
+          return
+        }
+        this.isUnikeClicked = true
+        if (!id) {
+          Toast.fire({
+            icon: 'warning',
+            title: '此推文不存在，無法按讚'
+          })
+          return
+        }
+
+        const data = await tweetsAPI.unlike({id})
+        if (data.status === 'error') {
+          throw new Error(data.message)
+        }
+        Toast.fire({
+          icon: 'success',
+          title: '已取消按讚此推文'
+        })
+        this.tweet.isLiked = false
+        this.tweet.likeCount--
+        this.isUnikeClicked = false
+      } catch(error) {
+        Toast.fire({
+          icon: 'warning',
+          title: '取消按讚失敗，請稍後再試'
+        })
+        this.isUnikeClicked = false
         console.error(error.message)
       }
     }
