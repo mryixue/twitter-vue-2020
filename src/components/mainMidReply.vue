@@ -28,6 +28,11 @@
           @click="handleLike(tweet.id)"
           src="/like.png"
           >
+          <img
+          v-show="tweet.isLiked"
+          @click="handleUnlike(tweet.id)"
+          src="/heart.png"
+          >
         </template>
       </div>
     </div>
@@ -66,6 +71,7 @@ export default {
     return {
       isLoading: true,
       isLikeClicked: false,
+      isUnikeClicked: false,
       tweet: {},
       replies: [],
     }
@@ -148,6 +154,40 @@ export default {
           title: '按讚失敗，請稍後再試'
         })
         this.isLikeClicked = false
+        console.error(error.message)
+      }
+    },
+    async handleUnlike (id) {
+      try {
+        if (this.isUnikeClicked) {
+          return
+        }
+        this.isUnikeClicked = true
+        if (!id) {
+          Toast.fire({
+            icon: 'warning',
+            title: '此推文不存在，無法按讚'
+          })
+          return
+        }
+
+        const data = await tweetsAPI.unlike({id})
+        if (data.status === 'error') {
+          throw new Error(data.message)
+        }
+        Toast.fire({
+          icon: 'success',
+          title: '已取消按讚此推文'
+        })
+        this.tweet.isLiked = false
+        this.tweet.likeCount--
+        this.isUnikeClicked = false
+      } catch(error) {
+        Toast.fire({
+          icon: 'warning',
+          title: '取消按讚失敗，請稍後再試'
+        })
+        this.isUnikeClicked = false
         console.error(error.message)
       }
     }

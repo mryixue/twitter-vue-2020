@@ -14,5 +14,8 @@ export default {
   },
   like ({ id }) {
     return apiHelper.post(`/tweets/${id}/like`)
+  },
+  unlike ({ id }) {
+    return apiHelper.post(`/tweets/${id}/unlike`)
   }
 }
