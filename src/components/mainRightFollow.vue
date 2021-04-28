@@ -4,11 +4,15 @@
       <div class="title">跟隨誰</div>
       <Spinner v-if="isLoading" />
       <div class="card" v-for="follower in followers" :key="follower.id">
-        <img class="avatar" :src="follower.avatar | emptyImage" alt="follower.avatar">
+        <router-link :to="{ name: 'others', params: { id: follower.id } }">
+          <img class="avatar" :src="follower.avatar | emptyImage" alt="follower.avatar">
+        </router-link>
         <div class="info">
-          <div class="name">{{follower.name}}</div>
+          <router-link :to="{ name: 'others', params: { id: follower.id } }">
+            <div class="name">{{follower.name}}</div>
+          </router-link>
           <div class="at">@{{follower.account}}</div>
-          <div class="switch" v-if="(follower.id !== currentUserId)">
+          <div class="switch">
             <div class="on" v-show="follower.isFollowed" @click.stop="handleUnfollow(follower.id)">取消跟隨</div>
             <div class="off" v-show="!follower.isFollowed" @click.stop="handleFollow(follower.id)">跟隨</div>
           </div>
@@ -53,9 +57,9 @@ export default {
           throw new Error(data.message)
         }
 
-        this.followers = data.data.topUsers
         this.currentUserId = data.data.currentUserId
-
+        this.followers = data.data.topUsers.filter(item => item.id != this.currentUserId)
+console.log(this.followers)
         this.isLoading = false
       } catch (error) {
         this.isLoading = false
