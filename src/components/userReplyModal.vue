@@ -18,6 +18,7 @@
         <textarea
           v-model="comment"
           placeholder="推你的回覆"
+          @keydown.prevent.stop.enter.exact="replyTweet"
         >
         </textarea>
         <button
