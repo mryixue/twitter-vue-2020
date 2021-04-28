@@ -19,8 +19,8 @@
       </div>
     </div>
     <div class="filter">
-      <div :class="{tweet:links == 'tweet'}" @click="tweet">推文</div>
-      <div :class="{reply:links == 'reply'}" @click="reply">推文與回覆</div>
+      <div :class="{tweet:links == 'tweet'}" @click="tweet">我的推文</div>
+      <div :class="{reply:links == 'reply'}" @click="reply">我的回覆</div>
       <div :class="{like:links == 'like'}" @click="like">喜歡的內容</div>
     </div>
   </div>

@@ -37,7 +37,6 @@ export default {
   },
   methods: {
     goTweet(){
-      console.log('ok')
       this.tweet = true
       this.reply = false
       this.like = false
