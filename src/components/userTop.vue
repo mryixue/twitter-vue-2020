@@ -6,7 +6,7 @@
       <img class="avatar" :src="user.avatar | emptyImage" alt="user.avatar">
     </div>
     <div class="button">
-      <div>編輯個人資料</div>
+      <div @click="editor">編輯個人資料</div>
     </div>
     <div class="card">
       <div class="name">{{user.name}}
@@ -30,6 +30,7 @@
 import usersAPI from './../apis/users'
 import { emptyImageFilter } from './../utils/mixins'
 import Spinner from './../components/spinner'
+import Bus from '../bus.js'
 
 export default {
   mixins: [emptyImageFilter],
@@ -103,6 +104,9 @@ export default {
         this.isLoading = false
         console.error(error.message)
       }
+    },
+    editor(){
+      Bus.$emit('toeditor')
     }
   }
 }

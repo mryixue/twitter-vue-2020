@@ -3,12 +3,12 @@
     <Spinner v-if="isLoading" />
     <div class="cards" v-for="like in likes" :key="like.id">
       <div class="left">
-        <router-link :to="{ name: 'user', params: { id: like.User.id } }">
+        <router-link :to="{ name: 'others', params: { id: like.User.id } }">
           <img class="avatar" :src="like.User.avatar | emptyImage" alt="like.avatar">
         </router-link>
       </div>
       <div class="right">
-        <router-link class="info" :to="{ name: 'user', params: { id: like.User.id } }">{{ like.User.name }}
+        <router-link class="info" :to="{ name: 'others', params: { id: like.User.id } }">{{ like.User.name }}
           <span>@{{ like.User.account }}·{{ like.createdAt | fromNow }}</span>
         </router-link>
         <router-link class="article" :to="{ name: 'reply_list', params: { tweetId: like.TweetId } }">
