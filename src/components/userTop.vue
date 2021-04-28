@@ -6,7 +6,7 @@
       <img class="avatar" :src="user.avatar | emptyImage" alt="user.avatar">
     </div>
     <div class="button">
-      <div @click="editor">編輯個人資料</div>
+      <div @click="editor(user)">編輯個人資料</div>
     </div>
     <div class="card">
       <div class="name">{{user.name}}
@@ -105,8 +105,8 @@ export default {
         console.error(error.message)
       }
     },
-    editor(){
-      Bus.$emit('toeditor')
+    editor(user){
+      Bus.$emit('toeditor',user)
     }
   }
 }

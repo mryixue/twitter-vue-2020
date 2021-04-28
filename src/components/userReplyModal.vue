@@ -80,7 +80,6 @@ export default {
 <style lang="sass">
 $font-color: rgba(#b0d7f6, .8)
 #userReplyModal
-  padding: 10px
   display: flex
   align-items: center
   justify-content: center

@@ -71,11 +71,6 @@ const routes = [
     beforeEnter: authorizeIsAdmin
   },
   {
-    path: '/setting',
-    name: 'setting',
-    component: () => import('../views/setting.vue')
-  },
-  {
     path: '/followers',
     name: 'followers',
     component: () => import('../views/followers.vue')
