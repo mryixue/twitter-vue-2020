@@ -36,6 +36,7 @@ export default {
       currentUserId: null,
       followers: [],
       isLoading: true,
+      isClickedFollow: false,
     }
   },
   created () {
@@ -64,6 +65,11 @@ export default {
 
     async handleFollow(id) {
       try {
+         if (this.isClickedFollow) {
+          return
+        }
+        this.isClickedFollow = true
+
         const data = await followApi.followUser({ id: id.toString() })
         if (data.status === 'error') {
           throw new Error(data.message)
@@ -76,11 +82,13 @@ export default {
         this.followers[index].isFollowed = true
         this.followers[index].followerCount++
         this.followers.sort((a, b) => b.followerCount - a.followerCount)
+        this.isClickedFollow = false
       } catch (error) {
         Toast.fire({
           icon: 'warning',
           title: '跟隨失敗，請稍後再試'
         })
+        this.isClickedFollow = false
         console.error(error.message)
       }
     }
