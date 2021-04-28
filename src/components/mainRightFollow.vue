@@ -14,7 +14,7 @@
           </div>
         </div>
       </div>
-      <router-link class="button" to="/followers/">顯示更多</router-link>
+      <router-link class="button" :to="{ name: 'followers', params: { id: currentUserId } }">顯示更多</router-link>
     </div>
   </div>
 </template>
@@ -33,7 +33,7 @@ export default {
   },
   data() {
     return {
-      currentUserId: null,
+      currentUserId: -1,
       followers: [],
       isLoading: true,
       isClickedFollow: false,
@@ -53,9 +53,8 @@ export default {
           throw new Error(data.message)
         }
 
-        const  { currentUserId, topUsers } = data.data
-        this.currentUserId = currentUserId
-        this.followers = topUsers
+        this.followers = data.data.topUsers
+        this.currentUserId = data.data.currentUserId
 
         this.isLoading = false
       } catch (error) {

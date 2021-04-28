@@ -3,22 +3,22 @@
     <div class="back">
       <a @click="$router.go(-1)">←</a>
     </div>
-    <div class="article">
+    <div class="article" :class="{one: replies.length === 0}">
+      <Spinner v-if="isLoading" />
       <div class="info">
         <div class="left">
-          <!-- <img class="avatar" :src="tweet.User.avatar | emptyImage" alt="tweet.avatar"> -->
-          <div class="avatar"></div>
+          <img class="avatar" :src="tweet.avatar | emptyImage" alt="tweet.avatar">
         </div>
         <div class="right">
-          <div class="name">{{ tweet.name }}</div>
-          <div class="account">@{{ tweet.account }}</div>
+          <div class="name">{{ tweet ? tweet.name : 'Unknown'}}</div>
+          <div class="account">@{{ tweet ? tweet.account : 'unknown'}}</div>
         </div>
       </div>
-      <p class="description">{{ tweet.description }}</p>
-      <div class="createTime">{{ tweet.createdAt }}</div>
+      <p class="description">{{ tweet ? tweet.description : ''}}</p>
+      <div class="createTime">{{ tweet.createdAt | formatDate}}</div>
       <div class="count">
-        <div class="reply">{{ tweet.replyCount }} 回覆</div>
-        <div class="like">{{ tweet.likeCount }} 喜歡次數</div>
+        <div class="reply">{{ tweet ? tweet.replyCount : 0}} 回覆</div>
+        <div class="like">{{ tweet ? tweet.likeCount : 0}} 喜歡次數</div>
       </div>
       <div class="icons">
         <img src="/reply.png" @click="reply(tweet)">
@@ -28,16 +28,15 @@
     <div class="replies">
       <div class="reply" v-for="reply in replies" :key="reply.id">
         <div class="left">
-          <!-- <img class="avatar" :src="tweet.User.avatar | emptyImage" alt="tweet.avatar"> -->
-          <div class="avatar"></div>
+          <img class="avatar" :src="reply.User.avatar | emptyImage" alt="tweet.avatar">
         </div>
         <div class="right">
-          <div class="name">{{ reply.name }}
-            <span class="account">@{{ reply.account }}</span>
-            <span class="creatTime">·{{ reply.createdAt }}</span>
+          <div class="name">{{ reply ? reply.User.name : 'Unknown'}}
+            <span class="account">@{{ reply ? reply.User.account : 'unknown'}}</span>
+            <span class="creatTime">·{{ reply.createdAt | fromNow}}</span>
           </div>
-          <div class="replyAt">回覆 <span>@{{tweet.name}}</span></div>
-          <p class="description">{{ reply.description }}</p>
+          <div class="replyAt">回覆 <span>@{{tweet ? tweet.name : 'Unknown'}}</span></div>
+          <p class="description">{{ reply ? reply.comment : ''}}</p>
         </div>
       </div>
     </div>
@@ -46,73 +45,67 @@
 
 <script>
 import Bus from '../bus.js'
+import tweetsAPI from './../apis/tweets'
+import { emptyImageFilter } from './../utils/mixins'
+import { fromNowFilter, formatDateFilter } from './../utils/mixins'
+import Spinner from './../components/spinner'
+
 export default {
+  mixins: [emptyImageFilter, fromNowFilter, formatDateFilter],
+  components: {
+    Spinner
+  },
   data() {
     return {
-      tweet: {
-        avatar: '',
-        name: 'Apple',
-        account: 'apple',
-        description: 'Nulla Lorem mollit cupidatat irure. Laborum magna nulla duis ullamco cillum dolor. Voluptate exercitation incididunt aliquip deserunt reprehenderit elit laborum.',
-        createdAt: '2020/6/10',
-        replyCount: 34,
-        likeCount: 808
-      },
-      replies: [
-        {
-          id: 1,
-          avatar: '',
-          name: 'Mary Jane',
-          account: 'mjjane',
-          description: 'Great~',
-          createdAt: '2020/6/10',
-        },
-        {
-          id: 2,
-          avatar: '',
-          name: 'Squishy Tom',
-          account: 'sushiTom',
-          description: 'Good Job!',
-          createdAt: '2020/6/10',
-        },
-        {
-          id: 3,
-          avatar: '',
-          name: 'Squishy Tom',
-          account: 'sushiTom',
-          description: 'Good Job!',
-          createdAt: '2020/6/10',
-        },
-        {
-          id: 4,
-          avatar: '',
-          name: 'Squishy Tom',
-          account: 'sushiTom',
-          description: 'Good Job!',
-          createdAt: '2020/6/10',
-        },
-        {
-          id: 5,
-          avatar: '',
-          name: 'Squishy Tom',
-          account: 'sushiTom',
-          description: 'Good Job!',
-          createdAt: '2020/6/10',
-        },
-        {
-          id: 6,
-          avatar: '',
-          name: 'Squishy Tom',
-          account: 'sushiTom',
-          description: 'Good Job!',
-          createdAt: '2020/6/10',
-        },
-      ]
+      isLoading: true,
+      tweet: {},
+      replies: [],
     }
+  },
+  created () {
+    const { tweetId } = this.$route.params
+    this.fetchTweet (tweetId)
+  },
+  beforeRouteUpdate (to, from, next) {
+    const { tweetId } = to.params
+    this.fetchTweet (tweetId)
+    next()
   },
   methods: {
     reply(tweet){
       Bus.$emit('toreply', tweet)
+    },
+    async fetchTweet (tweetId) {
+      try {
+        this.isLoading = true
+        const { data } = await tweetsAPI.getTweet({ tweetId })
+
+        if (data.status === 'error') {
+          throw new Error(data.message)
+        }
+
+        const { User, Replies } = data
+        const { description, createdAt, replyCount, likeCount } = data
+        const { avatar, name, account } = User
+
+        this.tweet = {
+          ...this.tweet,
+          description,
+          createdAt,
+          avatar,
+          name,
+          account,
+          replyCount,
+          likeCount
+        }
+
+        this.replies = Replies
+
+        this.isLoading = false
+      } catch (error) {
+        this.isLoading = false
+        console.error(error.message)
+      }
     }
   }
 }
@@ -129,8 +122,10 @@ $font-color: rgba(#b0d7f6, .8)
       cursor: pointer
   .article
     padding: 5px
-    border: 1px solid rgba(grey,.5)
-      style: solid solid none solid
+    border-radius: 10px 0
+    background-color: #f1f7fd
+    &.one
+      border-radius: 10px
     .info
       display: flex
       .left .avatar
@@ -170,10 +165,12 @@ $font-color: rgba(#b0d7f6, .8)
       &:hover
         cursor: pointer
   .replies
+    border-radius: 0 10px
+    background-color: #f1f7fd
+    margin:
+      bottom: 10px
     .reply
       display: flex
-      border: 1px solid rgba(grey,.5)
-        style: solid solid none solid
       font-size: 13px
       padding:
         top: 10px
@@ -191,7 +188,7 @@ $font-color: rgba(#b0d7f6, .8)
         .name
           font-weight: bold
           .account,
-          .creatTime          
+          .creatTime
             color: grey
         .replyAt
           margin: 5px 0

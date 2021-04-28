@@ -14,7 +14,7 @@
       <Spinner v-if="isLoading" />
       <tbody>
         <tr v-for="user in users" :key="user.id">
-          <td><img class="avatar" width="100" :src="user.avatar | emptyImage" alt="user.avater"></td>
+          <td><img class="avatar" width="100" :src="user.avatar | emptyImage" alt="user.avatar"></td>
           <td>{{user.name}}</td>
           <td>{{user.tweetCount}}</td>
           <td>{{user.likedCount}}</td>

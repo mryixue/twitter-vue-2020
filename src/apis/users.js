@@ -18,5 +18,8 @@ export default {
   },
   getTopUsers () {
     return apiHelper.get('/users/top')
+  },
+  getFollowingUsers ({ userId }) {
+    return apiHelper.get(`/users/${userId}/followings`)
   }
 }

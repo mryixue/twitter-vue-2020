@@ -1,5 +1,5 @@
 <template>
-  <div id="userReplyModal" v-show="modalOn">
+  <div id="userReplyModal" v-show="modalOn" @click.self="closeModal()">
     <div class="form">
       <div class="tweet">
         <div class="left">
@@ -9,7 +9,7 @@
         <div class="right">
           <div class="name">{{ tweet.name }}
             <span class="account">@{{ tweet.account }}</span>
-            <span class="creatTime">·{{ tweet.createdAt }}</span>
+            <span class="creatTime">·{{ tweet.createdAt | fromNow}}</span>
           </div>
           <p class="description">{{ tweet.description }}</p>
           <div class="tweetAt">回覆給 <span>@{{tweet.name}}</span></div>
@@ -25,7 +25,7 @@
           type="submit"
           class="button"
         >回覆</button>
-        <div class="close" @click="closeModal()">×</div>
+        <div class="close" @click.self="closeModal()">×</div>
       </form>
     </div>
   </div>
@@ -33,8 +33,11 @@
 
 <script>
 import Bus from '../bus.js'
+import { Toast } from './../utils/helpers'
+import { fromNowFilter } from './../utils/mixins'
 
 export default {
+  mixins: [fromNowFilter],
   data () {
     return {
       tweet: {},
@@ -50,7 +53,26 @@ export default {
   },
   methods: {
     closeModal(){
-      this.modalOn = !this.modalOn
+      if(this.reply){
+        Toast.fire({
+          title: '儲存變更?',
+          position: 'center',
+          showDenyButton: true,
+          showConfirmButton: true,
+          confirmButtonText: `儲存`,
+          denyButtonText: `取消儲存`,
+          timer: undefined
+        }).then(result => {
+          if (result.isConfirmed) {
+            this.modalOn = !this.modalOn
+          } else if (result.isDenied) {
+            this.reply = ''
+            this.modalOn = !this.modalOn
+          }
+        })
+      } else {
+        this.modalOn = !this.modalOn
+      }
     }
   }
 
@@ -60,7 +82,6 @@ export default {
 <style lang="sass">
 $font-color: rgba(#b0d7f6, .8)
 #userReplyModal
-  padding: 10px
   display: flex
   align-items: center
   justify-content: center
@@ -86,7 +107,7 @@ $font-color: rgba(#b0d7f6, .8)
         .name
           font-weight: bold
           .account,
-          .creatTime          
+          .creatTime
             color: grey
         p
           white-space: normal

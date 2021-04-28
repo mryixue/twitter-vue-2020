@@ -57,7 +57,14 @@
 </template>
 
 <script>
+import usersAPI from './../apis/users'
+import { Toast } from './../utils/helpers'
+import Spinner from './../components/spinner'
+
 export default {
+  components: {
+    Spinner
+  },
   data(){
     return{
       account: '',
@@ -66,6 +73,34 @@ export default {
       password: '',
       checkPassword: '',
       isProcessing: false
+    }
+  },
+  created () {
+    this.fetchUserSetting ()
+  },
+  methods: {
+    async fetchUserSetting () {
+      try {
+        this.isLoading = true
+        const { data } = await usersAPI.getCurrentUser()
+
+        if (data.status === 'error') {
+          throw new Error(data.message)
+        }
+        const { account, name, email, password } = data.currentUser
+        this.account = account
+        this.name = name
+        this.email = email
+        this.password = password
+        this.isLoading = false
+      } catch (error) {
+        this.isLoading = false
+        Toast.fire({
+          icon: 'error',
+          title: '無法取得帳戶資料，請稍後再試'
+        })
+        console.error(error.message)
+      }
     }
   }
 }

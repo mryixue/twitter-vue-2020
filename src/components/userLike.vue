@@ -1,19 +1,21 @@
 <template>
   <div id="userLike">
     <Spinner v-if="isLoading" />
-    <div class="cards" v-for="tweet in tweets" :key="tweet.id">
+    <div class="cards" v-for="like in likes" :key="like.id">
       <div class="left">
-        <img class="avatar" :src="tweet.User.avatar | emptyImage" alt="tweet.avater">
+        <router-link :to="{ name: 'others', params: { id: like.User.id } }">
+          <img class="avatar" :src="like.User.avatar | emptyImage" alt="like.avatar">
+        </router-link>
       </div>
       <div class="right">
-        <h5 class="info">{{ tweet.User.name }}
-          <span>@{{ tweet.User.account }}·{{ tweet.createdAt | fromNow }}</span>
-        </h5>
-        <router-link class="article" to="/reply_list/">
-          <p>{{ tweet.description }}</p>
+        <router-link class="info" :to="{ name: 'others', params: { id: like.User.id } }">{{ like.User.name }}
+          <span>@{{ like.User.account }}·{{ like.createdAt | fromNow }}</span>
+        </router-link>
+        <router-link class="article" :to="{ name: 'reply_list', params: { tweetId: like.TweetId } }">
+          <p>{{ like.description }}</p>
         </router-link>
         <div class="icons">
-          <div class="like">{{ tweet.likeCount }} 位喜歡</div>
+          <div class="like">{{ like.likeCount }} 位喜歡</div>
         </div>
       </div>
     </div>
@@ -34,37 +36,37 @@ export default {
   },
   data() {
     return {
-      tweets: [],
+      likes: [],
       isLoading: true,
     }
   },
   created () {
     const { id: userId } = this.$route.params
-    this.fetchUserTweets(userId)
+    this.fetchUserLikedTweets(userId)
   },
   beforeRouteUpdate (to, from, next) {
     const { id: userId } = to.params
-    this.fetchUserTweets(userId)
+    this.fetchUserLikedTweets(userId)
     next()
   },
   methods: {
-    async fetchUserTweets (userId) {
+    async fetchUserLikedTweets (userId) {
       try {
         this.isLoading = true
-        const data = await usersAPI.getUserTweets({ userId })
+        const data = await usersAPI.getUserLikedTweets({ userId })
 
         if (data.status === 'error') {
           throw new Error(data.message)
         }
 
-        this.tweets = data.data
+        this.likes = data.data
 
         this.isLoading = false
       } catch (error) {
         this.isLoading = false
         Toast.fire({
           icon: 'error',
-          title: '無法取得推文，請稍後再試'
+          title: '無法取得按讚過的推文，請稍後再試'
         })
         console.error(error.message)
       }
@@ -98,10 +100,14 @@ export default {
         left: 10px
       .info
         font-size: 18px
+        font-weight: bold
+        &:hover
+          text-decoration: underline
       .info span
         color: rgba(gray,.7)
         padding:
           left: 5px
+        font-size: 12px
       .article
         padding:
           top: 5px
