@@ -1,5 +1,5 @@
 <template>
-  <div id="newTweet" v-show="modalOn">
+  <div id="newTweet" v-show="modalOn" @click.self="closeModal()">
     <form @submit.prevent.stop="handleSubmit">
       <textarea
         v-model="description"
@@ -12,7 +12,7 @@
         :disabled="isProcessing"
         :class="{isProcessing}"
       >推文</button>
-      <div class="close" @click="closeModal()">×</div>
+      <div class="close" @click.self="closeModal()">×</div>
     </form>
   </div>
 </template>
@@ -66,7 +66,26 @@ export default {
       }
     },
     closeModal(){
-      this.modalOn = !this.modalOn
+      if(this.description){
+        Toast.fire({
+          title: '儲存變更?',
+          position: 'center',
+          showDenyButton: true,
+          showConfirmButton: true,
+          confirmButtonText: `儲存`,
+          denyButtonText: `取消儲存`,
+          timer: undefined
+        }).then(result => {
+          if (result.isConfirmed) {
+            this.modalOn = !this.modalOn
+          } else if (result.isDenied) {
+            this.description = ''
+            this.modalOn = !this.modalOn
+          }
+        })
+      } else {
+        this.modalOn = !this.modalOn
+      }
     }
   },
   created() {

@@ -1,5 +1,5 @@
 <template>
-  <div id="userReplyModal" v-show="modalOn">
+  <div id="userReplyModal" v-show="modalOn" @click.self="closeModal()">
     <div class="form">
       <div class="tweet">
         <div class="left">
@@ -25,7 +25,7 @@
           type="submit"
           class="button"
         >回覆</button>
-        <div class="close" @click="closeModal()">×</div>
+        <div class="close" @click.self="closeModal()">×</div>
       </form>
     </div>
   </div>
@@ -33,6 +33,7 @@
 
 <script>
 import Bus from '../bus.js'
+import { Toast } from './../utils/helpers'
 
 export default {
   data () {
@@ -50,7 +51,26 @@ export default {
   },
   methods: {
     closeModal(){
-      this.modalOn = !this.modalOn
+      if(this.reply){
+        Toast.fire({
+          title: '儲存變更?',
+          position: 'center',
+          showDenyButton: true,
+          showConfirmButton: true,
+          confirmButtonText: `儲存`,
+          denyButtonText: `取消儲存`,
+          timer: undefined
+        }).then(result => {
+          if (result.isConfirmed) {
+            this.modalOn = !this.modalOn
+          } else if (result.isDenied) {
+            this.reply = ''
+            this.modalOn = !this.modalOn
+          }
+        })
+      } else {
+        this.modalOn = !this.modalOn
+      }
     }
   }
 
