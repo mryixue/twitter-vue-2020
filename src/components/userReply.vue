@@ -1,19 +1,21 @@
 <template>
   <div id="userReply">
     <Spinner v-if="isLoading" />
-    <div class="cards" v-for="reply in replies" :key="reply.id">
+    <div class="cards" v-for="reply in replies" :key="reply.ReplyId">
       <div class="left">
-        <img class="avatar" :src="reply.Tweet ? reply.Tweet.User.avatar : 'https://via.placeholder.com/350x220/DFDFDF?text=No+Image'" alt="reply.avatar">
+        <router-link :to="{ name: 'others', params: { id: reply.Tweet.User.id } }">
+          <img class="avatar" :src="reply.Tweet.User.avatar" alt="reply.avatar">
+        </router-link>
       </div>
       <div class="right">
-        <h5 class="info">{{ reply.Tweet ? reply.Tweet.User.name : 'Unknown'}}
-          <span>@{{ reply.Tweet ? reply.Tweet.User.account : 'unknown'}}·{{ reply.createdAt | fromNow }}</span>
-        </h5>
-        <router-link class="article" :to="{ name: 'reply_list', params: { tweetId: reply.Tweet ? reply.Tweet.TweetId : -1} }">
-          <p>{{ reply.Tweet ? reply.Tweet.description : ''}}</p>
+        <router-link class="info" :to="{ name: 'others', params: { id: reply.Tweet.User.id } }">{{ reply.Tweet.User.name}}
+          <span>@{{ reply.Tweet.User.account}}·{{ reply.createdAt | fromNow }}</span>
+        </router-link>
+        <router-link class="article" :to="{ name: 'reply_list', params: { tweetId: reply.Tweet.TweetId} }">
+          <p>{{ reply.Tweet.description}}</p>
         </router-link>
         <div class="icons">
-          <div class="reply">{{ reply.Tweet ? reply.Tweet.replyCount : 0}} 則留言</div>
+          <div class="reply">{{ reply.Tweet.replyCount}} 則留言</div>
         </div>
       </div>
     </div>
@@ -57,7 +59,7 @@ export default {
           throw new Error(data.message)
         }
 
-        this.replies = data.data
+        this.replies = data.data.filter(data => data.Tweet !== null)
 
         this.isLoading = false
       } catch (error) {
@@ -98,10 +100,14 @@ export default {
         left: 10px
       .info
         font-size: 18px
+        font-weight: bold
+        &:hover
+          text-decoration: underline
       .info span
         color: rgba(gray,.7)
         padding:
           left: 5px
+        font-size: 12px
       .article
         padding:
           top: 5px

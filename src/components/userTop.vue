@@ -1,12 +1,16 @@
 <template>
   <div id="userTop">
     <!-- <Spinner v-if="isLoading" /> -->
+    <router-link class="links" v-show="currentUser.id != userId" to="/main/">
+      ← 首頁
+    </router-link>
     <div class="image">
       <img class="cover" :src="user.cover | emptyImage" alt="user.cover">
       <img class="avatar" :src="user.avatar | emptyImage" alt="user.avatar">
     </div>
     <div class="button">
-      <div>編輯個人資料</div>
+      <div @click="editor(user)" v-show="currentUser.id == userId">編輯個人資料</div>
+      <div v-show="currentUser.id != userId">正在跟隨</div>
     </div>
     <div class="card">
       <div class="name">{{user.name}}
@@ -19,8 +23,8 @@
       </div>
     </div>
     <div class="filter">
-      <div :class="{tweet:links == 'tweet'}" @click="tweet">推文</div>
-      <div :class="{reply:links == 'reply'}" @click="reply">推文與回覆</div>
+      <div :class="{tweet:links == 'tweet'}" @click="tweet">我的推文</div>
+      <div :class="{reply:links == 'reply'}" @click="reply">我的回覆</div>
       <div :class="{like:links == 'like'}" @click="like">喜歡的內容</div>
     </div>
   </div>
@@ -30,6 +34,8 @@
 import usersAPI from './../apis/users'
 import { emptyImageFilter } from './../utils/mixins'
 import Spinner from './../components/spinner'
+import Bus from '../bus.js'
+import { mapState } from 'vuex'
 
 export default {
   mixins: [emptyImageFilter],
@@ -52,11 +58,13 @@ export default {
         isFollowed: true
       },
       isLoading: true,
+      userId: ''
     }
   },
   created () {
     const { id: userId } = this.$route.params
     this.fetchUser (userId)
+    this.userId = userId
   },
   beforeRouteUpdate (to, from, next) {
     const { id: userId } = to.params
@@ -103,8 +111,14 @@ export default {
         this.isLoading = false
         console.error(error.message)
       }
+    },
+    editor(user){
+      Bus.$emit('toeditor',user)
     }
-  }
+  },
+  computed: {
+    ...mapState(['currentUser', 'isAuthenticated'])
+  },
 }
 </script>
 
@@ -112,6 +126,10 @@ export default {
 $font-color: rgba(#b0d7f6, .8)
 #userTop
   padding: 10px
+  .links
+    font-size: 24px
+    &:hover
+      cursor: pointer
   .image
     background-color: grey
     height: 20vh

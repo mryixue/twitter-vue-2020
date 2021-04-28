@@ -44,6 +44,11 @@ const routes = [
     component: () => import('../views/user.vue')
   },
   {
+    path: '/users/:id',
+    name: 'others',
+    component: () => import('../views/others.vue')
+  },
+  {
     path: '/setting',
     name: 'setting',
     component: () => import('../views/setting.vue')
@@ -66,12 +71,7 @@ const routes = [
     beforeEnter: authorizeIsAdmin
   },
   {
-    path: '/setting',
-    name: 'setting',
-    component: () => import('../views/setting.vue')
-  },
-  {
-    path: '/followers',
+    path: '/followers/:id',
     name: 'followers',
     component: () => import('../views/followers.vue')
   },

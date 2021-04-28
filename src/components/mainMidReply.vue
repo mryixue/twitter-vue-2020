@@ -3,7 +3,7 @@
     <div class="back">
       <a @click="$router.go(-1)">←</a>
     </div>
-    <div class="article">
+    <div class="article" :class="{one: replies.length === 0}">
       <Spinner v-if="isLoading" />
       <div class="info">
         <div class="left">
@@ -206,8 +206,10 @@ $font-color: rgba(#b0d7f6, .8)
       cursor: pointer
   .article
     padding: 5px
-    border: 1px solid rgba(grey,.5)
-    style: solid solid none solid
+    border-radius: 10px 0
+    background-color: #f1f7fd
+    &.one
+      border-radius: 10px
     .info
       display: flex
       .left .avatar
@@ -247,10 +249,12 @@ $font-color: rgba(#b0d7f6, .8)
       &:hover
         cursor: pointer
   .replies
+    border-radius: 0 10px
+    background-color: #f1f7fd
+    margin:
+      bottom: 10px
     .reply
       display: flex
-      border: 1px solid rgba(grey,.5)
-      style: solid solid none solid
       font-size: 13px
       padding:
         top: 10px
