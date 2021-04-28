@@ -59,6 +59,7 @@
 <script>
 import usersAPI from './../apis/users'
 import { Toast } from './../utils/helpers'
+import Spinner from './../components/spinner'
 
 export default {
   components: {
