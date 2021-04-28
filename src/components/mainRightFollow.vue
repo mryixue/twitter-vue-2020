@@ -8,7 +8,7 @@
         <div class="info">
           <div class="name">{{follower.name}}</div>
           <div class="at">@{{follower.account}}</div>
-          <div class="switch">
+          <div class="switch" v-if="(follower.id !== currentUserId)">
             <div class="on" v-show="follower.isFollowed">正在跟隨</div>
             <div class="off" v-show="!follower.isFollowed" @click.stop="handleFollow(follower.id)">跟隨</div>
           </div>
@@ -33,6 +33,7 @@ export default {
   },
   data() {
     return {
+      currentUserId: null,
       followers: [],
       isLoading: true,
     }
@@ -50,7 +51,9 @@ export default {
           throw new Error(data.message)
         }
 
-        this.followers = data.data
+        const  { currentUserId, topUsers } = data.data
+        this.currentUserId = currentUserId
+        this.followers = topUsers
 
         this.isLoading = false
       } catch (error) {
