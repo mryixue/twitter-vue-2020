@@ -74,6 +74,8 @@ export default {
         })
         const index = this.followers.findIndex(follower => follower.id === id)
         this.followers[index].isFollowed = true
+        this.followers[index].followerCount++
+        this.followers.sort((a, b) => b.followerCount - a.followerCount)
       } catch (error) {
         Toast.fire({
           icon: 'warning',
