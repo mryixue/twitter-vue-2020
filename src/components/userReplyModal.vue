@@ -130,11 +130,7 @@ $font-color: rgba(#b0d7f6, .8)
     position: relative
     width: 50vw
     padding: 10px
-<<<<<<< HEAD
     padding-top: 20px
-=======
-    top: 20px
->>>>>>> e924c08a1381754dccf7999269169a55cbaaf0c4
     border-radius: 10px
     background: white
     .tweet
