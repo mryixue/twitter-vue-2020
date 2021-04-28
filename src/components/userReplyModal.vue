@@ -89,7 +89,7 @@ $font-color: rgba(#b0d7f6, .8)
     position: relative
     width: 50vw
     padding: 10px
-      top: 20px
+    padding-top: 20px
     border-radius: 10px
     background: white
     .tweet
