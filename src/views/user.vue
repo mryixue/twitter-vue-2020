@@ -7,6 +7,7 @@
     <userLike v-show="like"/>
     <mainRightFollow/>
     <newTweet/>
+    <userEditor/>
   </div>
 </template>
 
@@ -18,6 +19,7 @@ import userTop from '../components/userTop'
 import userLike from '../components/userLike'
 import userReply from '../components/userReply'
 import newTweet from '../components/newTweet'
+import userEditor from '../components/userEditor'
 export default {
   components: {
     mainLeft,
@@ -26,7 +28,8 @@ export default {
     userLike,
     userReply,
     userTop,
-    newTweet
+    newTweet,
+    userEditor
   },
   data() {
     return {
@@ -37,7 +40,6 @@ export default {
   },
   methods: {
     goTweet(){
-      console.log('ok')
       this.tweet = true
       this.reply = false
       this.like = false
@@ -75,6 +77,14 @@ export default {
   #userTop
     grid-area: new
   #newTweet
+    position: absolute
+    top: 0
+    left: 0
+    width: 100vw
+    height: 100vh
+    grid-area: 1/1/3/3
+    background-color: rgba(grey,.8)
+  #userEditor
     position: absolute
     top: 0
     left: 0

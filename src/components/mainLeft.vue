@@ -4,7 +4,7 @@
     <nav class="nav">
       <router-link to="/main">首頁</router-link>
       <router-link
-        :to="{ name: 'user', params: { id: currentUser.id } }"
+        :to="{ name: 'others', params: { id: currentUser.id } }"
       >
         個人資料
       </router-link>

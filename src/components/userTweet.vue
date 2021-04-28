@@ -103,6 +103,7 @@ export default {
         color: rgba(gray,.7)
         padding:
           left: 5px
+        font-size: 12px
       .article
         padding:
           top: 5px

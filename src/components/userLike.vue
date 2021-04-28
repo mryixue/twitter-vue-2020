@@ -3,12 +3,14 @@
     <Spinner v-if="isLoading" />
     <div class="cards" v-for="like in likes" :key="like.id">
       <div class="left">
-        <img class="avatar" :src="like.User.avatar | emptyImage" alt="like.avatar">
+        <router-link :to="{ name: 'others', params: { id: like.User.id } }">
+          <img class="avatar" :src="like.User.avatar | emptyImage" alt="like.avatar">
+        </router-link>
       </div>
       <div class="right">
-        <h5 class="info">{{ like.User.name }}
+        <router-link class="info" :to="{ name: 'others', params: { id: like.User.id } }">{{ like.User.name }}
           <span>@{{ like.User.account }}·{{ like.createdAt | fromNow }}</span>
-        </h5>
+        </router-link>
         <router-link class="article" :to="{ name: 'reply_list', params: { tweetId: like.TweetId } }">
           <p>{{ like.description }}</p>
         </router-link>
@@ -98,10 +100,14 @@ export default {
         left: 10px
       .info
         font-size: 18px
+        font-weight: bold
+        &:hover
+          text-decoration: underline
       .info span
         color: rgba(gray,.7)
         padding:
           left: 5px
+        font-size: 12px
       .article
         padding:
           top: 5px
