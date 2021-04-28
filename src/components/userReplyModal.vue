@@ -1,10 +1,9 @@
 <template>
   <div id="userReplyModal" v-show="modalOn" @click.self="closeModal()">
-    <div class="form">
+    <div class="form" @submit.prevent.stop="replyTweet">
       <div class="tweet">
         <div class="left">
-          <!-- <img class="avatar" :src="tweet.User.avatar | emptyImage" alt="tweet.avatar"> -->
-          <div class="avatar"></div>
+          <img class="avatar" :src="tweet.avatar" alt="tweet.avatar">
         </div>
         <div class="right">
           <div class="name">{{ tweet.name }}
@@ -17,13 +16,15 @@
       </div>
       <form>
         <textarea
-          v-model="reply"
+          v-model="comment"
           placeholder="推你的回覆"
         >
         </textarea>
         <button
           type="submit"
           class="button"
+          :disabled="isProcessing"
+          :class="{isProcessing}"
         >回覆</button>
         <div class="close" @click.self="closeModal()">×</div>
       </form>
@@ -35,14 +36,17 @@
 import Bus from '../bus.js'
 import { Toast } from './../utils/helpers'
 import { fromNowFilter } from './../utils/mixins'
+import tweetsAPI from './../apis/tweets'
 
 export default {
   mixins: [fromNowFilter],
   data () {
     return {
       tweet: {},
-      reply: '',
-      modalOn: false
+      comment: '',
+      tweetId: -1,
+      modalOn: false,
+      isProcessing: false
     }
   },
   created() {
@@ -50,10 +54,12 @@ export default {
       this.tweet = tweet
       this.modalOn = !this.modalOn
     })
+    const { tweetId } = this.$route.params
+    this.tweetId = tweetId
   },
   methods: {
     closeModal(){
-      if(this.reply){
+      if(this.comment){
         Toast.fire({
           title: '儲存變更?',
           position: 'center',
@@ -66,16 +72,51 @@ export default {
           if (result.isConfirmed) {
             this.modalOn = !this.modalOn
           } else if (result.isDenied) {
-            this.reply = ''
+            this.comment = ''
             this.modalOn = !this.modalOn
           }
         })
       } else {
         this.modalOn = !this.modalOn
       }
+    },
+    async replyTweet () {
+      try {
+        if (!this.comment) {
+          Toast.fire({
+            icon: 'warning',
+            title: '請確認已填寫回覆內容'
+          })
+          return
+        }
+
+        this.isProcessing = true
+
+        const { data } = await tweetsAPI.replyTweet({
+          tweetId: this.tweetId,
+          comment: this.comment
+        })
+
+        if (data.status === 'error') {
+          throw new Error(data.message)
+        }
+
+        Toast.fire({
+          icon: 'success',
+          title: '新增回覆成功'
+        })
+        this.isProcessing = false
+      } catch (error) {
+        this.isProcessing = false
+
+        Toast.fire({
+          icon: 'warning',
+          title: '無法回覆推文'
+        })
+        console.error(error.message)
+      }
     }
   }
-
 }
 </script>
 
@@ -89,7 +130,11 @@ $font-color: rgba(#b0d7f6, .8)
     position: relative
     width: 50vw
     padding: 10px
+<<<<<<< HEAD
     padding-top: 20px
+=======
+    top: 20px
+>>>>>>> e924c08a1381754dccf7999269169a55cbaaf0c4
     border-radius: 10px
     background: white
     .tweet

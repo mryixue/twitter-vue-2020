@@ -11,5 +11,10 @@ export default {
     return apiHelper.post('/tweets', {
       description
     })
+  },
+  replyTweet ({ tweetId, comment }) {
+    return apiHelper.post(`/tweets/${tweetId}/replies`, {
+      comment
+    })
   }
 }
