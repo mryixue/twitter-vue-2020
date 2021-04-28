@@ -71,7 +71,7 @@ const routes = [
     beforeEnter: authorizeIsAdmin
   },
   {
-    path: '/followers',
+    path: '/followers/:id',
     name: 'followers',
     component: () => import('../views/followers.vue')
   },

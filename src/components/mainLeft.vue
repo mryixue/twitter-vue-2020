@@ -8,7 +8,7 @@
       >
         個人資料
       </router-link>
-      <router-link to="/setting/">設定</router-link>
+      <router-link :to="{ name: 'setting' }">設定</router-link>
     </nav>
     <div class="button" @click="tweet">新推文</div>
     <div class="logout" @click="logout">

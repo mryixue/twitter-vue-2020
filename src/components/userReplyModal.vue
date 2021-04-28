@@ -9,7 +9,7 @@
         <div class="right">
           <div class="name">{{ tweet.name }}
             <span class="account">@{{ tweet.account }}</span>
-            <span class="creatTime">·{{ tweet.createdAt }}</span>
+            <span class="creatTime">·{{ tweet.createdAt | fromNow}}</span>
           </div>
           <p class="description">{{ tweet.description }}</p>
           <div class="tweetAt">回覆給 <span>@{{tweet.name}}</span></div>
@@ -34,8 +34,10 @@
 <script>
 import Bus from '../bus.js'
 import { Toast } from './../utils/helpers'
+import { fromNowFilter } from './../utils/mixins'
 
 export default {
+  mixins: [fromNowFilter],
   data () {
     return {
       tweet: {},
@@ -87,7 +89,7 @@ $font-color: rgba(#b0d7f6, .8)
     position: relative
     width: 50vw
     padding: 10px
-      top: 20px
+    top: 20px
     border-radius: 10px
     background: white
     .tweet
@@ -105,7 +107,7 @@ $font-color: rgba(#b0d7f6, .8)
         .name
           font-weight: bold
           .account,
-          .creatTime          
+          .creatTime
             color: grey
         p
           white-space: normal

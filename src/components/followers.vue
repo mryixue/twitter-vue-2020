@@ -12,7 +12,7 @@
       v-if="tweet.ifFollowed == true || tweet.ifFollowed == filter"
       :key="tweet.followingId">
       <div class="left">
-        <img class="avatar" src="tweet.avatar">
+        <img class="avatar" :src="tweet.avatar | emptyImage">
       </div>
       <div class="right">
         <h5 class="info">{{ tweet.name }}
@@ -136,6 +136,15 @@ export default {
       ]
     }
   },
+  created () {
+    const { id: userId } = this.$route.params
+    this.fetchFollowingUsers (userId)
+  },
+  beforeRouteUpdate (to, from, next) {
+    const { id: userId } = to.params
+    this.fetchFollowingUsers (userId)
+    next()
+  },
   methods: {
     followers(){
       this.filter = false
@@ -153,7 +162,6 @@ export default {
         }
 
         this.tweets = data.data
-        console.log(this.tweets)
         this.isLoading = false
       } catch (error) {
         this.isLoading = false
