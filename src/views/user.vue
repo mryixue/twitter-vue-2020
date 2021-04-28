@@ -1,5 +1,5 @@
 <template>
-  <div id="userframe">
+  <div id="userframe" :class="{same: currentUser.id == userId}">
     <mainLeft/>
     <userTop @goTweet="goTweet" @goReply="goReply" @goLike="goLike"/>
     <userTweet v-show="tweet"/>
@@ -20,6 +20,7 @@ import userLike from '../components/userLike'
 import userReply from '../components/userReply'
 import newTweet from '../components/newTweet'
 import userEditor from '../components/userEditor'
+import { mapState } from 'vuex'
 export default {
   components: {
     mainLeft,
@@ -54,7 +55,14 @@ export default {
       this.reply = false
       this.tweet = false
     },
-  }
+  },
+  created () {
+    const { id: userId } = this.$route.params
+    this.userId = userId
+  },
+  computed: {
+    ...mapState(['currentUser', 'isAuthenticated'])
+  },
 }
 </script>
 
@@ -65,9 +73,11 @@ export default {
   display: grid
   grid-template:
     columns: 20vw 1fr 30vw
-    rows: 395px 1fr
+    rows: 430px 1fr
     areas: "left new right" "left article right"
   position: relative
+  &.same
+    grid-template-rows: 395px 1fr
   #mainLeft
     grid-area: left
   #userTweet
