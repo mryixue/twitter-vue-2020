@@ -8,9 +8,9 @@
         <div class="info">
           <div class="name">{{follower.name}}</div>
           <div class="at">@{{follower.account}}</div>
-          <div class="switch">
-            <div class="on" v-show="follower.isFollowed">正在跟隨</div>
-            <div class="off" v-show="!follower.isFollowed">跟隨</div>
+          <div class="switch" v-if="(follower.id !== currentUserId)">
+            <div class="on" v-show="follower.isFollowed" @click.stop="handleUnfollow(follower.id)">取消跟隨</div>
+            <div class="off" v-show="!follower.isFollowed" @click.stop="handleFollow(follower.id)">跟隨</div>
           </div>
         </div>
       </div>
@@ -22,7 +22,9 @@
 <script>
 import { emptyImageFilter } from './../utils/mixins'
 import usersAPI from './../apis/users'
+import followApi from '../apis/followships'
 import Spinner from './../components/spinner'
+import { Toast } from '../utils/helpers'
 
 export default {
   mixins: [emptyImageFilter],
@@ -31,9 +33,11 @@ export default {
   },
   data() {
     return {
+      currentUserId: -1,
       followers: [],
       isLoading: true,
-      currentUserId: -1
+      isClickedFollow: false,
+      isClickedUnfollow: false
     }
   },
   created () {
@@ -55,6 +59,66 @@ export default {
         this.isLoading = false
       } catch (error) {
         this.isLoading = false
+        console.error(error.message)
+      }
+    },
+
+    async handleFollow(id) {
+      try {
+         if (this.isClickedFollow) {
+          return
+        }
+        this.isClickedFollow = true
+
+        const data = await followApi.followUser({ id: id.toString() })
+        if (data.status === 'error') {
+          throw new Error(data.message)
+        }
+        Toast.fire({
+          icon: 'success',
+          title: '已跟隨此使用者'
+        })
+        const index = this.followers.findIndex(follower => follower.id === id)
+        this.followers[index].isFollowed = true
+        this.followers[index].followerCount++
+        this.followers.sort((a, b) => b.followerCount - a.followerCount)
+        this.isClickedFollow = false
+      } catch (error) {
+        Toast.fire({
+          icon: 'warning',
+          title: '跟隨失敗，請稍後再試'
+        })
+        this.isClickedFollow = false
+        console.error(error.message)
+      }
+    },
+
+    async handleUnfollow (id) {
+      try {
+         if (this.isClickedUnfollow) {
+          return
+        }
+        this.isClickedUnfollow = true
+
+        const data = await followApi.cancelFollow({ followingId: id.toString() })
+        if (data.status === 'error') {
+          throw new Error(data.message)
+        }
+        Toast.fire({
+          icon: 'success',
+          title: '已取消跟隨此使用者'
+        })
+        const index = this.followers.findIndex(follower => follower.id === id)
+        this.followers[index].isFollowed = false
+        this.followers[index].followerCount--
+        this.followers.sort((a, b) => b.followerCount - a.followerCount)
+        this.isClickedUnfollow = false
+      } catch (error) {
+        Toast.fire({
+          icon: 'warning',
+          title: '取消跟隨失敗，請稍後再試'
+        })
+        this.isClickedUnfollow = false
         console.error(error.message)
       }
     }
