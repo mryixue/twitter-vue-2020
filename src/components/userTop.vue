@@ -14,12 +14,14 @@
         <div
           v-show="user.isFollowed"
           @click="handleUnfollow(user.id)"
+          class="on"
         >
           取消跟隨
         </div>
         <div
           v-if="!user.isFollowed"
           @click="handleFollow(user.id)"
+          class="off"
         >
           跟隨
         </div>
@@ -242,12 +244,16 @@ $font-color: rgba(#b0d7f6, .8)
     div
       text-align: center
       padding: 5px 10px
-      margin: 10px
       border-radius: 10px
-      background:
-        color: $font_color
       &:hover
         cursor: pointer
+      margin: 10px
+      &.on
+        background:
+          color: $font_color
+      &.off
+        color: $font_color
+        border: 2px solid $font_color
   .card
     margin:
       bottom: 10px

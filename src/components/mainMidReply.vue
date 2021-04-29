@@ -7,11 +7,15 @@
       <Spinner v-if="isLoading" />
       <div class="info">
         <div class="left">
-          <img class="avatar" :src="tweet.avatar | emptyImage" alt="tweet.avatar">
+          <router-link :to="{ name: 'others', params: { id: tweet.UserId } }">
+            <img class="avatar" :src="tweet.avatar | emptyImage" alt="tweet.avatar">
+          </router-link>
         </div>
         <div class="right">
-          <div class="name">{{ tweet ? tweet.name : 'Unknown'}}</div>
-          <div class="account">@{{ tweet ? tweet.account : 'unknown'}}</div>
+          <router-link :to="{ name: 'others', params: { id: tweet.UserId } }">
+            <div class="name">{{ tweet ? tweet.name : 'Unknown'}}</div>
+            <div class="account">@{{ tweet ? tweet.account : 'unknown'}}</div>
+          </router-link>
         </div>
       </div>
       <p class="description">{{ tweet ? tweet.description : ''}}</p>
@@ -39,13 +43,17 @@
     <div class="replies">
       <div class="reply" v-for="reply in replies" :key="reply.id">
         <div class="left">
-          <img class="avatar" :src="reply.User.avatar | emptyImage" alt="tweet.avatar">
+          <router-link :to="{ name: 'others', params: { id: reply.User.id } }">
+            <img class="avatar" :src="reply.User.avatar | emptyImage" alt="tweet.avatar">
+          </router-link>
         </div>
         <div class="right">
-          <div class="name">{{ reply ? reply.User.name : 'Unknown'}}
-            <span class="account">@{{ reply ? reply.User.account : 'unknown'}}</span>
-            <span class="creatTime">·{{ reply.createdAt | fromNow}}</span>
-          </div>
+          <router-link :to="{ name: 'others', params: { id: reply.User.id } }">
+            <div class="name">{{ reply ? reply.User.name : 'Unknown'}}
+              <span class="account">@{{ reply ? reply.User.account : 'unknown'}}</span>
+              <span class="creatTime">·{{ reply.createdAt | fromNow}}</span>
+            </div>
+          </router-link>
           <div class="replyAt">回覆 <span>@{{tweet ? tweet.name : 'Unknown'}}</span></div>
           <p class="description">{{ reply ? reply.comment : ''}}</p>
         </div>
@@ -101,7 +109,7 @@ export default {
           throw new Error(data.message)
         }
 
-        const { User, Replies } = data
+        const { User, Replies, UserId } = data
         const { id, description, createdAt, replyCount, likeCount, isLiked } = data
         const { avatar, name, account } = User
 
@@ -115,7 +123,8 @@ export default {
           account,
           replyCount,
           likeCount,
-          isLiked
+          isLiked,
+          UserId
         }
 
         this.replies = Replies
@@ -225,6 +234,8 @@ $font-color: rgba(#b0d7f6, .8)
         display: flex
         flex-direction: column
         justify-content: center
+        &:hover
+          text-decoration: underline
         .name
           font-weight: bold
         .account
@@ -274,6 +285,8 @@ $font-color: rgba(#b0d7f6, .8)
         justify-content: center
         .name
           font-weight: bold
+          &:hover
+            text-decoration: underline
           .account,
           .creatTime
             color: grey
