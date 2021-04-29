@@ -22,8 +22,8 @@
         <p class="article">{{ tweet.introduction }}</p>
       </div>
       <div class="switch">
-        <div class="on" v-show="tweet.isFollowed" @click="handleUnfollow(tweet.followingId)">取消跟隨</div>
-        <div class="off" v-show="!tweet.isFollowed" @click="handleFollow(tweet.followingId)">跟隨</div>
+        <div class="on" v-show="tweet.isFollowed" @click="handleUnfollow(tweet.followingId || tweet.followerId)">取消跟隨</div>
+        <div class="off" v-show="!tweet.isFollowed" @click="handleFollow(tweet.followerId)">跟隨</div>
       </div>
     </div>
   </div>
@@ -122,7 +122,7 @@ export default {
           icon: 'success',
           title: '已跟隨此使用者'
         })
-        const index = this.tweets.findIndex(follower => follower.followingId === id)
+        const index = this.tweets.findIndex(followship => followship.followerId === id)
         this.tweets[index].isFollowed = true
         this.isClickedFollow = false
       } catch (error) {
@@ -149,8 +149,11 @@ export default {
           icon: 'success',
           title: '已取消跟隨此使用者'
         })
-        const index = this.tweets.findIndex(follower => follower.followingId === id)
+        const index = this.tweets.findIndex(followship => followship.followingId === id || followship.followerId === id)
         this.tweets[index].isFollowed = false
+        if (this.tweets[index].followingId) { // update following user list
+          this.tweets.splice(index, 1)
+        }
         this.isClickedUnfollow = false
       } catch (error) {
         Toast.fire({
