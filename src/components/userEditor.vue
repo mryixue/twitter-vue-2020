@@ -4,15 +4,13 @@
       <h3>編輯個人資料</h3>
       <div class="image">
         <div class="cover" :style="'background-image: url('+ user.cover || emptyImage +')'">
-          <img src="/camera-add.png" alt="camera-add" v-show="user.cover === ''">
-          <div class="delete" v-show="user.cover !== ''">×</div>
+          <img src="/camera-add.png" @click="changeCover(user)">
         </div>
         <div class="avatar" :style="'background-image: url('+ user.avatar || emptyImage +')'">
-          <img src="/camera-add.png" alt="camera-add" v-show="user.avatar === ''">
-          <div class="delete" v-show="user.avatar !== ''">×</div>
+          <img src="/camera-add.png" @click="changeAvatar(user)">
         </div>
       </div>
-      <form>
+      <form @submit.prevent.stop="handleSubmit(user)">
         <div class="input-group">
           <label for="name">名稱</label>
           <input
@@ -30,12 +28,16 @@
             id="intro"
             @input="countIntro"
             maxlength="160"
+            @keydown.prevent.stop.enter.exact="handleSubmit(user)"
+            @keydown.esc="closeModal()"
           ></textarea>
           <div class="length">{{introCount}}/160</div>
         </div>
         <button
           type="submit"
           class="button"
+          :disabled="isProcessing"
+          :class="{isProcessing}"
         >儲存</button>
         <div class="close" @click.self="closeModal()">×</div>
       </form>
@@ -46,19 +48,21 @@
 <script>
 import Bus from '../bus.js'
 import { Toast } from './../utils/helpers'
+import usersAPI from './../apis/users'
+import { mapState } from 'vuex'
 
 export default {
   data () {
     return {
       user: {},
-      reply: '',
       modalOn: false,
       introCount: 0,
-      nameCount: 0
+      nameCount: 0,
+      isProcessing: false,
     }
   },
   created() {
-    Bus.$on('toeditor', (user) => {
+    Bus.$on('toeditor', user => {
       this.user = user
       this.modalOn = !this.modalOn
       this.introCount = this.user.introduction.length
@@ -66,27 +70,72 @@ export default {
     })
   },
   methods: {
-    closeModal(){
-      if(this.reply){
-        Toast.fire({
-          title: '儲存變更?',
-          position: 'center',
-          showDenyButton: true,
-          showConfirmButton: true,
-          confirmButtonText: `儲存`,
-          denyButtonText: `取消儲存`,
-          timer: undefined
-        }).then(result => {
-          if (result.isConfirmed) {
-            this.modalOn = !this.modalOn
-          } else if (result.isDenied) {
-            this.reply = ''
-            this.modalOn = !this.modalOn
+    async handleSubmit (user) {
+      try {
+        this.isProcessing = true
+
+        const { data } = await usersAPI.putProfile({
+          userId: this.currentUser.id,
+          profile: {
+            cover: user.cover,
+            avatar: user.avatar,
+            name: user.name,
+            introduction: user.introduction,
           }
         })
-      } else {
+
+        if (data.status === 'error') {
+          throw new Error(data.message)
+        }
+
+        Toast.fire({
+          icon: 'success',
+          title: '更新個人資料成功'
+        })
         this.modalOn = !this.modalOn
+        this.isProcessing = false
+      } catch (error) {
+        this.isProcessing = false
+
+        Toast.fire({
+          icon: 'error',
+          title: '無法更新'
+        })
+        console.error(error.message)
       }
+    },
+    changeCover(user){
+      Toast.fire({
+        title: '輸入封面網址',
+        input: 'text',
+        timer: undefined,
+        position: 'center',
+        showCancelButton: true,
+        showConfirmButton: true,
+      }).then(result => {
+        if(result.isConfirmed){
+          user.cover = result.value
+          this.handleSubmit(user)
+        }
+      })
+    },
+    changeAvatar(user){
+      Toast.fire({
+        title: '輸入大頭貼網址',
+        input: 'text',
+        timer: undefined,
+        position: 'center',
+        showCancelButton: true,
+        showConfirmButton: true,
+      }).then(result => {
+        if(result.isConfirmed){
+          user.avatar = result.value
+          this.handleSubmit(user)
+        }
+      })
+    },
+    closeModal(){
+      this.modalOn = !this.modalOn
     },
     countIntro(){
       this.introCount = this.user.introduction.length
@@ -94,8 +143,10 @@ export default {
     countName(){
       this.nameCount = this.user.name.length
     },
-  }
-
+  },
+  computed: {
+    ...mapState(['currentUser', 'isAuthenticated'])
+  },
 }
 </script>
 
@@ -140,7 +191,7 @@ $font-color: rgba(#b0d7f6, .8)
         left: 10px
         object-fit: cover
       .cover, .avatar
-        img, .delete
+        img
           position: absolute
           width: 30px
           height: 30px
@@ -153,7 +204,7 @@ $font-color: rgba(#b0d7f6, .8)
           transform: translate(-50%,-50%)
           display: none
       .cover:hover, .avatar:hover
-        img, .delete
+        img
           display: block
           cursor: pointer
     form

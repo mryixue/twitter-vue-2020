@@ -24,5 +24,11 @@ export default {
   },
   getFollowers ({ userId }) {
     return apiHelper.get(`/users/${userId}/followers`)
-  }
+  },
+  setAccount ({ userId, setting }) {
+    return apiHelper.put(`/users/${userId}/account`, setting)
+  },
+  putProfile ({ userId, profile }) {
+    return apiHelper.put(`/users/${userId}`, profile)
+  },
 }

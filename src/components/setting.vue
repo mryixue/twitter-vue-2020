@@ -1,14 +1,13 @@
 <template>
   <div id="setting">
     <h1 class="title">帳戶設定</h1>
-    <form>
+    <form @submit.prevent.stop="handleSubmit">
       <div class="group">
         <label for="account">帳號</label>
         <input
           inputmode="account"
-          v-model="account"
+          v-model="setting.account"
           autocomplete="username"
-          required
           autofocus
           id="account">
       </div>
@@ -16,41 +15,39 @@
         <label for="name">名稱</label>
         <input
           inputmode="name"
-          v-model="name"
+          v-model="setting.name"
           maxlength="25"
-          required
           id="name">
       </div>
       <div class="group">
         <label for="email">Email</label>
         <input
           inputmode="email"
-          v-model="email"
+          v-model="setting.email"
           autocomplete="email"
-          required
           id="email">
       </div>
       <div class="group">
         <label for="password">密碼</label>
         <input
           type="password"
-          v-model="password"
+          v-model="setting.password"
           autocomplete="new-password"
-          required
           id="password">
       </div>
       <div class="group">
         <label for="checkPassword">密碼確認</label>
         <input
           type="password"
-          v-model="checkPassword"
+          v-model="setting.checkPassword"
           autocomplete="new-password"
-          required
           id="checkPassword">
       </div>
       <button
         type="submit"
         class="button"
+        :disabled="isProcessing"
+        :class="{isProcessing}"
       >送出</button>
     </form>
   </div>
@@ -58,51 +55,76 @@
 
 <script>
 import usersAPI from './../apis/users'
+import authorizationAPI from './../apis/authorization'
 import { Toast } from './../utils/helpers'
-import Spinner from './../components/spinner'
+import { mapState } from 'vuex'
 
 export default {
-  components: {
-    Spinner
-  },
   data(){
     return{
-      account: '',
-      name: '',
-      email: '',
-      password: '',
-      checkPassword: '',
-      isProcessing: false
+      setting: {
+        account: '',
+        name: '',
+        email: '',
+        password: '',
+        checkPassword: '',
+      },
+      isProcessing: false,
     }
   },
   created () {
-    this.fetchUserSetting ()
+    const { account, name, email } = this.currentUser
+    this.setting.account = account
+    this.setting.name = name
+    this.setting.email = email
   },
   methods: {
-    async fetchUserSetting () {
+    async handleSubmit () {
       try {
-        this.isLoading = true
-        const { data } = await usersAPI.getCurrentUser()
+        this.isProcessing = true
+
+        const { data } = await usersAPI.setAccount({
+          userId: this.currentUser.id,
+          setting: this.setting
+        })
 
         if (data.status === 'error') {
           throw new Error(data.message)
         }
-        const { account, name, email, password } = data.currentUser
-        this.account = account
-        this.name = name
-        this.email = email
-        this.password = password
-        this.isLoading = false
+
+        Toast.fire({
+          icon: 'success',
+          title: '更新帳戶設定成功'
+        })
+
+        try {
+          const response = await authorizationAPI.logIn({
+            account: this.setting.account,
+            password: this.setting.password
+          })
+          const { account } = response
+          localStorage.setItem('token', account.token)
+          this.$store.commit('setCurrentUser', account.user)
+        } catch (error) {
+          console.error(error.message)
+        }
+
+        this.isProcessing = false
+        this.$router.go()
       } catch (error) {
-        this.isLoading = false
+        this.isProcessing = false
+
         Toast.fire({
           icon: 'error',
-          title: '無法取得帳戶資料，請稍後再試'
+          title: '無法更新'
         })
         console.error(error.message)
       }
-    }
-  }
+    },
+  },
+  computed: {
+    ...mapState(['currentUser', 'isAuthenticated'])
+  },
 }
 </script>
 

@@ -25,8 +25,8 @@
         <p class="article">{{ tweet.introduction }}</p>
       </div>
       <div class="switch">
-        <div class="on" v-show="tweet.isFollowed" @click="handleUnfollow(tweet.followingId || tweet.followerId)">取消跟隨</div>
-        <div class="off" v-show="!tweet.isFollowed" @click="handleFollow(tweet.followerId)">跟隨</div>
+        <div class="on" v-show="tweet.isFollowed && currentUser.id == userId" @click="handleUnfollow(tweet.followingId || tweet.followerId)">取消跟隨</div>
+        <div class="off" v-show="!tweet.isFollowed && currentUser.id == userId" @click="handleFollow(tweet.followerId)">跟隨</div>
       </div>
     </div>
   </div>
@@ -38,11 +38,15 @@ import usersAPI from './../apis/users'
 import followApi from '../apis/followships'
 import { Toast } from './../utils/helpers'
 import Spinner from './../components/spinner'
+import { mapState } from 'vuex'
 
 export default {
   mixins: [emptyImageFilter],
   components: {
     Spinner
+  },
+  computed: {
+    ...mapState(['currentUser', 'isAuthenticated'])
   },
   data(){
     return{
