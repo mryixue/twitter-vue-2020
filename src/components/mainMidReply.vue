@@ -21,17 +21,17 @@
         <div class="like">{{ tweet ? tweet.likeCount : 0}} 喜歡次數</div>
       </div>
       <div class="icons">
-        <img src="/reply.png" @click="reply(tweet)">
+        <img src="/images/reply.png" @click="reply(tweet)">
         <template>
           <img
           v-show="!tweet.isLiked"
           @click="handleLike(tweet.id)"
-          src="/like.png"
+          src="/images/like.png"
           >
           <img
           v-show="tweet.isLiked"
           @click="handleUnlike(tweet.id)"
-          src="/heart.png"
+          src="/images/heart.png"
           >
         </template>
       </div>
