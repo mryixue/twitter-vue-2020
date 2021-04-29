@@ -7,7 +7,7 @@
     </div>
     <Spinner v-if="isLoading" />
 
-    <!-- v-if="tweet.ifFollowed == true || tweet.ifFollowed == filter" -->
+    <!-- v-if="tweet.isFollowed == true || tweet.isFollowed == filter" -->
     <div
       class="cards"
       v-for="tweet in tweets"
@@ -22,8 +22,8 @@
         <p class="article">{{ tweet.introduction }}</p>
       </div>
       <div class="switch">
-        <div class="on" v-show="tweet.ifFollowed" @click="handleUnfollow(tweet.followingId)">取消跟隨</div>
-        <div class="off" v-show="!tweet.ifFollowed" @click="handleFollow(tweet.followingId)">跟隨</div>
+        <div class="on" v-show="tweet.isFollowed" @click="handleUnfollow(tweet.followingId)">取消跟隨</div>
+        <div class="off" v-show="!tweet.isFollowed" @click="handleFollow(tweet.followingId)">跟隨</div>
       </div>
     </div>
   </div>
@@ -123,7 +123,7 @@ export default {
           title: '已跟隨此使用者'
         })
         const index = this.tweets.findIndex(follower => follower.followingId === id)
-        this.tweets[index].ifFollowed = true
+        this.tweets[index].isFollowed = true
         this.isClickedFollow = false
       } catch (error) {
         Toast.fire({
@@ -150,7 +150,7 @@ export default {
           title: '已取消跟隨此使用者'
         })
         const index = this.tweets.findIndex(follower => follower.followingId === id)
-        this.tweets[index].ifFollowed = false
+        this.tweets[index].isFollowed = false
         this.isClickedUnfollow = false
       } catch (error) {
         Toast.fire({
