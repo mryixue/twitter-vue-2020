@@ -4,10 +4,10 @@
       <h3>編輯個人資料</h3>
       <div class="image">
         <div class="cover" :style="'background-image: url('+ user.cover || emptyImage +')'">
-          <img src="/camera-add.png" @click="changeCover(user)">
+          <img src="/images/camera-add.png" @click="changeCover(user)">
         </div>
         <div class="avatar" :style="'background-image: url('+ user.avatar || emptyImage +')'">
-          <img src="/camera-add.png" @click="changeAvatar(user)">
+          <img src="/images/camera-add.png" @click="changeAvatar(user)">
         </div>
       </div>
       <form @submit.prevent.stop="handleSubmit(user)">
