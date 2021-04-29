@@ -81,13 +81,6 @@ export default {
   methods: {
     async handleSubmit () {
       try {
-        if (!this.setting.checkPassword || !this.setting.password) {
-          Toast.fire({
-            icon: 'warning',
-            title: '請填入帳號和密碼'
-          })
-          return
-        }
         this.isProcessing = true
 
         const { data } = await usersAPI.setAccount({
@@ -105,7 +98,6 @@ export default {
         })
 
         try {
-          console.log('go')
           const response = await authorizationAPI.logIn({
             account: this.setting.account,
             password: this.setting.password

@@ -25,8 +25,8 @@
         <p class="article">{{ tweet.introduction }}</p>
       </div>
       <div class="switch">
-        <div class="on" v-show="tweet.isFollowed && currentUser == userId" @click="handleUnfollow(tweet.followingId || tweet.followerId)">取消跟隨</div>
-        <div class="off" v-show="!tweet.isFollowed && currentUser == userId" @click="handleFollow(tweet.followerId)">跟隨</div>
+        <div class="on" v-show="tweet.isFollowed && currentUser.id == userId" @click="handleUnfollow(tweet.followingId || tweet.followerId)">取消跟隨</div>
+        <div class="off" v-show="!tweet.isFollowed && currentUser.id == userId" @click="handleFollow(tweet.followerId)">跟隨</div>
       </div>
     </div>
   </div>
