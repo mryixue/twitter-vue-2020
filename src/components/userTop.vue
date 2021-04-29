@@ -31,7 +31,7 @@
       </div>
       <div class="intro">{{user.introduction}}</div>
       <div class="follow">
-        <div>{{length}} 則推文</div>
+        <div>{{user.tweetCount}} 則推文</div>
         <div class="following">{{user.followingCount}} 位跟隨中</div>
         <div class="follower">{{user.followerCount}} 位跟隨者</div>
       </div>
