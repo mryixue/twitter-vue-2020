@@ -63,7 +63,6 @@ export default {
         }
 
         this.tweets = data.data
-        Bus.$emit('pushAmount', this.tweets.length)
         this.isLoading = false
       } catch (error) {
         this.isLoading = false

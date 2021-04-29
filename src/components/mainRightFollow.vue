@@ -47,6 +47,9 @@ export default {
   },
   created () {
     this.fetchTopUsers ()
+    Bus.$on('chanFollow', () =>{
+      this.fetchTopUsers ()
+    })
   },
   methods: {
     async fetchTopUsers () {
