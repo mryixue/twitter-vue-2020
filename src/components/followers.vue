@@ -2,14 +2,15 @@
   <div id="follow">
     <div class="links">
       <a @click="$router.go(-1)">←</a>
-      <div :class="{filter:!filter}" @click="followers">跟隨者</div>
-      <div :class="{filter:filter}" @click="following">正在跟隨</div>
+      <div :class="{filter:!filter}" @click="fetchFollowers(userId)">跟隨者</div>
+      <div :class="{filter:filter}" @click="fetchFollowingUsers(userId)">正在跟隨</div>
     </div>
-    <!-- <Spinner v-if="isLoading" /> -->
+    <Spinner v-if="isLoading" />
+
+    <!-- v-if="tweet.ifFollowed == true || tweet.ifFollowed == filter" -->
     <div
       class="cards"
       v-for="tweet in tweets"
-      v-if="tweet.ifFollowed == true || tweet.ifFollowed == filter"
       :key="tweet.followingId">
       <div class="left">
         <img class="avatar" :src="tweet.avatar | emptyImage">
@@ -43,119 +44,29 @@ export default {
   data(){
     return{
       filter: false,
-      tweets2: [],
+      tweets: [],
+      userId: -1,
       isLoading: true,
       isClickedFollow: false,
-      isClickedUnfollow: false,
-      tweets: [
-        {
-          id: 1,
-          avatar: '',
-          name: 'Laure',
-          account: 'LaureBill',
-          intro: 'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit',
-          followed: true
-        },
-        {
-          id: 2,
-          avatar: '',
-          name: 'Laure',
-          account: 'LaureBill',
-          intro: 'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit',
-          followed: true
-        },
-        {
-          id: 3,
-          avatar: '',
-          name: 'Laure',
-          account: 'LaureBill',
-          intro: 'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit',
-          followed: true
-        },
-        {
-          id: 4,
-          avatar: '',
-          name: 'Laure',
-          account: 'LaureBill',
-          intro: 'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit',
-          followed: false
-        },
-        {
-          id: 5,
-          avatar: '',
-          name: 'Laure',
-          account: 'LaureBill',
-          intro: 'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit',
-          followed: false
-        },
-        {
-          id: 6,
-          avatar: '',
-          name: 'Laure',
-          account: 'LaureBill',
-          intro: 'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit',
-          followed: false
-        },
-        {
-          id: 7,
-          avatar: '',
-          name: 'Laure',
-          account: 'LaureBill',
-          intro: 'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit',
-          followed: false
-        },
-        {
-          id: 8,
-          avatar: '',
-          name: 'Laure',
-          account: 'LaureBill',
-          intro: 'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit',
-          followed: false
-        },
-        {
-          id: 9,
-          avatar: '',
-          name: 'Laure',
-          account: 'LaureBill',
-          intro: 'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit',
-          followed: false
-        },
-        {
-          id: 10,
-          avatar: '',
-          name: 'Laure',
-          account: 'LaureBill',
-          intro: 'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit',
-          followed: false
-        },
-        {
-          id: 11,
-          avatar: '',
-          name: 'Laure',
-          account: 'LaureBill',
-          intro: 'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit',
-          followed: false
-        },
-      ]
+      isClickedUnfollow: false
     }
   },
   created () {
     const { id: userId } = this.$route.params
+    this.fetchFollowers (userId)
     this.fetchFollowingUsers (userId)
+    this.userId = userId
   },
   beforeRouteUpdate (to, from, next) {
     const { id: userId } = to.params
+    this.fetchFollowers (userId)
     this.fetchFollowingUsers (userId)
+    this.userId = userId
     next()
   },
   methods: {
-    followers(){
-      this.filter = false
-    },
-    following(){
-      this.filter = true
-    },
     async fetchFollowingUsers (userId) {
+      this.filter = true
       try {
         this.isLoading = true
         const data = await usersAPI.getFollowingUsers({ userId })
@@ -171,6 +82,27 @@ export default {
         Toast.fire({
           icon: 'error',
           title: '無法取得正在跟隨的使用者，請稍後再試'
+        })
+        console.error(error.message)
+      }
+    },
+    async fetchFollowers (userId) {
+      this.filter = false
+      try {
+        this.isLoading = true
+        const data = await usersAPI.getFollowers({ userId })
+
+        if (data.status === 'error') {
+          throw new Error(data.message)
+        }
+
+        this.tweets = data.data
+        this.isLoading = false
+      } catch (error) {
+        this.isLoading = false
+        Toast.fire({
+          icon: 'error',
+          title: '無法取得跟隨者資料，請稍後再試'
         })
         console.error(error.message)
       }
@@ -226,7 +158,6 @@ export default {
           title: '取消跟隨失敗，請稍後再試'
         })
         this.isClickedUnfollow = false
-        console.error(error.message)
       }
     }
   }

@@ -10,7 +10,7 @@
     </div>
     <div class="button">
       <div @click="editor(user)" v-show="currentUser.id == userId">編輯個人資料</div>
-      <div v-show="currentUser.id != userId">正在跟隨</div>
+      <div v-show="currentUser.id != userId">跟隨??</div>
     </div>
     <div class="card">
       <div class="name">{{user.name}}
@@ -18,6 +18,7 @@
       </div>
       <div class="intro">{{user.introduction}}</div>
       <div class="follow">
+        <div>{{length}} 則推文</div>
         <div class="following">{{user.followingCount}} 位跟隨中</div>
         <div class="follower">{{user.followerCount}} 位跟隨者</div>
       </div>
@@ -45,6 +46,7 @@ export default {
   data() {
     return {
       links: 'tweet',
+      length: 0,
       user: {
         account: '',
         name: '',
@@ -65,6 +67,9 @@ export default {
     const { id: userId } = this.$route.params
     this.fetchUser (userId)
     this.userId = userId
+    Bus.$on('pushAmount', length =>{
+      this.length = length
+    })
   },
   beforeRouteUpdate (to, from, next) {
     const { id: userId } = to.params
@@ -107,6 +112,7 @@ export default {
           isFollowed
         }
         this.isLoading = false
+        
       } catch (error) {
         this.isLoading = false
         console.error(error.message)

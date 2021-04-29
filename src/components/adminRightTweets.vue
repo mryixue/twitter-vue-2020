@@ -39,6 +39,9 @@ export default {
   },
   created () {
     this.fetchTweets()
+    setInterval(() => {
+      this.fetchTweets()
+    }, 60000);
   },
   methods: {
     async fetchTweets () {
@@ -80,6 +83,9 @@ export default {
           icon: 'success',
           title: '刪除推文成功'
         })
+
+        this.fetchTweets()
+        
       } catch (error) {
         Toast.fire({
           icon: 'error',
