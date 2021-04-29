@@ -29,6 +29,7 @@ import usersAPI from './../apis/users'
 import followApi from '../apis/followships'
 import Spinner from './../components/spinner'
 import { Toast } from '../utils/helpers'
+import Bus from '../bus.js'
 
 export default {
   mixins: [emptyImageFilter],
@@ -46,6 +47,9 @@ export default {
   },
   created () {
     this.fetchTopUsers ()
+    Bus.$on('chanFollow', () =>{
+      this.fetchTopUsers ()
+    })
   },
   methods: {
     async fetchTopUsers () {
@@ -86,6 +90,7 @@ export default {
         this.followers[index].followerCount++
         this.followers.sort((a, b) => b.followerCount - a.followerCount)
         this.isClickedFollow = false
+        Bus.$emit('changeFollow')
       } catch (error) {
         Toast.fire({
           icon: 'error',
@@ -116,6 +121,7 @@ export default {
         this.followers[index].followerCount--
         this.followers.sort((a, b) => b.followerCount - a.followerCount)
         this.isClickedUnfollow = false
+        Bus.$emit('changeFollow')
       } catch (error) {
         Toast.fire({
           icon: 'error',

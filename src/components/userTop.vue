@@ -32,8 +32,16 @@
       <div class="intro">{{user.introduction}}</div>
       <div class="follow">
         <div>{{user.tweetCount}} 則推文</div>
-        <div class="following">{{user.followingCount}} 位跟隨中</div>
-        <div class="follower">{{user.followerCount}} 位跟隨者</div>
+        <div class="following">
+          <router-link :to="{ name: 'followers', params: { id: currentUser.id } }">
+            {{user.followingCount}} 位跟隨中
+          </router-link>
+        </div>
+        <div class="follower">
+          <router-link :to="{ name: 'followers', params: { id: currentUser.id } }">
+            {{user.followerCount}} 位跟隨者
+          </router-link>
+        </div>
       </div>
     </div>
     <div class="filter">
@@ -85,8 +93,8 @@ export default {
     const { id: userId } = this.$route.params
     this.fetchUser (userId)
     this.userId = userId
-    Bus.$on('pushAmount', length =>{
-      this.length = length
+    Bus.$on('changeFollow', () =>{
+      this.fetchUser (userId)
     })
   },
   beforeRouteUpdate (to, from, next) {
@@ -155,7 +163,7 @@ export default {
           icon: 'success',
           title: '已跟隨此使用者'
         })
-
+        Bus.$emit('chanFollow')
         this.user.isFollowed = true
         this.isClickedFollow = false
       } catch (error) {
@@ -182,7 +190,7 @@ export default {
           icon: 'success',
           title: '已取消跟隨此使用者'
         })
-
+        Bus.$emit('chanFollow')
         this.user.isFollowed = false
         this.isClickedUnfollow = false
       } catch (error) {
