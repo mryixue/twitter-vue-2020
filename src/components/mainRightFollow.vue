@@ -1,7 +1,7 @@
 <template>
   <div id="mainRightFollow">
     <div class="box">
-      <div class="title">跟隨誰</div>
+      <div class="title">我要跟隨誰</div>
       <Spinner v-if="isLoading" />
       <div class="card" v-for="follower in followers" :key="follower.id">
         <router-link :to="{ name: 'others', params: { id: follower.id } }">
@@ -13,8 +13,8 @@
           </router-link>
           <div class="at">@{{follower.account}}</div>
           <div class="switch">
-            <div class="on" v-show="follower.isFollowed" @click.stop="handleUnfollow(follower.id)">取消跟隨</div>
-            <div class="off" v-show="!follower.isFollowed" @click.stop="handleFollow(follower.id)">跟隨</div>
+            <div class="on" v-show="follower.isFollowed" @click="handleUnfollow(follower.id)">取消跟隨</div>
+            <div class="off" v-show="!follower.isFollowed" @click="handleFollow(follower.id)">跟隨</div>
           </div>
         </div>
       </div>
@@ -29,6 +29,7 @@ import usersAPI from './../apis/users'
 import followApi from '../apis/followships'
 import Spinner from './../components/spinner'
 import { Toast } from '../utils/helpers'
+import Bus from '../bus.js'
 
 export default {
   mixins: [emptyImageFilter],
@@ -46,6 +47,9 @@ export default {
   },
   created () {
     this.fetchTopUsers ()
+    Bus.$on('chanFollow', () =>{
+      this.fetchTopUsers ()
+    })
   },
   methods: {
     async fetchTopUsers () {
@@ -59,7 +63,6 @@ export default {
 
         this.currentUserId = data.data.currentUserId
         this.followers = data.data.topUsers.filter(item => item.id != this.currentUserId)
-
         this.isLoading = false
       } catch (error) {
         this.isLoading = false
@@ -87,9 +90,10 @@ export default {
         this.followers[index].followerCount++
         this.followers.sort((a, b) => b.followerCount - a.followerCount)
         this.isClickedFollow = false
+        Bus.$emit('changeFollow')
       } catch (error) {
         Toast.fire({
-          icon: 'warning',
+          icon: 'error',
           title: '跟隨失敗，請稍後再試'
         })
         this.isClickedFollow = false
@@ -117,9 +121,10 @@ export default {
         this.followers[index].followerCount--
         this.followers.sort((a, b) => b.followerCount - a.followerCount)
         this.isClickedUnfollow = false
+        Bus.$emit('changeFollow')
       } catch (error) {
         Toast.fire({
-          icon: 'warning',
+          icon: 'error',
           title: '取消跟隨失敗，請稍後再試'
         })
         this.isClickedUnfollow = false

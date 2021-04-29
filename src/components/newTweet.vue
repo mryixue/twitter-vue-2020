@@ -5,6 +5,8 @@
         v-model="description"
         placeholder="有什麼新鮮事？"
         @keydown.prevent.stop.enter.exact="handleSubmit"
+        @keydown.esc="closeModal()"
+        maxlength="140"
       >
       </textarea>
       <button
@@ -117,6 +119,7 @@ $font-color: rgba(#b0d7f6, .8)
         top: 10px
       padding: 5px 10px
       border-radius: 10px
+      white-space: normal
     button
       position: absolute
       right: 10px

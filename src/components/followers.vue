@@ -2,28 +2,31 @@
   <div id="follow">
     <div class="links">
       <a @click="$router.go(-1)">←</a>
-      <div :class="{filter:!filter}" @click="fetchFollowers(userId)">跟隨者</div>
       <div :class="{filter:filter}" @click="fetchFollowingUsers(userId)">正在跟隨</div>
+      <div :class="{filter:!filter}" @click="fetchFollowers(userId)">跟隨者</div>
     </div>
     <Spinner v-if="isLoading" />
 
-    <!-- v-if="tweet.ifFollowed == true || tweet.ifFollowed == filter" -->
     <div
       class="cards"
       v-for="tweet in tweets"
       :key="tweet.followingId">
       <div class="left">
-        <img class="avatar" :src="tweet.avatar | emptyImage">
+        <router-link :to="{ name: 'others', params: { id: tweet.followingId | tweet.followerId } }">
+          <img class="avatar" :src="tweet.avatar | emptyImage">
+        </router-link>
       </div>
       <div class="right">
-        <h5 class="info">{{ tweet.name }}
-          <div>@{{ tweet.account }}</div>
-        </h5>
+        <router-link :to="{ name: 'others', params: { id: tweet.followingId | tweet.followerId  } }">
+          <h5 class="info">{{ tweet.name }}
+            <div>@{{ tweet.account }}</div>
+          </h5>
+        </router-link>
         <p class="article">{{ tweet.introduction }}</p>
       </div>
       <div class="switch">
-        <div class="on" v-show="tweet.ifFollowed">正在跟隨</div>
-        <div class="off" v-show="!tweet.ifFollowed">跟隨</div>
+        <div class="on" v-show="tweet.isFollowed && currentUser.id == userId" @click="handleUnfollow(tweet.followingId || tweet.followerId)">取消跟隨</div>
+        <div class="off" v-show="!tweet.isFollowed && currentUser.id == userId" @click="handleFollow(tweet.followerId)">跟隨</div>
       </div>
     </div>
   </div>
@@ -32,31 +35,36 @@
 <script>
 import { emptyImageFilter } from './../utils/mixins'
 import usersAPI from './../apis/users'
+import followApi from '../apis/followships'
 import { Toast } from './../utils/helpers'
 import Spinner from './../components/spinner'
+import { mapState } from 'vuex'
 
 export default {
   mixins: [emptyImageFilter],
   components: {
     Spinner
   },
+  computed: {
+    ...mapState(['currentUser', 'isAuthenticated'])
+  },
   data(){
     return{
-      filter: false,
+      filter: true,
       tweets: [],
       userId: -1,
       isLoading: true,
+      isClickedFollow: false,
+      isClickedUnfollow: false
     }
   },
   created () {
     const { id: userId } = this.$route.params
-    this.fetchFollowers (userId)
     this.fetchFollowingUsers (userId)
     this.userId = userId
   },
   beforeRouteUpdate (to, from, next) {
     const { id: userId } = to.params
-    this.fetchFollowers (userId)
     this.fetchFollowingUsers (userId)
     this.userId = userId
     next()
@@ -103,6 +111,62 @@ export default {
         })
         console.error(error.message)
       }
+    },
+    async handleFollow(id) {
+      try {
+         if (this.isClickedFollow) {
+          return
+        }
+        this.isClickedFollow = true
+
+        const data = await followApi.followUser({ id: id.toString() })
+        if (data.status === 'error') {
+          throw new Error(data.message)
+        }
+        Toast.fire({
+          icon: 'success',
+          title: '已跟隨此使用者'
+        })
+        const index = this.tweets.findIndex(followship => followship.followerId === id)
+        this.tweets[index].isFollowed = true
+        this.isClickedFollow = false
+      } catch (error) {
+        Toast.fire({
+          icon: 'error',
+          title: '跟隨失敗，請稍後再試'
+        })
+        this.isClickedFollow = false
+        console.error(error.message)
+      }
+    },
+    async handleUnfollow (id) {
+      try {
+         if (this.isClickedUnfollow) {
+          return
+        }
+        this.isClickedUnfollow = true
+
+        const data = await followApi.cancelFollow({ followingId: id.toString() })
+        if (data.status === 'error') {
+          throw new Error(data.message)
+        }
+        Toast.fire({
+          icon: 'success',
+          title: '已取消跟隨此使用者'
+        })
+        const index = this.tweets.findIndex(followship => followship.followingId === id || followship.followerId === id)
+        this.tweets[index].isFollowed = false
+        if (this.tweets[index].followingId) { // update following user list
+          this.tweets.splice(index, 1)
+        }
+        this.isClickedUnfollow = false
+      } catch (error) {
+        Toast.fire({
+          icon: 'error',
+          title: '取消跟隨失敗，請稍後再試'
+        })
+        this.isClickedUnfollow = false
+      }
     }
   }
 }
@@ -147,8 +211,11 @@ $font-color: rgba(#b0d7f6, .8)
         background-color: grey
         object-fit: cover
     .right
-      .info div
-        color: grey
+      .info
+        &:hover
+          text-decoration: underline
+        div
+          color: grey
       .article
         margin:
           top: 10px
