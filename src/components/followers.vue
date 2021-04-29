@@ -21,8 +21,8 @@
         <p class="article">{{ tweet.introduction }}</p>
       </div>
       <div class="switch">
-        <div class="on" v-show="tweet.ifFollowed">正在跟隨</div>
-        <div class="off" v-show="!tweet.ifFollowed">跟隨</div>
+        <div class="on" v-show="tweet.ifFollowed" @click="handleUnfollow(tweet.followingId)">取消跟隨</div>
+        <div class="off" v-show="!tweet.ifFollowed" @click="handleFollow(tweet.followingId)">跟隨</div>
       </div>
     </div>
   </div>
@@ -31,6 +31,7 @@
 <script>
 import { emptyImageFilter } from './../utils/mixins'
 import usersAPI from './../apis/users'
+import followApi from '../apis/followships'
 import { Toast } from './../utils/helpers'
 import Spinner from './../components/spinner'
 
@@ -44,6 +45,8 @@ export default {
       filter: false,
       tweets2: [],
       isLoading: true,
+      isClickedFollow: false,
+      isClickedUnfollow: false,
       tweets: [
         {
           id: 1,
@@ -169,6 +172,60 @@ export default {
           icon: 'error',
           title: '無法取得正在跟隨的使用者，請稍後再試'
         })
+        console.error(error.message)
+      }
+    },
+    async handleFollow(id) {
+      try {
+         if (this.isClickedFollow) {
+          return
+        }
+        this.isClickedFollow = true
+
+        const data = await followApi.followUser({ id: id.toString() })
+        if (data.status === 'error') {
+          throw new Error(data.message)
+        }
+        Toast.fire({
+          icon: 'success',
+          title: '已跟隨此使用者'
+        })
+        const index = this.tweets.findIndex(follower => follower.followingId === id)
+        this.tweets[index].ifFollowed = true
+        this.isClickedFollow = false
+      } catch (error) {
+        Toast.fire({
+          icon: 'error',
+          title: '跟隨失敗，請稍後再試'
+        })
+        this.isClickedFollow = false
+        console.error(error.message)
+      }
+    },
+    async handleUnfollow (id) {
+      try {
+         if (this.isClickedUnfollow) {
+          return
+        }
+        this.isClickedUnfollow = true
+
+        const data = await followApi.cancelFollow({ followingId: id.toString() })
+        if (data.status === 'error') {
+          throw new Error(data.message)
+        }
+        Toast.fire({
+          icon: 'success',
+          title: '已取消跟隨此使用者'
+        })
+        const index = this.tweets.findIndex(follower => follower.followingId === id)
+        this.tweets[index].ifFollowed = false
+        this.isClickedUnfollow = false
+      } catch (error) {
+        Toast.fire({
+          icon: 'error',
+          title: '取消跟隨失敗，請稍後再試'
+        })
+        this.isClickedUnfollow = false
         console.error(error.message)
       }
     }
