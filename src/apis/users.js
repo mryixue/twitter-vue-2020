@@ -27,7 +27,7 @@ export default {
   },
   setAccount ({ userId, setting }) {
     return apiHelper.put(`/users/${userId}/account`, {
-      setting
+      ...setting
     })
   },
 }

@@ -46,6 +46,7 @@
 <script>
 import Bus from '../bus.js'
 import { Toast } from './../utils/helpers'
+import { mapState } from 'vuex'
 
 export default {
   data () {

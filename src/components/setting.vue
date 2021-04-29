@@ -66,8 +66,8 @@ export default {
         account: '',
         name: '',
         email: '',
-        password: '12345678',
-        checkPassword: '12345678',
+        password: '',
+        checkPassword: '',
       },
       isProcessing: false,
     }
