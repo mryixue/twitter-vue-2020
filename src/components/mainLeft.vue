@@ -1,6 +1,6 @@
 <template>
   <div id="mainLeft">
-    <img class="logo" src="/images/logo.png">
+    <img class="logo" src="../../public/images/logo.png">
     <nav class="nav">
       <router-link to="/main">首頁</router-link>
       <router-link
@@ -12,7 +12,7 @@
     </nav>
     <div class="button" @click="tweet">新推文</div>
     <div class="logout" @click="logout">
-      <img src="/images/logout.png">
+      <img src="../../public/images/logout.png">
       <span>登出</span>
     </div>
   </div>
