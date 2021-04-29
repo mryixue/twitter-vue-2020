@@ -2,23 +2,26 @@
   <div id="follow">
     <div class="links">
       <a @click="$router.go(-1)">←</a>
-      <div :class="{filter:!filter}" @click="fetchFollowers(userId)">跟隨者</div>
       <div :class="{filter:filter}" @click="fetchFollowingUsers(userId)">正在跟隨</div>
+      <div :class="{filter:!filter}" @click="fetchFollowers(userId)">跟隨者</div>
     </div>
     <Spinner v-if="isLoading" />
 
-    <!-- v-if="tweet.isFollowed == true || tweet.isFollowed == filter" -->
     <div
       class="cards"
       v-for="tweet in tweets"
       :key="tweet.followingId">
       <div class="left">
-        <img class="avatar" :src="tweet.avatar | emptyImage">
+        <router-link :to="{ name: 'others', params: { id: tweet.followingId | tweet.followerId } }">
+          <img class="avatar" :src="tweet.avatar | emptyImage">
+        </router-link>
       </div>
       <div class="right">
-        <h5 class="info">{{ tweet.name }}
-          <div>@{{ tweet.account }}</div>
-        </h5>
+        <router-link :to="{ name: 'others', params: { id: tweet.followingId | tweet.followerId  } }">
+          <h5 class="info">{{ tweet.name }}
+            <div>@{{ tweet.account }}</div>
+          </h5>
+        </router-link>
         <p class="article">{{ tweet.introduction }}</p>
       </div>
       <div class="switch">
@@ -43,7 +46,7 @@ export default {
   },
   data(){
     return{
-      filter: false,
+      filter: true,
       tweets: [],
       userId: -1,
       isLoading: true,
@@ -53,13 +56,11 @@ export default {
   },
   created () {
     const { id: userId } = this.$route.params
-    this.fetchFollowers (userId)
     this.fetchFollowingUsers (userId)
     this.userId = userId
   },
   beforeRouteUpdate (to, from, next) {
     const { id: userId } = to.params
-    this.fetchFollowers (userId)
     this.fetchFollowingUsers (userId)
     this.userId = userId
     next()
@@ -206,8 +207,11 @@ $font-color: rgba(#b0d7f6, .8)
         background-color: grey
         object-fit: cover
     .right
-      .info div
-        color: grey
+      .info
+        &:hover
+          text-decoration: underline
+        div
+          color: grey
       .article
         margin:
           top: 10px

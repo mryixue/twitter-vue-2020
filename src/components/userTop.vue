@@ -33,12 +33,12 @@
       <div class="follow">
         <div>{{user.tweetCount}} 則推文</div>
         <div class="following">
-          <router-link :to="{ name: 'followers', params: { id: currentUser.id } }">
-            {{user.followingCount}} 位跟隨中
+          <router-link :to="{ name: 'followers', params: { id: userId } }">
+            {{user.followingCount}} 位正在跟隨
           </router-link>
         </div>
         <div class="follower">
-          <router-link :to="{ name: 'followers', params: { id: currentUser.id } }">
+          <router-link :to="{ name: 'followers', params: { id: userId } }">
             {{user.followerCount}} 位跟隨者
           </router-link>
         </div>
