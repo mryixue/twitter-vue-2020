@@ -27,6 +27,7 @@ import { fromNowFilter } from './../utils/mixins'
 import usersAPI from './../apis/users'
 import { Toast } from './../utils/helpers'
 import Spinner from './../components/spinner'
+import Bus from '../bus.js'
 
 export default {
   mixins: [emptyImageFilter, fromNowFilter],
@@ -42,6 +43,9 @@ export default {
   created () {
     const { id: userId } = this.$route.params
     this.fetchUserTweets(userId)
+    Bus.$on('tweetSuccess', () => {
+      this.fetchUserTweets(userId)
+    })
   },
   beforeRouteUpdate (to, from, next) {
     const { id: userId } = to.params
@@ -59,7 +63,7 @@ export default {
         }
 
         this.tweets = data.data
-
+        Bus.$emit('pushAmount', this.tweets.length)
         this.isLoading = false
       } catch (error) {
         this.isLoading = false

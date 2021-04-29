@@ -4,6 +4,7 @@
       <textarea
         v-model="description"
         placeholder="有什麼新鮮事？"
+        @keydown.prevent.stop.enter.exact="handleSubmit"
       >
       </textarea>
       <button
@@ -55,6 +56,8 @@ export default {
         })
         this.isProcessing = false
         this.description = ''
+        this.modalOn = !this.modalOn
+        Bus.$emit('tweetSuccess')
       } catch (error) {
         this.isProcessing = false
 

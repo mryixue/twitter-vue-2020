@@ -79,6 +79,9 @@ export default {
   created () {
     const { tweetId } = this.$route.params
     this.fetchTweet (tweetId)
+    Bus.$on('replySuccess', () => {
+      this.fetchTweet (tweetId)
+    })
   },
   beforeRouteUpdate (to, from, next) {
     const { tweetId } = to.params

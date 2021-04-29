@@ -5,6 +5,7 @@
       <textarea
         v-model="description"
         placeholder="有什麼新鮮事？"
+        @keydown.prevent.stop.enter.exact="handleSubmit"
       >
       </textarea>
       <button
@@ -20,6 +21,7 @@
 <script>
 import tweetsAPI from './../apis/tweets'
 import { Toast } from './../utils/helpers'
+import Bus from '../bus.js'
 
 export default {
   data () {
@@ -53,6 +55,7 @@ export default {
         })
         this.isProcessing = false
         this.description = ''
+        Bus.$emit('tweetSuccess')
       } catch (error) {
         this.isProcessing = false
 

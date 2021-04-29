@@ -38,8 +38,8 @@ import { Toast } from './../utils/helpers'
 export default {
   data(){
     return{
-      account: 'root@example.com',
-      password: '12345678',
+      account: '',
+      password: '',
       isProcessing: false
     }
   },
