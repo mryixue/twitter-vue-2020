@@ -162,8 +162,8 @@ $font-color: rgba(#b0d7f6, .8)
     position: relative
     width: 50vw
     padding: 10px
-    top: 20px
-    bottom: 50px
+    padding-top: 20px
+    padding-bottom: 50px
     border-radius: 10px
     background: white
     .image
@@ -215,7 +215,7 @@ $font-color: rgba(#b0d7f6, .8)
         flex-direction: column
         input
           border: 1px
-          style: none none solid none
+          border-style: none none solid none
         .length
           text-align: right
           font-size: 13px
