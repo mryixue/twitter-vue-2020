@@ -1,7 +1,7 @@
 <template>
   <div id="mainRightFollow">
     <div class="box">
-      <div class="title">跟隨誰</div>
+      <div class="title">我要跟隨誰</div>
       <Spinner v-if="isLoading" />
       <div class="card" v-for="follower in followers" :key="follower.id">
         <router-link :to="{ name: 'others', params: { id: follower.id } }">
