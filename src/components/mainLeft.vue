@@ -12,7 +12,7 @@
     </nav>
     <div class="button" @click="tweet">新推文</div>
     <div class="logout" @click="logout">
-      <img :src="this.publicPath + 'logout.png'">
+      <img src="/logout.png">
       <span>登出</span>
     </div>
   </div>
@@ -23,11 +23,6 @@ import { mapState } from 'vuex'
 import Bus from '../bus.js'
 
 export default {
-  data () {
-    return {
-      publicPath: process.env.NODE_ENV
-    }
-  },
   computed: {
     ...mapState(['currentUser', 'isAuthenticated'])
   },
