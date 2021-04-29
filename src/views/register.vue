@@ -1,7 +1,7 @@
 <template>
   <div class="loginframe">
     <div id="register">
-      <img class="logo" src="/images/logo.png">
+      <img class="logo" src="../../public/images/logo.png">
       <h3 class="title">建立您的帳號</h3>
       <form class="form" @submit.prevent.stop="handleSubmit">
         <input
