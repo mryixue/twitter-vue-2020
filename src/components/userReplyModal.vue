@@ -18,6 +18,7 @@
         <textarea
           v-model="comment"
           placeholder="推你的回覆"
+          @keydown.prevent.stop.enter.exact="replyTweet"
         >
         </textarea>
         <button
@@ -106,6 +107,9 @@ export default {
           title: '新增回覆成功'
         })
         this.isProcessing = false
+        this.modalOn = !this.modalOn
+        this.comment = ''
+        Bus.$emit('replySuccess')
       } catch (error) {
         this.isProcessing = false
 

@@ -59,7 +59,7 @@ export default {
 
         this.currentUserId = data.data.currentUserId
         this.followers = data.data.topUsers.filter(item => item.id != this.currentUserId)
-console.log(this.followers)
+
         this.isLoading = false
       } catch (error) {
         this.isLoading = false
