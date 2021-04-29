@@ -9,8 +9,21 @@
       <img class="avatar" :src="user.avatar | emptyImage" alt="user.avatar">
     </div>
     <div class="button">
-      <div @click="editor(user)" v-show="currentUser.id == userId">編輯個人資料</div>
-      <div v-show="currentUser.id != userId">跟隨??</div>
+      <div @click="editor(user)" v-if="currentUser.id == userId">編輯個人資料</div>
+      <template v-if="currentUser.id != userId">
+        <div
+          v-show="user.isFollowed"
+          @click="handleUnfollow(user.id)"
+        >
+          取消跟隨
+        </div>
+        <div
+          v-if="!user.isFollowed"
+          @click="handleFollow(user.id)"
+        >
+          跟隨
+        </div>
+      </template>
     </div>
     <div class="card">
       <div class="name">{{user.name}}
@@ -41,10 +54,12 @@
 
 <script>
 import usersAPI from './../apis/users'
+import followApi from '../apis/followships'
 import { emptyImageFilter } from './../utils/mixins'
 import Spinner from './../components/spinner'
 import Bus from '../bus.js'
 import { mapState } from 'vuex'
+import { Toast } from '../utils/helpers'
 
 export default {
   mixins: [emptyImageFilter],
@@ -56,6 +71,7 @@ export default {
       links: 'tweet',
       length: 0,
       user: {
+        id: -1,
         account: '',
         name: '',
         email: '',
@@ -68,6 +84,8 @@ export default {
         isFollowed: true
       },
       isLoading: true,
+      isClickedFollow: false,
+      isClickedUnfollow: false,
       userId: ''
     }
   },
@@ -108,9 +126,10 @@ export default {
         if (data.status === 'error') {
           throw new Error(data.message)
         }
-        const { account, name, email, introduction, avatar, cover, tweetCount, followingCount, followerCount, isFollowed } = data
+        const { id, account, name, email, introduction, avatar, cover, tweetCount, followingCount, followerCount, isFollowed } = data
         this.user = {
           ...this.user,
+          id,
           account,
           name,
           email,
@@ -123,7 +142,7 @@ export default {
           isFollowed
         }
         this.isLoading = false
-        
+
       } catch (error) {
         this.isLoading = false
         console.error(error.message)
@@ -131,6 +150,59 @@ export default {
     },
     editor(user){
       Bus.$emit('toeditor',user)
+    },
+    async handleFollow(id) {
+      try {
+         if (this.isClickedFollow) {
+          return
+        }
+        this.isClickedFollow = true
+
+        const data = await followApi.followUser({ id: id.toString() })
+        if (data.status === 'error') {
+          throw new Error(data.message)
+        }
+        Toast.fire({
+          icon: 'success',
+          title: '已跟隨此使用者'
+        })
+
+        this.user.isFollowed = true
+        this.isClickedFollow = false
+      } catch (error) {
+        Toast.fire({
+          icon: 'error',
+          title: '跟隨失敗，請稍後再試'
+        })
+        this.isClickedFollow = false
+        console.error(error.message)
+      }
+    },
+    async handleUnfollow (id) {
+      try {
+         if (this.isClickedUnfollow) {
+          return
+        }
+        this.isClickedUnfollow = true
+
+        const data = await followApi.cancelFollow({ followingId: id.toString() })
+        if (data.status === 'error') {
+          throw new Error(data.message)
+        }
+        Toast.fire({
+          icon: 'success',
+          title: '已取消跟隨此使用者'
+        })
+
+        this.user.isFollowed = false
+        this.isClickedUnfollow = false
+      } catch (error) {
+        Toast.fire({
+          icon: 'error',
+          title: '取消跟隨失敗，請稍後再試'
+        })
+        this.isClickedUnfollow = false
+      }
     }
   },
   computed: {

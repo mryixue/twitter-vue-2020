@@ -13,8 +13,8 @@
           </router-link>
           <div class="at">@{{follower.account}}</div>
           <div class="switch">
-            <div class="on" v-show="follower.isFollowed" @click.stop="handleUnfollow(follower.id)">取消跟隨</div>
-            <div class="off" v-show="!follower.isFollowed" @click.stop="handleFollow(follower.id)">跟隨</div>
+            <div class="on" v-show="follower.isFollowed" @click="handleUnfollow(follower.id)">取消跟隨</div>
+            <div class="off" v-show="!follower.isFollowed" @click="handleFollow(follower.id)">跟隨</div>
           </div>
         </div>
       </div>
@@ -60,7 +60,6 @@ export default {
 
         this.currentUserId = data.data.currentUserId
         this.followers = data.data.topUsers.filter(item => item.id != this.currentUserId)
-
         this.isLoading = false
       } catch (error) {
         this.isLoading = false
@@ -91,7 +90,7 @@ export default {
         Bus.$emit('changeFollow')
       } catch (error) {
         Toast.fire({
-          icon: 'warning',
+          icon: 'error',
           title: '跟隨失敗，請稍後再試'
         })
         this.isClickedFollow = false
@@ -122,7 +121,7 @@ export default {
         Bus.$emit('changeFollow')
       } catch (error) {
         Toast.fire({
-          icon: 'warning',
+          icon: 'error',
           title: '取消跟隨失敗，請稍後再試'
         })
         this.isClickedUnfollow = false
