@@ -34,6 +34,11 @@ const routes = [
     component: () => import('../views/register.vue')
   },
   {
+    path: '/test',
+    name: 'test',
+    component: () => import('../views/test.vue')
+  },
+  {
     path: '/main',
     name: 'main',
     component: main
@@ -74,6 +79,11 @@ const routes = [
     path: '/followers/:id',
     name: 'followers',
     component: () => import('../views/followers.vue')
+  },
+  {
+    path: '/chatRoom/:id',
+    name: 'chatRoom',
+    component: () => import('../views/chatRoom.vue')
   },
   {
     path: '/reply_list/:tweetId',

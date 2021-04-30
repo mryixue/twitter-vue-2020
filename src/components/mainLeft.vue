@@ -8,6 +8,11 @@
       >
         個人資料
       </router-link>
+      <router-link
+        :to="{ name: 'chatRoom', params: { id: currentUser.id } }"
+      >
+        聊天室
+      </router-link>
       <router-link :to="{ name: 'setting' }">設定</router-link>
     </nav>
     <div class="button" @click="tweet">新推文</div>
