@@ -76,6 +76,11 @@ const routes = [
     component: () => import('../views/followers.vue')
   },
   {
+    path: '/chatRoom/:id',
+    name: 'chatRoom',
+    component: () => import('../views/chatRoom.vue')
+  },
+  {
     path: '/reply_list/:tweetId',
     name: 'reply_list',
     component: () => import('../views/reply_list.vue')
